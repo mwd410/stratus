@@ -1,0 +1,20 @@
+Options +FollowSymLinks +ExecCGI
+
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+
+  RewriteCond %{REQUEST_URI}  /img/.+(gif|png|jpg)$
+  RewriteRule .* - [L]
+
+  RewriteCond %{REQUEST_URI}  /css/.+(css|png|less)$
+  RewriteRule .* - [L]
+
+  RewriteCond %{REQUEST_URI}  /js/.+(css|less)$
+  RewriteRule .* - [L]
+
+  RewriteCond %{REQUEST_URI}  /js/.+(js|htm)$
+  RewriteRule .* - [L]
+
+  RewriteCond $1 !^(index\.php|robots\.txt)
+  RewriteRule ^(.*)$ /index.php/$1 [L]
+</IfModule>

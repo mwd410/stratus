@@ -1,0 +1,7 @@
+{
+    "all" : {
+        "dsn" : "mysql:host=localhost;dbname=stratus",
+        "username" : "root",
+        "password" : ""
+    }
+}

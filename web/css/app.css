@@ -1,0 +1,159 @@
+body {
+    padding-top : 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+    font-family : sans-serif;
+}
+
+.form-signin {
+    max-width        : 300px;
+    padding          : 19px 29px 29px;
+    margin           : 0 auto 20px;
+    background-color : #fff;
+    /*border: 1px solid #e5e5e5;
+    -webkit-border-radius: 5px;
+       -moz-border-radius: 5px;
+            border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+       -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+            box-shadow: 0 1px 2px rgba(0,0,0,.05);*/
+}
+
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+    margin-bottom : 10px;
+}
+
+.form-signin input[type="text"],
+.form-signin input[type="password"] {
+    font-size     : 16px;
+    height        : auto;
+    margin-bottom : 15px;
+    padding       : 7px 9px;
+}
+
+.navbar-inverse .navbar-inner {
+    background-color : #019EE1;
+    background-image : none;
+    border-color     : #fff;
+    padding-top      : 12px;
+}
+
+.navbar-inverse .brand {
+    color : #333;
+}
+
+.navbar-inverse .nav .active > a, .navbar-inverse .nav .active > a:hover, .navbar-inverse .nav .active > a:focus {
+    background-color        : #fff;
+    border-top-left-radius  : 8px;
+    border-top-right-radius : 8px;
+    color                   : #333;
+    box-shadow              : none;
+}
+
+.navbar-inverse .brand, .navbar-inverse .nav > li > a {
+    color       : #fff;
+    font-weight : bold;
+}
+
+.navbar-fixed-top .navbar-inner, .navbar-static-top .navbar-inner {
+    box-shadow : none;
+}
+
+.second-bar {
+    margin-top : -20px;
+}
+
+.second-bar .inner2 {
+    background-color : #fff;
+    background-image : none;
+    border-color     : #fff;
+}
+
+.menu2 > .nav > li {
+    position : relative;
+}
+
+.menu2 > .nav > li > a, .menu2 > .nav > li > a:hover {
+    color      : #777;
+    box-shadow : none;
+}
+
+.menu2 > .nav > .active:after {
+    background  : none repeat scroll 0 0 #FFFFFF;
+    bottom      : -5px;
+    box-shadow  : 1px 1px 2px 0 rgba(0, 0, 0, 0.28);
+    content     : "";
+    display     : inline-block;
+    height      : 10px;
+    left        : 30%;
+    margin-left : 14px;
+    position    : absolute;
+    transform   : rotate(56deg) skew(0deg, -20deg);
+    width       : 9px;
+}
+
+.menu2 > .nav > .active:before {
+    background  : none repeat scroll 0 0 #FFFFFF;
+    bottom      : 0;
+    content     : "";
+    display     : inline-block;
+    height      : 10px;
+    left        : 50%;
+    margin-left : 8px;
+    position    : absolute;
+    width       : 20px;
+    z-index     : 1;
+}
+
+.menu2 > .nav > .active > a {
+    color       : black;
+    font-weight : bold;
+}
+
+.inner2 .container {
+    width : 805px;
+}
+
+.brand > img {
+    margin-top : -19px;
+}
+
+.rightmenu {
+    float : right;
+}
+
+.rightside {
+    float : right;
+}
+
+.accountTable {
+    width : 100%;
+}
+
+
+.accountId,
+.accountName,
+.accountAws,
+.accountSecret,
+.accountExpander {
+    padding : 5px;
+}
+
+.accountExpander {
+    width: 16px;
+    height: 16px;
+    background: black;
+    vertical-align: middle;
+}
+
+.accountBody.expanded {
+    display: block;
+}
+
+.accountBody.collapsed {
+    display: none;
+}
+
+.gridStyle {
+    border : 1px solid rgb(212, 212, 212);
+    height : 500px
+}

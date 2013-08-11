@@ -1,0 +1,26 @@
+{
+    "all" : {
+        "security" : {
+            "all"               : {
+                "secure" : true,
+                "role"   : ".*"
+            },
+            "/^\\/(?:login)?$/" : {
+                "secure" : false
+            },
+            "/^\\/admin/"       : {
+                "role" : "^admin$"
+            }
+        },
+        "noAuth"   : "/",
+        "routes"   : {
+            "/"               : "Default.index",
+            "/login"          : "Default.login",
+            "/logout"         : "Default.logout",
+            "/accounts"       : "Account.main",
+            "/getAccounts"    : "Account.getAccounts",
+            "/account/add"    : "Account.add",
+            "/account/edit"   : "Account.edit"
+        }
+    }
+}
