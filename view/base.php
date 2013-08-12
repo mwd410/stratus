@@ -22,20 +22,17 @@ $tbl_account = "account";
     <meta name="author" content="">
     //-->
 
+</head>
+<body>
     <?php
+    insertPartial('body');
     includeStylesheets();
     includeJavaScripts();
     ?>
-
-
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
     <script src="bootstrap/js/html5shiv.js"></script>
     <![endif]-->
-
-</head>
-<body>
-    <?php insertPartial('body') ?>
-    <script src="/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
