@@ -18,7 +18,9 @@ beginPartial('content');
             <div class="accountSecret">Secret Key</div>
             <div class="accountIcons"></div>
         </div>
-        <div class="account" data-ng-repeat="account in accounts">
+        <div class="account"
+             ng-animate="'fade'"
+             data-ng-repeat="account in accounts">
             <div class="accountName">{{account.name}}</div>
             <div class="accountAws">{{account.aws_key}}</div>
             <div class="accountSecret">{{account.secret_key | obstructed}}</div>
@@ -53,7 +55,7 @@ beginPartial('content');
 
             <div class="accountBody"
                  ng-show="isEditing(account) || isAdding(account)"
-                 ng-animate=" 'animate' ">
+                 ng-animate=" 'expandDown' ">
 
                 <h4>Edit Account</h4>
 

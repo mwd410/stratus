@@ -39,27 +39,36 @@
 
 .transition(@style) {
 
+  -webkit-transition : @style;
+  -moz-transition    : @style;
+  -ms-transition     : @style;
+  -o-transition      : @style;
+  transition         : @style;
 }
 
-.animate-show,
-.animate-hide {
-  -webkit-transition : 200ms linear all;
-  -moz-transition    : 200ms linear all;
-  -ms-transition     : 200ms linear all;
-  -o-transition      : 200ms linear all;
-  transition         : 200ms linear all;
+.expandDown-show,
+.expandDown-hide {
+  .transition(200ms linear all);
   display            : block;
   overflow           : hidden;
 }
 
-.animate-show.animate-show-active,
-.animate-hide {
+.expandDown-show.expandDown-show-active,
+.expandDown-hide {
   height : 150px;
 }
 
-.animate-hide.animate-hide-active,
-.animate-show {
+.expandDown-hide.expandDown-hide-active,
+.expandDown-show {
   height  : 0px;
+}
+
+.fade-enter {
+  .transition(500ms linear all);
+  .opacity(0);
+  &.fade-enter-active {
+    .opacity(100);
+  }
 }
 
 .blockRight {
