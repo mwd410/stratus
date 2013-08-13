@@ -11,9 +11,11 @@ function __autoload($className) {
     $dirs = array(
         '../app',
         '../controller',
-        '../lib'
+        '../lib',
+        '../model'
     );
 
+    //TODO: traverse recursively
     foreach($dirs as $dir) {
         foreach($names as $name) {
             $path = dirname(__FILE__)."/$dir/$name";

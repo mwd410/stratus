@@ -10,17 +10,31 @@
 class Request {
 
     private $params;
+    private $method;
 
     public function __construct($params = array()) {
 
-        $this->setParams($params);
-        $this->setParams($_GET);
-        $this->setParams($_POST);
+        $this->method = strtoupper($_SERVER['REQUEST_METHOD']);
 
-        $requestBody = file_get_contents('php://input');
-        if ($requestBody) {
-            $this->setParams(json_decode($requestBody, true));
+        $this->setParams($params);
+
+        if ($this->method === 'GET') {
+            $this->setParams($_GET);
+        } else if ($this->method === 'POST') {
+
+            $requestBody = file_get_contents('php://input');
+            $requestBody = json_decode($requestBody, true);
+
+            if (is_array($requestBody)) {
+                $this->setParams($requestBody);
+            } else {
+                $this->setParams($_POST);
+            }
         }
+    }
+
+    public function getMethod() {
+        return $this->method;
     }
 
     public function setParam($name, $value) {

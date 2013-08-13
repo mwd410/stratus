@@ -18,18 +18,10 @@ class AccountController extends Controller {
 
         $customerId = $this->getUser()->get('customer_id');
 
-        $keyString = Config::from('config')->get('keystring');
-
-        $db = Database::getInstance();
-        $accounts = $db->fetchAll("
-        select
-            account_id as id,
-            AES_DECRYPT(account_name,'$keyString') as name,
-            AES_DECRYPT(aws_key,'$keyString') as aws_key,
-            AES_DECRYPT(secret_key,'$keyString') as secret_key
-        from account
-        where customer_id = $customerId
-        and deleted = 0");
+        $accounts = Account::getBasicSelect()
+            ->where("customer_id = $customerId")
+            ->where('deleted = 0')
+            ->execute();
 
         $this->json($accounts);
     }
@@ -79,17 +71,17 @@ class AccountController extends Controller {
 
     public function editAction(Request $request) {
 
-        $db = Database::getInstance();
-
         $id = $request->getParam('id');
-
+        $db = Database::getInstance();
         $keystring = Config::from('config')->get('keystring');
+        $customerId = $this->getUser()->get('customer_id');
 
         $sql = "UPDATE `account` SET
                 `account_name` = AES_ENCRYPT(:name, :keystring),
                 `aws_key` = AES_ENCRYPT(:aws_key, :keystring),
                 `secret_key` = AES_ENCRYPT(:secret_key, :keystring)
-                WHERE `account_id` = :id;";
+                WHERE `account_id` = :id;
+                and `customer_id` = :customer_id";
 
         $db->begin();
         $stmt = $db->getConnection()->prepare($sql);
@@ -97,6 +89,7 @@ class AccountController extends Controller {
         $params = Utils::stripNotIn($request->getParams(),
             array('id', 'name', 'aws_key', 'secret_key'));
         $params['keystring'] = $keystring;
+        $params['customer_id'] = $customerId;
 
         if (!$stmt->execute($params)) {
             $result = array(
