@@ -46,6 +46,7 @@ abstract class Query {
         $this->parts = array(
             'column' => array(),
             'from'   => array(),
+            'set'    => array(),
             'insert' => array(),
             'join'   => array(),
             'where'  => array(),
@@ -121,6 +122,14 @@ abstract class Query {
         return $this;
     }
 
+    public function set($set, $params = null) {
+
+        $this->addPart('set', $set);
+        $this->addParams('set', array_slice(func_get_args(), 1));
+
+        return $this;
+    }
+
     public function insert($data, $params = null) {
 
         $this->setPart('insert', $data);
@@ -185,7 +194,7 @@ abstract class Query {
 
     private function getColumnPart() {
 
-        return implode(',', $this->parts['column']);
+        return implode(', ', $this->parts['column']);
     }
 
     private function getFromPart() {
@@ -193,12 +202,17 @@ abstract class Query {
         return $this->parts['from'][0];
     }
 
+    private function getSetPart() {
+
+        return 'set '.implode(', ', $this->parts['set']);
+    }
+
     private function getInsertPart() {
         $valueList = array();
         foreach($this->parts['insert'] as $values) {
-            $valueList[] = "('".implode("','", $values) . "')";
+            $valueList[] = "('".implode("', '", $values) . "')";
         }
-        return implode(',', $valueList);
+        return implode(', ', $valueList);
     }
 
     private function getJoinPart() {
@@ -213,7 +227,7 @@ abstract class Query {
 
     private function getGroupPart() {
 
-        return 'group by ' . implode(',', $this->parts['group']);
+        return 'group by ' . implode(', ', $this->parts['group']);
     }
 
 }

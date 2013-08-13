@@ -19,7 +19,7 @@ class AccountController extends Controller {
         $customerId = $this->getUser()->get('customer_id');
 
         $accounts = Account::getBasicSelect()
-            ->where("customer_id = $customerId")
+            ->where("customer_id = ?", $customerId)
             ->where('deleted = 0')
             ->execute();
 
@@ -73,50 +73,51 @@ class AccountController extends Controller {
 
         $id = $request->getParam('id');
         $db = Database::getInstance();
-        $keystring = Config::from('config')->get('keystring');
         $customerId = $this->getUser()->get('customer_id');
 
-        $sql = "UPDATE `account` SET
-                `account_name` = AES_ENCRYPT(:name, :keystring),
-                `aws_key` = AES_ENCRYPT(:aws_key, :keystring),
-                `secret_key` = AES_ENCRYPT(:secret_key, :keystring)
-                WHERE `account_id` = :id;
-                and `customer_id` = :customer_id";
+        $existing = Account::find($id)
+                    ->execute();
+        $success = false; // false unless everything works out.
 
-        $db->begin();
-        $stmt = $db->getConnection()->prepare($sql);
+        if (empty($existing)) {
 
-        $params = Utils::stripNotIn($request->getParams(),
-            array('id', 'name', 'aws_key', 'secret_key'));
-        $params['keystring'] = $keystring;
-        $params['customer_id'] = $customerId;
-
-        if (!$stmt->execute($params)) {
-            $result = array(
-                'success' => false,
-                'message' => implode(': ', $stmt->errorInfo())
-            );
-        } else if ($stmt->rowCount() === 0 &&
-            0 == count($db->fetchAll(
-                'select * from account where account_id = ?', array($id)))) {
-
-            $result = array(
-                'success' => false,
-                'message' => 'Account not found.'
-            );
+            $message = 'Account not found';
         } else {
-            $result = array(
-                'success' => true,
-                'message' => $params['name'].' saved.'
-            );
-        }
 
-        if ($result['success'] === true) {
-            $db->commit();
-        } else {
-            $db->rollBack();
-        }
+            $existing = $existing[0];
 
+            if ($existing['customer_id'] != $customerId) {
+
+                $message = 'Sorry, you do not have access to this account.';
+            } else {
+
+                $params = $request->getParams();
+                $params['customer_id'] = $customerId;
+
+                $db->begin();
+
+                $q = Account::update($params);
+
+                if (!$q->execute()) {
+                    $stmt = $q->getStatement();
+                    $message = implode(': ', $stmt->errorInfo());
+                } else {
+                    $success = true;
+                    $message = $params['name'] . ' saved.';
+                }
+
+                if ($success === true) {
+                    $db->commit();
+                } else {
+                    $db->rollBack();
+                }
+
+            }
+        }
+        $result = array(
+            'success' => $success,
+            'message' => $message
+        );
         $this->json($result);
     }
 }
