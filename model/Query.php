@@ -67,6 +67,10 @@ abstract class Query {
         return $this->stmt;
     }
 
+    public function getErrorInfo() {
+        return $this->getStatement()->errorInfo();
+    }
+
     public function execute($params = array()) {
 
         $sql = $this->getSql();
@@ -210,7 +214,7 @@ abstract class Query {
     private function getInsertPart() {
         $valueList = array();
         foreach($this->parts['insert'] as $values) {
-            $valueList[] = "('".implode("', '", $values) . "')";
+            $valueList[] = "(".implode(", ", $values) . ")";
         }
         return implode(', ', $valueList);
     }

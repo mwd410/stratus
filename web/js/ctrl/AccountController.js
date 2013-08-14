@@ -2,6 +2,14 @@
 
 app.controller('AccountController', function($scope, $http) {
 
+    $scope.fv = {
+        aws_key: {
+            length : 20
+        },
+        secret_key:{
+            length : 40
+        }
+    };
     $scope.accounts = [];
     $scope.editing = {};
     $scope.deleting = {};
@@ -123,8 +131,7 @@ app.controller('AccountController', function($scope, $http) {
         }
     };
 
-    $scope.validateSecretKey = function(secret) {
-
-    };
-
+    $scope.changeAws = function(error) {
+        console.log(error);
+    }
 });

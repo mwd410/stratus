@@ -23,6 +23,7 @@ class AccountController extends Controller {
             ->where('deleted = 0')
             ->execute();
 
+
         $this->json($accounts);
     }
 
@@ -30,35 +31,24 @@ class AccountController extends Controller {
 
         $db = Database::getInstance();
         $customerId = $this->getUser()->get('customer_id');
-        $keystring = Config::from('config')->get('keystring');
-
-        $sql = "INSERT INTO account
-                (customer_id, account_name, aws_key, secret_key, deleted)
-                VALUES
-                (:customer_id,
-                AES_ENCRYPT(:name, '$keystring'),
-                AES_ENCRYPT(:aws_key, '$keystring'),
-                AES_ENCRYPT(:secret_key, '$keystring'),
-                0)";
 
         $params = Utils::stripNotIn($request->getParams(),
-            array('name', 'aws_key', 'secret_key'));
+            array('id', 'name', 'aws_key', 'secret_key'));
         $params['customer_id'] = $customerId;
+
+        $q = Account::insert($params);
 
         $db->begin();
 
-        $stmt = $db->getConnection()->prepare($sql);
-        if (!$stmt->execute($params)) {
+        if (!$q->execute()) {
             $db->rollback();
             $result = array(
                 'success' => false,
-                'message' => implode(': ', $stmt->errorInfo())
+                'message' => implode(': ', $q->getErrorInfo())
             );
         } else {
-            $id = $db->getConnection()->lastInsertId();
-            unset($params['customer_id']);
-            $params['id'] = $id;
             $db->commit();
+            unset($params['customer_id']);
 
             $result = array(
                 'success' => true,
@@ -78,6 +68,7 @@ class AccountController extends Controller {
         $existing = Account::find($id)
                     ->execute();
         $success = false; // false unless everything works out.
+        $errors = array();
 
         if (empty($existing)) {
 
@@ -94,29 +85,36 @@ class AccountController extends Controller {
                 $params = $request->getParams();
                 $params['customer_id'] = $customerId;
 
-                $db->begin();
+                $errors = Account::getErrors($params);
 
-                $q = Account::update($params);
+                if (!empty($errors)) {
 
-                if (!$q->execute()) {
-                    $stmt = $q->getStatement();
-                    $message = implode(': ', $stmt->errorInfo());
+                    $message = 'Account save failed with errors.';
                 } else {
-                    $success = true;
-                    $message = $params['name'] . ' saved.';
-                }
+                    $db->begin();
 
-                if ($success === true) {
-                    $db->commit();
-                } else {
-                    $db->rollBack();
-                }
+                    $q = Account::update($params);
 
+                    if (!$q->execute()) {
+                        $stmt = $q->getStatement();
+                        $message = implode(': ', $stmt->errorInfo());
+                    } else {
+                        $success = true;
+                        $message = $params['name'] . ' saved.';
+                    }
+
+                    if ($success === true) {
+                        $db->commit();
+                    } else {
+                        $db->rollBack();
+                    }
+                }
             }
         }
         $result = array(
             'success' => $success,
-            'message' => $message
+            'message' => $message,
+            'errors'  => $errors
         );
         $this->json($result);
     }

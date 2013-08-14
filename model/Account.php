@@ -9,6 +9,15 @@
 
 class Account {
 
+    public static $allColumns = array(
+        'account_id',
+        'customer_id',
+        'account_name',
+        'aws_key',
+        'secret_key',
+        'deleted'
+    );
+
     /**
      * @return string
      */
@@ -87,5 +96,69 @@ class Account {
         }
 
         return $q;
+    }
+
+    /**
+     * @param $data
+     *
+     * @return Insert
+     */
+    public static function insert($data) {
+
+        $keyString = self::getKeyString();
+        $q = Query::create(Query::INSERT)
+            ->from('account');
+
+        $values = array();
+        $params = array();
+
+        foreach($data as $key => &$value) {
+
+            $name = $key;
+            if ($name == 'name') {
+                $name = 'account_name';
+            } else if ($name == 'id') {
+                $name = 'account_id';
+            }
+
+
+            switch ($name) {
+                case 'aws_key':
+                case 'secret_key':
+                case 'account_name':
+                    $values[] = "AES_ENCRYPT(?, '$keyString')";
+                    break;
+                case 'customer_id':
+                case 'account_id':
+                case 'deleted':
+                    $values[] = '?';
+                    break;
+                default:
+                    continue;
+            }
+            $params[] = $value;
+            $q->column($name);
+        }
+        $q->insert($values, $params);
+
+        return $q;
+    }
+
+    public static function getErrors($data) {
+
+        $errors = array();
+        if (empty($data['name'])) {
+            $errors['name'] = 'An account name is required';
+        }
+
+        if (!isset($data['aws_key']) || ($awsLength = strlen($data['aws_key']) !== 20)) {
+            $errors['aws_key'] = "The AWS Key must be 20 characters long.";
+        }
+
+        if (!isset($data['secret_key']) || ($secretLength = strlen($data['secret_key']) !== 40)) {
+            $errors['secret_key'] = "The Secret Key must be 40 characters long.";
+        }
+
+        return $errors;
     }
 }

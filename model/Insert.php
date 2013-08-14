@@ -12,6 +12,7 @@ class Insert extends Query{
     private $onDupKey;
 
     public function __construct() {
+        parent::__construct();
         $this->onDupKey = '';
     }
 
@@ -31,7 +32,7 @@ class Insert extends Query{
         }
 
         $sql = "INSERT INTO {$parts['from']} {$parts['column']} VALUES "
-            .implode($parts['insert']) . ' '
+            . $parts['insert'] . ' '
             .$this->onDupKey;
 
         return $sql;

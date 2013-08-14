@@ -171,7 +171,9 @@
     display    : inline-block;
   }
 
-  .accountName,
+  .accountName {
+    .accountColumn(300px);
+  }
   .accountAws {
     .accountColumn;
   }
@@ -184,8 +186,22 @@
     .accountColumn(auto);
   }
 
+  .accountId,
   .accountIcons {
     .accountColumn(150px);
   }
 }
 
+form {
+  label,
+  span {
+    line-height: 3px;
+  }
+
+  .formError {
+    color : red;
+    &:before {
+      content: '*';
+    }
+  }
+}
