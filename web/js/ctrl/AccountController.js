@@ -17,13 +17,18 @@ app.controller('AccountController', function($scope, $http) {
     var accountMap = {};
     $http.get('/getAccounts').success(function(response) {
 
-        for (var i = 0; i < response.length; ++i) {
-            var account = response[i];
+        $scope.accounts = response.accounts;
 
-            account.expanded = false;
+        for (var i = 0; i < $scope.accounts.length; ++i) {
+            var account = $scope.accounts[i];
+
             accountMap[account.id] = account;
         }
-        $scope.accounts = response;
+
+        $scope.masterAccount = response.masterAccount || {
+            account_id : '0',
+            billing_bucket : ''
+        };
     });
 
     $scope.isModifying = function(account) {
@@ -133,5 +138,11 @@ app.controller('AccountController', function($scope, $http) {
 
     $scope.changeAws = function(error) {
         console.log(error);
-    }
+    };
+
+    $scope.setMasterAccount = function(account, isMaster) {
+
+        $scope.masterAccount.account_id = isMaster ? account.id : null;
+        console.log(arguments);
+    };
 });

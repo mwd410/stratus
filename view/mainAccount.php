@@ -13,7 +13,8 @@ beginPartial('content');
 
     <div class="accountList">
         <div class="accountHeader">
-
+            <div class="icon-space"></div>
+            <div class="icon-space"></div>
             <div class="accountId">Account ID</div>
             <div class="accountName">Account Name</div>
             <div class="accountAws">AWS Key</div>
@@ -21,9 +22,13 @@ beginPartial('content');
 
         </div>
         <div class="account"
-             ng-animate="'fade'"
+             data-ng-animate="'fade'"
              data-ng-repeat="account in accounts">
-
+            <div class="icon-accept"
+                 title="This is your master account."
+                 data-ng-show="masterAccount.account_id == account.id"></div>
+            <div class="icon-space"
+                 data-ng-show="masterAccount.account_id != account.id"></div>
             <div class="accountId">{{account.id}}</div>
             <div class="accountName">{{account.name}}</div>
             <div class="accountAws">{{account.aws_key}}</div>
@@ -41,8 +46,8 @@ beginPartial('content');
             </div>
             <div class="accountIcons" data-ng-show="isModifying(account)">
                 <a href="#" data-ng-click="commit(account)">
-                    <div class="icon-accept"></div>
-                    OK
+                    <div class="icon-save"></div>
+                    Save
                 </a>
                 <div class="icon-space"></div>
                 <a href="#" data-ng-click="cancel(account)">
@@ -107,10 +112,26 @@ beginPartial('content');
                                type="password">
 
                         <span class="formError"
-                              ng-show="accountForm.secret_key.$error.minlength || accountForm.secret_key.$error.required">
+                              ng-show="accountForm.secret_key.$error.minlength">
                             The Secret Key must be {{fv.secret_key.length}} characters long.
                         </span>
                         <br>
+
+                        <label for="masterAccountCheck_{{account.id}}">Master Account</label>
+                        <input
+                            id="masterAccountCheck_{{account.id}}"
+                            class="masterAccountCheckbox"
+                            data-ng-model="isMaster"
+                            data-ng-checked="masterAccount.account_id == account.id"
+                            data-ng-click="masterAccount.account_id = isMaster ? account.id : null"
+                            type="checkbox">
+
+                        <br>
+                        <div data-ng-show="masterAccount.account_id == account.id">
+                            <label>Billing Bucket</label>
+                            <input data-ng-model="masterAccount.billingBucket"
+                                   type="text">
+                        </div>
                     </fieldset>
                 </form>
             </div>

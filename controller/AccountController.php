@@ -23,8 +23,18 @@ class AccountController extends Controller {
             ->where('deleted = 0')
             ->execute();
 
+        $masterAccount = Query::create(Query::SELECT)
+            ->column('account_id')
+            ->column('billing_bucket')
+            ->from('master_account')
+            ->where('customer_id = ?', $customerId)
+            ->execute();
 
-        $this->json($accounts);
+        $result = array(
+            'accounts' => $accounts,
+            'masterAccount' => empty($masterAccount) ? null : $masterAccount
+        );
+        $this->json($result);
     }
 
     public function addAction(Request $request) {
