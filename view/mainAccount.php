@@ -12,7 +12,9 @@ beginPartial('content');
     </a>
 
     <div class="accountList">
+
         <div class="accountHeader">
+
             <div class="icon-space"></div>
             <div class="icon-space"></div>
             <div class="accountId">Account ID</div>
@@ -21,14 +23,18 @@ beginPartial('content');
             <div class="accountIcons"></div>
 
         </div>
+
         <div class="account"
              data-ng-animate="'fade'"
              data-ng-repeat="account in accounts">
+            <!-- Master Account Indicator -->
             <div class="icon-accept"
                  title="This is your master account."
                  data-ng-show="masterAccount.account_id == account.id"></div>
             <div class="icon-space"
                  data-ng-show="masterAccount.account_id != account.id"></div>
+
+            <!-- Account value columns -->
             <div class="accountId">{{account.id}}</div>
             <div class="accountName">{{account.name}}</div>
             <div class="accountAws">{{account.aws_key}}</div>
@@ -44,7 +50,7 @@ beginPartial('content');
                     Delete
                 </a>
             </div>
-            <div class="accountIcons" data-ng-show="isModifying(account)">
+            <div class="accountIcons" data-ng-show="isEditing(account) || isAdding(account)">
                 <a href="#" data-ng-click="commit(account)">
                     <div class="icon-save"></div>
                     Save
@@ -60,11 +66,22 @@ beginPartial('content');
                  data-ng-show="isDeleting(account)">
                 Are you sure you wish to delete {{account.name}}? This
                 cannot be undone.
+
+                <a href="#" class="button" data-ng-click="commit(account)">
+                    <div class="icon-exclaim"></div>
+                    Delete Account
+                </a>
+
+                <div class="icon-space"></div>
+                <a href="#" class="button" data-ng-click="cancel(account)">
+                    <div class="icon-cancel"></div>
+                    Cancel
+                </a>
             </div>
 
             <div class="accountBody"
-                 ng-show="isEditing(account) || isAdding(account)"
-                 ng-animate=" 'expandDown' ">
+                 data-ng-show="isEditing(account) || isAdding(account)"
+                 data-ng-animate=" 'expandDown' ">
 
                 <h4>Edit Account</h4>
 
@@ -75,7 +92,7 @@ beginPartial('content');
                                data-ng-model="account.id"
                                id="editAccountId_{{account.id}}"
                                type="text"
-                               ng-disabled="!isAdding(account)">
+                               data-ng-disabled="!isAdding(account)">
                         <br>
                         <label for="editAccountName_{{account.id}}">Name</label>
                         <input name="name"
@@ -91,12 +108,12 @@ beginPartial('content');
                                id="editAccountAws_{{account.id}}"
                                pattern="{{'.{' + fv.aws_key.length + '}'}}"
                                required
-                               ng-minlength="{{fv.aws_key.length}}"
+                               data-ng-minlength="{{fv.aws_key.length}}"
                                maxlength="{{fv.aws_key.length}}"
                                type="text">
 
                         <span class="formError"
-                              ng-show="accountForm.aws_key.$error.minlength || accountForm.aws_key.$error.required">
+                              data-ng-show="accountForm.aws_key.$error.minlength || accountForm.aws_key.$error.required">
                             The AWS Key must be {{fv.aws_key.length}} characters long.
                         </span>
                         <br>
@@ -107,12 +124,12 @@ beginPartial('content');
                                type="password"
                                pattern="{{'.{' + fv.secret_key.length + '}'}}"
                                required
-                               ng-minlength="{{fv.secret_key.length}}"
+                               data-ng-minlength="{{fv.secret_key.length}}"
                                maxlength="{{fv.secret_key.length}}"
                                type="password">
 
                         <span class="formError"
-                              ng-show="accountForm.secret_key.$error.minlength">
+                              data-ng-show="accountForm.secret_key.$error.minlength">
                             The Secret Key must be {{fv.secret_key.length}} characters long.
                         </span>
                         <br>
@@ -129,7 +146,7 @@ beginPartial('content');
                         <br>
                         <div data-ng-show="masterAccount.account_id == account.id">
                             <label>Billing Bucket</label>
-                            <input data-ng-model="masterAccount.billingBucket"
+                            <input data-ng-model="masterAccount.billing_bucket"
                                    type="text">
                         </div>
                     </fieldset>

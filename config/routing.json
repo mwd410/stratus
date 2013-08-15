@@ -20,7 +20,8 @@
             "/accounts"       : "Account.main",
             "/getAccounts"    : "Account.getAccounts",
             "/account/add"    : "Account.add",
-            "/account/edit"   : "Account.edit"
+            "/account/edit"   : "Account.edit",
+            "/account/delete" : "Account.delete"
         }
     }
 }

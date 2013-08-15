@@ -32,17 +32,20 @@ class AccountController extends Controller {
 
         $result = array(
             'accounts' => $accounts,
-            'masterAccount' => empty($masterAccount) ? null : $masterAccount
+            'masterAccount' => empty($masterAccount) ? null : $masterAccount[0]
         );
         $this->json($result);
     }
 
     public function addAction(Request $request) {
 
+        $account = $request->getParam('account');
+        $master = $request->getParam('master');
+
         $db = Database::getInstance();
         $customerId = $this->getUser()->get('customer_id');
 
-        $params = Utils::stripNotIn($request->getParams(),
+        $params = Utils::stripNotIn($account,
             array('id', 'name', 'aws_key', 'secret_key'));
         $params['customer_id'] = $customerId;
 
@@ -57,6 +60,9 @@ class AccountController extends Controller {
                 'message' => implode(': ', $q->getErrorInfo())
             );
         } else {
+
+            Account::saveMaster($master, $customerId);
+
             $db->commit();
             unset($params['customer_id']);
 
@@ -71,7 +77,10 @@ class AccountController extends Controller {
 
     public function editAction(Request $request) {
 
-        $id = $request->getParam('id');
+        $account = $request->getParam('account');
+        $master  = $request->getParam('master');
+
+        $id = $account['id'];
         $db = Database::getInstance();
         $customerId = $this->getUser()->get('customer_id');
 
@@ -92,7 +101,7 @@ class AccountController extends Controller {
                 $message = 'Sorry, you do not have access to this account.';
             } else {
 
-                $params = $request->getParams();
+                $params = $account;
                 $params['customer_id'] = $customerId;
 
                 $errors = Account::getErrors($params);
@@ -113,6 +122,8 @@ class AccountController extends Controller {
                         $message = $params['name'] . ' saved.';
                     }
 
+                    Account::saveMaster($master, $customerId);
+
                     if ($success === true) {
                         $db->commit();
                     } else {
@@ -125,6 +136,18 @@ class AccountController extends Controller {
             'success' => $success,
             'message' => $message,
             'errors'  => $errors
+        );
+        $this->json($result);
+    }
+
+    public function deleteAction(Request $request) {
+
+        $customerId = $this->getUser()->get('customer_id');
+
+        Account::delete($request->getParam('id'), $customerId);
+        $result = array(
+            'success' => true,
+            'message' => 'Account deleted.'
         );
         $this->json($result);
     }

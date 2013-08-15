@@ -161,4 +161,43 @@ class Account {
 
         return $errors;
     }
+
+    public static function saveMaster($master, $customerId) {
+
+        $db = Database::getInstance();
+
+        if ($master['account_id'] == '0') {
+            $sql = "
+                        delete from master_account
+                        where customer_id = ?";
+            $params = array($customerId);
+        } else {
+            $sql = "
+            replace into master_account
+            (account_id, customer_id, billing_bucket)
+            values (?, ?, ?)";
+            $params = array(
+                $master['account_id'],
+                $customerId,
+                $master['billing_bucket']
+            );
+        }
+
+        $db->execute($sql, $params);
+    }
+
+    public static function delete($id, $customerId) {
+
+        Query::create(Query::UPDATE)
+            ->from('account')
+            ->set('deleted = 1')
+            ->where('account_id = ?', $id)
+            ->where('customer_id = ?', $customerId)
+            ->execute();
+
+        $sql = 'delete from master_account where account_id = ? and customer_id = ?';
+
+        $params = array($id, $customerId);
+        Database::getInstance()->execute($sql, $params);
+    }
 }

@@ -3,10 +3,10 @@
 app.controller('AccountController', function($scope, $http) {
 
     $scope.fv = {
-        aws_key: {
+        aws_key    : {
             length : 20
         },
-        secret_key:{
+        secret_key : {
             length : 40
         }
     };
@@ -26,9 +26,10 @@ app.controller('AccountController', function($scope, $http) {
         }
 
         $scope.masterAccount = response.masterAccount || {
-            account_id : '0',
+            account_id     : '0',
             billing_bucket : ''
         };
+        $scope.originalMasterAccount = angular.copy($scope.masterAccount);
     });
 
     $scope.isModifying = function(account) {
@@ -88,17 +89,12 @@ app.controller('AccountController', function($scope, $http) {
     }
 
     var commitActions = {
-            edit : function(account) {
-                $http.post('/account/edit', account)
-                    .success(function(response) {
-                        if (response.success) {
-
-                            delete $scope.editing[account.id];
-                        }
-                    });
-            },
-            add : function(account) {
-                $http.post('/account/add', account)
+            add    : function(account) {
+                var params = {
+                    master  : $scope.masterAccount,
+                    account : account
+                };
+                $http.post('/account/add', params)
                     .success(function(response) {
                         if (response.success) {
 
@@ -107,12 +103,41 @@ app.controller('AccountController', function($scope, $http) {
                             console.log(account);
                         }
                     });
+            },
+            edit   : function(account) {
+                var params = {
+                    master  : $scope.masterAccount,
+                    account : account
+                };
+                $http.post('/account/edit', params)
+                    .success(function(response) {
+                        if (response.success) {
+
+                            delete $scope.editing[account.id];
+                        }
+                    });
+            },
+            delete : function(account) {
+                $http.post('/account/delete', account)
+                    .success(function(response) {
+                        if (response.success) {
+                            $scope.accounts.splice($scope.accounts.indexOf(account), 1);
+                            delete $scope.deleting[account.id];
+                        }
+                    });
             }
         },
         cancelActions = {
-            edit : function(account) {
+            add    : function(account) {
+                $scope.accounts.splice($scope.accounts.indexOf(account), 1);
+                $scope.adds.splice($scope.adds.indexOf(account), 1);
+            },
+            edit   : function(account) {
                 Utils.apply(account, $scope.editing[account.id]);
                 delete $scope.editing[account.id];
+            },
+            delete : function(account) {
+                delete $scope.deleting[account.id];
             }
         };
 
@@ -134,6 +159,7 @@ app.controller('AccountController', function($scope, $http) {
             cancelActions[action](account);
             console.log('canceled ' + action + ' for ' + account.name);
         }
+        $scope.masterAccount = angular.copy($scope.originalMasterAccount);
     };
 
     $scope.changeAws = function(error) {
