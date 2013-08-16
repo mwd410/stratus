@@ -6,6 +6,8 @@ beginPartial('content');
 ?>
 <div data-ng-controller="AccountController">
 
+    <h2>Account Management</h2>
+
     <a href="#" class="button blockRight" data-ng-click="add()">
         <div class="icon-add"></div>
         Add
