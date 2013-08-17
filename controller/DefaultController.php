@@ -8,6 +8,28 @@ class DefaultController extends Controller {
         $this->render('login');
     }
 
+    public function registerAction(Request $request) {
+
+        $email = $request->getParam('email');
+        $password = $request->getParam('password');
+        $confirm = $request->getParam('confirm');
+
+        $success = false;
+        if ($password !== $confirm) {
+
+            $message = 'Passwords do not match.';
+        } else {
+
+            Query::create(Query::INSERT);
+        }
+
+        $result = array(
+            'success' => $success,
+            'message' => $message
+        );
+        $this->json($result);
+    }
+
     public function loginAction(Request $request) {
 
         $username = $request->getParam('username');

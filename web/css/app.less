@@ -49,13 +49,13 @@
 .expandDown.ng-hide-add,
 .expandDown.ng-hide-remove {
   .transition(0.5s linear all);
-  transform-origin:top;
-  overflow: hidden;
-  display : block !important;
+  transform-origin : top;
+  overflow         : hidden;
+  display          : block !important;
 }
 
 .expandDown.ng-hide-add.ng-hide-add-active,
-.expandDown.ng-hide-remove{
+.expandDown.ng-hide-remove {
   max-height : 0px;
 }
 
@@ -64,13 +64,21 @@
   max-height : 250px;
 }
 
-.fade-enter {
+.animate-fade.ng-enter,
+.animate-fade.ng-leave {
   .transition(500ms linear all);
-  .opacity(0);
-  &.fade-enter-active {
-    .opacity(100);
-  }
 }
+
+.animate-fade.ng-enter.ng-enter-active,
+.animate-fade.ng-leave {
+  .opacity(100);
+}
+
+.animate-fade.ng-leave.ng-leave-active,
+.animate-fade.ng-enter {
+  .opacity(0);
+}
+
 
 .blockRight {
   float   : right;
@@ -118,10 +126,8 @@
   }
 }
 
-.button:hover
-
 .icon-space {
-  .icon;
+  .iconSpriteSheet(3, 7);
 }
 
 .icon-save {
