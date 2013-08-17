@@ -1,5 +1,7 @@
 'use strict';
-var app = angular.module('App', ['ngGrid']);
+var app = angular.module('App', [
+    'ngAnimate'
+]);
 
 app.controller('MenuController', function($scope) {
 

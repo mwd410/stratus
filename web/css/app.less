@@ -46,21 +46,22 @@
   transition         : @style;
 }
 
-.expandDown-show,
-.expandDown-hide {
-  .transition(200ms linear all);
-  display            : block;
-  overflow           : hidden;
+.expandDown.ng-hide-add,
+.expandDown.ng-hide-remove {
+  .transition(0.5s linear all);
+  transform-origin:top;
+  overflow: hidden;
+  display : block !important;
 }
 
-.expandDown-show.expandDown-show-active,
-.expandDown-hide {
-  height : 150px;
+.expandDown.ng-hide-add.ng-hide-add-active,
+.expandDown.ng-hide-remove{
+  max-height : 0px;
 }
 
-.expandDown-hide.expandDown-hide-active,
-.expandDown-show {
-  height  : 0px;
+.expandDown.ng-hide-remove.ng-hide-remove-active,
+.expandDown.ng-hide-add {
+  max-height : 250px;
 }
 
 .fade-enter {
@@ -72,8 +73,8 @@
 }
 
 .blockRight {
-  float: right;
-  display: block;
+  float   : right;
+  display : block;
 }
 
 @iconSize : 16px;
@@ -100,8 +101,8 @@
 
 .accentHover {
   &:hover {
-    background-color: @accentColor;
-    color : @mainColor;
+    background-color : @accentColor;
+    color            : @mainColor;
     .box-shadow(0px 2px 2px, 20%);
   }
 }
@@ -113,9 +114,11 @@
   .accentHover;
   .iconHover;
   &:hover {
-    text-decoration: none;
+    text-decoration : none;
   }
 }
+
+.button:hover
 
 .icon-space {
   .icon;
@@ -203,17 +206,17 @@
 form {
   label,
   span {
-    line-height: 3px;
+    line-height : 3px;
   }
 
   .formError {
     color : red;
     &:before {
-      content: '*';
+      content : '*';
     }
   }
   input[type="checkbox"] {
-    height : 30px;
-    margin-bottom: 10px;
+    height        : 30px;
+    margin-bottom : 10px;
   }
 }

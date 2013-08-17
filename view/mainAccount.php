@@ -81,9 +81,8 @@ beginPartial('content');
                 </a>
             </div>
 
-            <div class="accountBody"
-                 data-ng-show="isEditing(account) || isAdding(account)"
-                 data-ng-animate=" 'expandDown' ">
+            <div class="accountBody expandDown"
+                 data-ng-show="isEditing(account) || isAdding(account)">
 
                 <h4>Edit Account</h4>
 
@@ -94,6 +93,7 @@ beginPartial('content');
                                data-ng-model="account.id"
                                id="editAccountId_{{account.id}}"
                                type="text"
+                               required
                                data-ng-disabled="!isAdding(account)">
                         <br>
                         <label for="editAccountName_{{account.id}}">Name</label>

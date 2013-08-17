@@ -4,6 +4,7 @@
             "/js/less.js",
             "/js/jquery.js",
             "/js/angular.min.js",
+            "/js/angular-animate.min.js",
             "/js/ng-grid-2.0.7.debug.js",
             "/js/App.js",
             "/js/ctrl/AccountController.js"
