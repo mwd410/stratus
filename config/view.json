@@ -7,7 +7,7 @@
             "/js/angular-animate.min.js",
             "/js/ng-grid-2.0.7.debug.js",
             "/js/App.js",
-            "/js/ctrl/AccountController.js"
+            "/js/controllers/AccountController.js"
         ],
         "css" : [
             "/bootstrap/css/bootstrap.min.css",
