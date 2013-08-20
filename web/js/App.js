@@ -13,13 +13,13 @@ app.controller('MenuController', function($scope) {
                     name : 'Login'
                 }
             ],
-            '/accounts|/analysis' : [
+            '/accounts|/analysis/overview' : [
                 {
                     url  : '/accounts',
                     name : 'Accounts'
                 },
                 {
-                    url  : '/analysis',
+                    url  : '/analysis/overview',
                     name : 'Analysis'
                 }
             ]

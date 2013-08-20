@@ -14,14 +14,15 @@
         },
         "noAuth"   : "/",
         "routes"   : {
-            "/"               : "Default.index",
-            "/login"          : "Default.login",
-            "/logout"         : "Default.logout",
-            "/accounts"       : "Account.main",
-            "/getAccounts"    : "Account.getAccounts",
-            "/account/add"    : "Account.add",
-            "/account/edit"   : "Account.edit",
-            "/account/delete" : "Account.delete"
+            "/"                  : "Default.index",
+            "/login"             : "Default.login",
+            "/logout"            : "Default.logout",
+            "/accounts"          : "Account.main",
+            "/getAccounts"       : "Account.getAccounts",
+            "/account/add"       : "Account.add",
+            "/account/edit"      : "Account.edit",
+            "/account/delete"    : "Account.delete",
+            "/analysis/overview" : "Analysis.overview"
         }
     }
 }

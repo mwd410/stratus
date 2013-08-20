@@ -35,9 +35,7 @@ beginPartial('body');
 
 insertPartial('menu');
 
-echo '<div class="container">';
 
 insertPartial('content');
 
-echo '</div>';
 endPartial();
