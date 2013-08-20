@@ -1,3 +1,4 @@
 .idea
 config/db.json
 bower_components
+db/backup

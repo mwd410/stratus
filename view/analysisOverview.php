@@ -25,9 +25,9 @@ beginPartial('analysisContent');
                     <tr data-ng-repeat="account in accounts">
                         <td><a href="/analysis/totals/{{account.id}}">{{account.name}}</a></td>
                         <td>{{account.cost}}</td>
-                        <td>{{account.daily}}</td>
-                        <td>{{account.weekly}}</td>
-                        <td>{{account.monthly}}</td>
+                        <td dd-overview-td data-value="{{account.daily.value}}"></td>
+                        <td dd-overview-td data-value="{{account.weekly.value}}"></td>
+                        <td dd-overview-td data-value="{{account.monthly.value}}"></td>
                     </tr>
                 </tbody>
             </table>

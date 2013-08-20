@@ -11,7 +11,8 @@
             "/js/controllers/AccountManagementController.js",
             "/js/controllers/AccountController.js",
             "/js/controllers/AnalysisPageController.js",
-            "/js/controllers/AnalysisOverviewController.js"
+            "/js/controllers/AnalysisOverviewController.js",
+            "/js/directives/OverviewTd.js"
         ],
         "css" : [
             "/bootstrap/css/bootstrap.min.css",
