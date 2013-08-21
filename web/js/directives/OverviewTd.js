@@ -3,12 +3,11 @@
 app.directive('ddOverviewTd', function() {
 
     return {
-        scope : {
+        scope      : {
             value : '@ddOverviewTd'
         },
-        restrict : 'A',
-        template :
-            '<div data-ng-show="true"></div>{{value}}%',
+        restrict   : 'A',
+        template   : '<div data-ng-show="true"></div>{{value}}%',
         controller : function($scope, $element) {
             var cls,
                 iconCls;
@@ -28,9 +27,27 @@ app.directive('ddOverviewTd', function() {
                 $element.find('> div:first-child').addClass(iconCls);
             }
         },
-        link : function(scope) {
+        link       : function(scope) {
 
             console.log(scope);
+        }
+    };
+});
+
+app.directive('ddOverviewTh', function() {
+
+    return {
+        restrict   : 'A',
+        require    : 'ddOverviewTh',
+        controller : function($scope) {
+
+            this.sortBy = function(property) {
+                $scope.sortBy(property);
+            };
+        },
+        link       : function(scope, element, attrs, controller) {
+
+            scope.$watch(attrs.ddOverviewTh);
         }
     };
 });

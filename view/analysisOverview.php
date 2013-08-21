@@ -13,17 +13,12 @@ beginPartial('analysisContent');
             <table id="tbl_overview"
                    class="table table-bordered table-hover table-striped tablesorter">
                 <thead>
-                    <tr class="unselectable handCursor">
-                        <th style="width:40%"
-                            data-ng-click="sortBy('name')">Account Name</th>
-                        <th style="width:15%"
-                            data-ng-click="sortBy('cost')">Cost</th>
-                        <th style="width:15%"
-                            data-ng-click="sortBy('daily.value')">Daily</th>
-                        <th style="width:15%"
-                            data-ng-click="sortBy('weekly.value')">Weekly</th>
-                        <th style="width:15%"
-                            data-ng-click="sortBy('monthly.value')">Monthly</th>
+                    <tr class="unselectable handCursor overview-header">
+                        <th data-ng-click="sortBy('name')">Account Name</th>
+                        <th data-ng-click="sortBy('cost')">Cost</th>
+                        <th data-ng-click="sortBy('daily.value')">Daily</th>
+                        <th data-ng-click="sortBy('weekly.value')">Weekly</th>
+                        <th data-ng-click="sortBy('monthly.value')">Monthly</th>
                     </tr>
                 </thead>
                 <tbody>
