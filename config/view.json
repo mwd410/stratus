@@ -12,7 +12,8 @@
             "/js/controllers/AccountController.js",
             "/js/controllers/AnalysisPageController.js",
             "/js/controllers/AnalysisOverviewController.js",
-            "/js/directives/OverviewTd.js"
+            "/js/directives/OverviewTd.js",
+            "/js/directives/SortingTable.js"
         ],
         "css" : [
             "/bootstrap/css/bootstrap.min.css",

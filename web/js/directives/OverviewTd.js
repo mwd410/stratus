@@ -4,13 +4,12 @@ app.directive('ddOverviewTd', function() {
 
     return {
         scope : {
-            value : '@'
+            value : '@ddOverviewTd'
         },
         restrict : 'A',
         template :
             '<div data-ng-show="true"></div>{{value}}%',
         controller : function($scope, $element) {
-            console.log('controller');
             var cls,
                 iconCls;
             if ($scope.value > 0) {
@@ -29,9 +28,9 @@ app.directive('ddOverviewTd', function() {
                 $element.find('> div:first-child').addClass(iconCls);
             }
         },
-        link : function() {
-            console.log('link');
+        link : function(scope) {
 
+            console.log(scope);
         }
     };
 });
