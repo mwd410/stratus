@@ -34,5 +34,5 @@ beginPartial('analysisContent');
         </div>
     </div>
 
-<?
+<?php
 endPartial();
