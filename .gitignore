@@ -2,3 +2,4 @@
 config/db.json
 bower_components
 db/backup
+error.log
