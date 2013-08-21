@@ -15,6 +15,6 @@ Options +FollowSymLinks +ExecCGI
   RewriteCond %{REQUEST_URI}  /js/.+(js|htm)$
   RewriteRule .* - [L]
 
-  RewriteCond $1 !^(index\.php|robots\.txt)
+  RewriteCond $1 !^(index\.php|favicon\.ico)
   RewriteRule ^(.*)$ /index.php/$1 [L]
 </IfModule>
