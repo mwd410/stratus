@@ -39,11 +39,12 @@ class User {
     public function __construct($session) {
 
         $this->data = array();
-        if (isset($session['user'])) {
-            $this->apply($session['user']);
+        if (isset($session['user']) && isset($_SESSION['user']['data'])) {
+
+            $this->apply($session['user']['data']);
         }
 
-        $this->authenticated = isset($session['authenticated']) ? $session['authenticated'] : false;
+        $this->authenticated = isset($session['user']['authenticated']) ? $session['user']['authenticated'] : false;
     }
 
     public function isAuthenticated() {
@@ -102,8 +103,10 @@ class User {
 
     public function persist() {
 
-        $_SESSION['user'] = $this->data;
-        $_SESSION['authenticated'] = $this->isAuthenticated();
+        $_SESSION['user'] = array(
+            'data' => $this->data,
+            'authenticated' => $this->isAuthenticated()
+        );
     }
 
 }
