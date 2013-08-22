@@ -5,13 +5,13 @@ class User {
     private $data;
     private $authenticated;
 
-    public function authenticate($username, $password) {
+    public function authenticate($email, $password) {
 
         $db = Database::getInstance();
 
-        $sql = 'select * from users where user_name = ? and password = ? and deleted = 0';
+        $sql = 'select * from users where email_address = ? and password = ? and deleted = 0';
         $params = array(
-            $username,
+            $email,
             sha1($password));
 
         $result = $db->fetchAll($sql, $params);

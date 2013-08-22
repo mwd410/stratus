@@ -111,10 +111,10 @@ class DefaultController extends Controller {
 
     public function loginAction(Request $request) {
 
-        $username = $request->getParam('username');
+        $email = $request->getParam('email');
         $password = $request->getParam('password');
 
-        $success = $this->getUser()->authenticate($username, $password);
+        $success = $this->getUser()->authenticate($email, $password);
 
         if ($success) {
             $this->forward('/accounts');

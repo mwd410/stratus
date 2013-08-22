@@ -16,8 +16,8 @@ beginPartial('content');?>
 
 <form class="form-signin" method="POST" action="/login">
     <h2 class="form-signin-heading">Login</h2>
-    <input type="text" name="username" class="input-block-level"
-           placeholder="Username">
+    <input type="text" name="email" class="input-block-level"
+           placeholder="Email Address">
     <input type="password" name="password" class="input-block-level"
            placeholder="Password">
     <button class="btn btn-primary" type="submit">Sign in</button>
