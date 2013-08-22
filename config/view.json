@@ -12,6 +12,7 @@
             "/js/controllers/AccountController.js",
             "/js/controllers/AnalysisPageController.js",
             "/js/controllers/AnalysisOverviewController.js",
+            "/js/controllers/RegisterController.js",
             "/js/directives/OverviewTd.js",
             "/js/directives/SortingTable.js"
         ],

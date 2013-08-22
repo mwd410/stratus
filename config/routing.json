@@ -5,7 +5,7 @@
                 "secure" : true,
                 "role"   : ".*"
             },
-            "/^\\/(?:login)?$/" : {
+            "/^\\/(?:login|register|isEmailAvailable)?$/" : {
                 "secure" : false
             },
             "/^\\/admin/"       : {
@@ -16,6 +16,8 @@
         "routes"   : {
             "/"                  : "Default.index",
             "/login"             : "Default.login",
+            "/register"          : "Default.register",
+            "/isEmailAvailable"  : "Default.isEmailAvailable",
             "/logout"            : "Default.logout",
             "/accounts"          : "Account.main",
             "/getAccounts"       : "Account.getAccounts",

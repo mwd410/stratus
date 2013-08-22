@@ -208,14 +208,22 @@
   }
 }
 
+.error {
+  color : red;
+}
+
 form {
   label,
   span {
-    line-height : 3px;
+    vertical-align: 3px;
+  }
+
+  div.icon-info-sign {
+    vertical-align: 3px;
   }
 
   .formError {
-    color : red;
+    .error;
     &:before {
       content : '*';
     }

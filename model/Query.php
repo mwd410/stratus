@@ -138,6 +138,8 @@ abstract class Query {
 
         $this->setPart('insert', $data);
         $this->addParams('insert', array_slice(func_get_args(), 1));
+
+        return $this;
     }
 
     public function join($join, $params = null) {
