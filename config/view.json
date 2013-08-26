@@ -22,5 +22,10 @@
             {"rel":"stylesheet/less","href":"/css/app.less"},
             "/css/ng-grid.min.css"
         ]
+    },
+    "prod" : {
+        "js" : [
+            "/js/stratus.min.js"
+        ]
     }
 }
