@@ -13,15 +13,29 @@ extendView('body');
 
 beginPartial('content');?>
 
-<!--
-<form class="form-signin" method="POST" action="/login">
-    <h2 class="form-signin-heading">Login</h2>
-    <input type="text" name="email" class="input-block-level"
-           placeholder="Email Address">
-    <input type="password" name="password" class="input-block-level"
-           placeholder="Password">
-    <button class="btn btn-primary" type="submit">Sign in</button>
-</form>-->
+<div class="container">
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+            <h2 class="form-signin-heading">Login</h2>
+
+            <form role="form" method="POST" action="/login">
+                <div class="form-group">
+                    <input type="text"
+                           name="email"
+                           class="form-control"
+                           placeholder="Email Address">
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password"
+                           class="form-control"
+                           placeholder="Password">
+                </div>
+                <button class="btn btn-primary" type="submit">Sign in</button>
+            </form>
+        </div>
+    </div>
+</div>
 
 
 <?php endPartial();

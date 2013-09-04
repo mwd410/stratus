@@ -7,16 +7,7 @@ app.controller('MenuController', function($scope) {
 
     var path = window.location.pathname,
         pathMenus = {
-            '/'                   : [
-                {
-                    url  : '/',
-                    name : 'Login'
-                },
-                {
-                    url : '/accounts',
-                    name : 'Other'
-                }
-            ],
+            '/'                   : [],
             '/accounts|/analysis/overview' : [
                 {
                     url  : '/accounts',

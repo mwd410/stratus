@@ -15,8 +15,11 @@ beginPartial('menu');
             class="navbar navbar-inverse navbar-fixed-top st-navbar"
             role="banner">
         <div class="container">
+            <!--
+              Mobile nav expander and logo
+            -->
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle"
+                <button ng-show="menuOptions.length > 0" type="button" class="navbar-toggle"
                         data-toggle="collapse"
                         data-target=".st-navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
@@ -29,6 +32,9 @@ beginPartial('menu');
                 </a>
             </div>
 
+            <!--
+              Navigation
+            -->
             <nav class="collapse navbar-collapse st-navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li data-ng-repeat="option in menuOptions"
@@ -40,22 +46,6 @@ beginPartial('menu');
             </nav>
         </div>
     </header>
-<!--
-    <nav data-ng-controller="MenuController"
-         class="navbar navbar-default menu-bar" role="navigation">
-        <div class="container">
-
-            <div class="collapse navbar-collapse st-navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li data-ng-repeat="option in menuOptions"
-                        ng-class="{true:'active',false:''}[option.url==currentPath]">
-
-                        <a href="{{option.url}}">{{option.name}}</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>-->
 <?php
 endPartial();
 
