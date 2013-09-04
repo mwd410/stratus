@@ -1,0 +1,37 @@
+@st-main-color : #019EE1;
+@st-main-dark: #0875c6;
+@muted-color : #acd4e5;
+
+.st-navbar {
+  background-color : @st-main-color;
+  border-color: @st-main-dark;
+  text-shadow : 0 -1px 0 rgba(0, 0, 0, .15);
+  box-shadow : 0 1px 0 rgba(255, 255, 255, .1);
+  .navbar-collapse {
+    border-color: @st-main-dark;
+  }
+  .brand img {
+    margin:6px;
+  }
+  .navbar-nav {
+    & > li > a {
+      color : @muted-color;
+      &:hover {
+        color : #FFF;
+      }
+    }
+    & > .active > a,
+    & > .active > a:hover {
+      color : #FFF;
+      background-color: @st-main-dark;
+    }
+  }
+
+  .navbar-toggle {
+    border-color: @st-main-color;
+    &:hover {
+      border-color: @st-main-dark;
+      background-color: @st-main-dark;
+    }
+  }
+}

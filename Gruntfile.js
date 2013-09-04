@@ -3,7 +3,8 @@
 module.exports = function(grunt) {
 
     var viewConfig = grunt.file.readJSON('config/view.json'),
-        jsFiles = viewConfig.all.js.slice();
+        jsFiles = viewConfig.all.js.slice(),
+        cssFiles = viewConfig.all.css.slice();
 
     for (var i = 0; i < jsFiles.length; ++i) {
         jsFiles[i] = 'web' + jsFiles[i];
@@ -21,6 +22,11 @@ module.exports = function(grunt) {
                 files : {
                     'web/js/stratus.min.js' : jsFiles
                 }
+            }
+        },
+        less : {
+            options : {
+
             }
         }
     });

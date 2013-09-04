@@ -11,6 +11,10 @@ app.controller('MenuController', function($scope) {
                 {
                     url  : '/',
                     name : 'Login'
+                },
+                {
+                    url : '/accounts',
+                    name : 'Other'
                 }
             ],
             '/accounts|/analysis/overview' : [
