@@ -17,7 +17,7 @@
             "/js/directives/SortingTable.js"
         ],
         "css" : [
-            "/bower_components/bootstrap/dist/css/bootstrap.min.css",
+            "/bower_components/bootstrap/dist/css/bootstrap.css",
             {"rel":"stylesheet/less","href":"/css/app2.less"},
             "/css/ng-grid.min.css"
         ]

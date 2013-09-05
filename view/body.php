@@ -43,6 +43,11 @@ beginPartial('menu');
                         <a href="{{option.url}}">{{option.name}}</a>
                     </li>
                 </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/logout">Logout</a>
+                    </li>
+                </ul>
             </nav>
         </div>
     </header>

@@ -9,18 +9,14 @@ $tbl_customer = "customer";
 $tbl_users = "users";
 $tbl_account = "account";
 ?>
-
 <!DOCTYPE html>
 <html lang="en" data-ng-app="App">
 <head>
-
-    <!--
-    <meta charset="utf-8">
     <title>Stratus</title>
-    <meta name="description" content="">
-    <meta name="author" content="">
-    //-->
 
+    <meta charset="utf-8">
+    <meta name="description" content="Stratus Cloudservices">
+    <meta name="author" content="Stratus">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 </head>

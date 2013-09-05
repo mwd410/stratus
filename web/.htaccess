@@ -1,20 +1,14 @@
 Options +FollowSymLinks +ExecCGI
 
 <IfModule mod_rewrite.c>
-  RewriteEngine on
+    RewriteEngine on
 
-  RewriteCond %{REQUEST_URI}  /img/.+(gif|png|jpg)$
-  RewriteRule .* - [L]
+    # Redirect /index.php to / (optional, but recommended I guess)
+    RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /.*index\.php
+    RewriteRule ^index.php/?(.*)$ $1 [R=301,L]
 
-  RewriteCond %{REQUEST_URI}  /css/.+(css|png|less)$
-  RewriteRule .* - [L]
-
-  RewriteCond %{REQUEST_URI}  /js/.+(css|less)$
-  RewriteRule .* - [L]
-
-  RewriteCond %{REQUEST_URI}  /js/.+(js|htm)$
-  RewriteRule .* - [L]
-
-  RewriteCond $1 !^(index\.php|favicon\.ico)
-  RewriteRule ^(.*)$ /index.php/$1 [L]
+    # Run everything else but real files through index.php
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ index.php/$1?%{QUERY_STRING} [L]
 </IfModule>

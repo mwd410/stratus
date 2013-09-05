@@ -1,9 +1,79 @@
+@import "/bower_components/bootstrap/less/bootstrap.less";
+
+/**
+ * VARS
+ */
 @st-main-color : #019EE1;
-@st-main-dark: #0875c6;
-@muted-color : #acd4e5;
+@st-dark-color: #0875c6;
+@st-muted-color : #acd4e5;
+@st-gray: #BBB;
+
+/**
+ * MIXINS
+ */
+.opacity(@percent) {
+  /* found at http://css-tricks.com/snippets/css/cross-browser-opacity/ */
+  /* IE 8 */
+  -ms-filter     : "progid:DXImageTransform.Microsoft.Alpha(Opacity=@{percent})";
+  /* IE 5-7 */
+  filter         : alpha(opacity=@percent);
+  /* Netscape */
+  -moz-opacity   : (@percent / 100);
+  /* Safari 1.x */
+  -khtml-opacity : (@percent / 100);
+  /* Good browsers */
+  opacity        : (@percent / 100);
+}
+
+.transition(@style) {
+
+  -webkit-transition : @style;
+  -moz-transition    : @style;
+  -ms-transition     : @style;
+  -o-transition      : @style;
+  transition         : @style;
+}
+
+.box-shadow(@style, @c) when (iscolor(@c)) {
+  box-shadow         : @style @c;
+  -webkit-box-shadow : @style @c;
+  -moz-box-shadow    : @style @c;
+}
+
+.box-shadow(@style, @alpha: 50%) when (isnumber(@alpha)) {
+  .box-shadow(@style, rgba(0, 0, 0, @alpha));
+}
+
+.border-radius (@radius: 5px) {
+  -webkit-border-radius : @radius;
+  -moz-border-radius    : @radius;
+  -ms-border-radius     : @radius;
+  -o-border-radius      : @radius;
+  border-radius         : @radius;
+}
+
+/**
+ * MISC
+ */
 
 body {
-  padding-top: 50px;
+  padding-top : 50px;
+}
+
+.main-text {
+  color : @st-main-color;
+}
+
+.dark-text {
+  color : @st-dark-color;
+}
+
+.muted-text {
+  color : @st-muted-color;
+}
+
+.white-text {
+  color : #fff;
 }
 
 /**
@@ -11,34 +81,145 @@ body {
  */
 .st-navbar {
   background-color : @st-main-color;
-  border-color: @st-main-dark;
-  text-shadow : 0 -1px 0 rgba(0, 0, 0, .15);
-  box-shadow : 0 1px 0 rgba(255, 255, 255, .1);
+  border-color     : @st-dark-color;
+  text-shadow      : 0 -1px 0 rgba(0, 0, 0, .15);
+  box-shadow       : 0 1px 0 rgba(255, 255, 255, .1);
   .navbar-collapse {
-    border-color: @st-main-dark;
+    border-color : @st-dark-color;
   }
   .brand img {
-    margin:6px;
+    margin : 6px;
   }
   .navbar-nav {
     & > li > a {
-      color : @muted-color;
+      color : @st-muted-color;
       &:hover {
         color : #FFF;
       }
     }
     & > .active > a,
     & > .active > a:hover {
-      color : #FFF;
-      background-color: @st-main-dark;
+      color            : #FFF;
+      background-color : @st-dark-color;
     }
   }
 
   .navbar-toggle {
-    border-color: @st-main-color;
+    border-color : @st-main-color;
     &:hover {
-      border-color: @st-main-dark;
-      background-color: @st-main-dark;
+      border-color     : @st-dark-color;
+      background-color : @st-dark-color;
     }
+  }
+}
+
+/**
+ * TRANSITIONS / ANIMATIONS
+ */
+
+.expandDown.ng-hide-add,
+.expandDown.ng-hide-remove {
+  .transition(0.5s linear all);
+  transform-origin : top;
+  overflow         : hidden;
+  display          : block !important;
+}
+
+.expandDown.ng-hide-add.ng-hide-add-active,
+.expandDown.ng-hide-remove {
+  max-height : 0px;
+}
+
+.expandDown.ng-hide-remove.ng-hide-remove-active,
+.expandDown.ng-hide-add {
+  max-height : 250px;
+}
+
+.animate-fade.ng-enter,
+.animate-fade.ng-leave {
+  .transition(500ms linear all);
+}
+
+.animate-fade.ng-enter.ng-enter-active,
+.animate-fade.ng-leave {
+  .opacity(100);
+}
+
+.animate-fade.ng-leave.ng-leave-active,
+.animate-fade.ng-enter {
+  .opacity(0);
+}
+
+/**
+ * ACCOUNT LIST
+ */
+.st-account-header {
+  padding : 20px 10px 10px 10px;
+  & > div {
+    font-weight : bold;
+  }
+  .spacer {
+    width : 19px;
+  }
+}
+
+.st-account {
+  border  : 1px solid @st-gray;
+  .border-radius(8px);
+  padding : 5px;
+  overflow: hidden;
+  &+.st-account {
+    margin-top : 5px;
+  }
+  .spacer {
+    width : 14px;
+  }
+  .column {
+    margin-top : 5px;
+  }
+  .st-master-icon {
+    margin-left: 5px;
+  }
+  @media (min-width : @screen-sm) {
+
+    .st-account-edit-btn:after {
+      content : 'Edit';
+    }
+
+    .st-account-delete-btn:after {
+      content : 'Delete';
+    }
+  }
+  .st-account-body {
+    .transition(0.5s linear all);
+    max-height: 0;
+    .opacity(0);
+    overflow: hidden;
+    .form-group:last-of-type {
+      margin-bottom: 0px;
+    }
+  }
+  &.is-expanded {
+    .st-account-body,
+    .st-account-body > form {
+      .transition(0.5s linear all);
+      max-height: 300px;
+      .opacity(100);
+    }
+    .form-group {
+      .transition(0.5s linear all);
+    }
+  }
+}
+
+.st-btn {
+  background-color : @st-main-color;
+  color            : @st-muted-color;
+  border-color     : @st-dark-color;
+  .box-shadow(0px 1px 1px, @st-gray);
+  &:hover {
+    color            : #FFF;
+    background-color : @st-main-color;
+    border-color     : @st-dark-color;
   }
 }
