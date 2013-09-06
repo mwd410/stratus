@@ -25,13 +25,13 @@
   opacity        : (@percent / 100);
 }
 
-.transition(@style) {
+.transition(...) {
 
-  -webkit-transition : @style;
-  -moz-transition    : @style;
-  -ms-transition     : @style;
-  -o-transition      : @style;
-  transition         : @style;
+  -webkit-transition : @arguments;
+  -moz-transition    : @arguments;
+  -ms-transition     : @arguments;
+  -o-transition      : @arguments;
+  transition         : @arguments;
 }
 
 .box-shadow(@style, @c) when (iscolor(@c)) {
@@ -154,7 +154,7 @@ body {
  * ACCOUNT LIST
  */
 .st-account-header {
-  padding : 20px 10px 10px 10px;
+  padding : 20px 5px 10px 10px;
   & > div {
     font-weight : bold;
   }
@@ -171,6 +171,18 @@ body {
   &+.st-account {
     margin-top : 5px;
   }
+  &.is-master {
+    .st-master-icon {
+      .main-text;
+    }
+  }
+  &.is-expanded {
+    .st-account-body {
+      .transition(0.25s linear all);
+      max-height : 430px;
+      .opacity(100);
+    }
+  }
   .spacer {
     width : 14px;
   }
@@ -179,35 +191,25 @@ body {
   }
   .st-master-icon {
     margin-left: 5px;
+    .white-text;
   }
-  @media (min-width : @screen-sm) {
+  .st-account-edit-btn:after {
+    content : 'Edit';
+  }
 
-    .st-account-edit-btn:after {
-      content : 'Edit';
-    }
-
-    .st-account-delete-btn:after {
-      content : 'Delete';
-    }
+  .st-account-delete-btn:after {
+    content : 'Delete';
   }
   .st-account-body {
-    .transition(0.5s linear all);
+    .transition(0.25s linear all);
     max-height: 0;
     .opacity(0);
     overflow: hidden;
     .form-group:last-of-type {
       margin-bottom: 0px;
     }
-  }
-  &.is-expanded {
-    .st-account-body,
-    .st-account-body > form {
-      .transition(0.5s linear all);
-      max-height: 300px;
-      .opacity(100);
-    }
-    .form-group {
-      .transition(0.5s linear all);
+    .form-group:first-of-type {
+      margin-top : 15px;
     }
   }
 }

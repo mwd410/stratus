@@ -26,23 +26,24 @@ beginPartial('content');
     </div>
 
     <div class="st-account animate-fade row"
-         data-ng-class="{true:'is-expanded',false:''}[isEditing()]"
+         data-ng-class="{'is-expanded' : isModifying(), 'is-master' : masterAccount.account_id == account.id}"
          data-ng-repeat="account in accounts"
          data-ng-controller="AccountController">
 
         <!-- Master Account Indicator-->
-        <div class="pull-left column st-account-master-icon">
-            <span class="main-text glyphicon glyphicon-chevron-right"
-                  data-ng-show="masterAccount.account_id != account.id"></span>
-            <div class="spacer"
-                 data-ng-show="masterAccount.account_id == account.id">&nbsp;</div>
+        <div class="pull-left column">
+            <span class="st-master-icon glyphicon glyphicon-chevron-right"></span>
         </div>
 
         <!-- Account value columns -->
-        <div class="col-xs-4 col-md-3 hidden-xs column">{{account.id || '&nbsp;'}}</div>
-        <div class="col-xs-4 col-md-3 column">{{account.name || '&nbsp;'}}</div>
-        <div class="col-md-3 visible-md visible-lg column">{{account.aws_key ||
-            '&nbsp;'}}
+        <div class="col-xs-4 col-md-3 hidden-xs column">
+            {{account.id || '&nbsp;'}}
+        </div>
+        <div class="col-xs-4 col-md-3 column">
+            {{account.name || '&nbsp;'}}
+        </div>
+        <div class="col-md-3 visible-md visible-lg column">
+            {{account.aws_key || '&nbsp;'}}
         </div>
 
         <!-- Collapsed Icons -->
@@ -104,7 +105,7 @@ beginPartial('content');
                   method="POST">
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label"
+                    <label class="col-sm-2 col-sm-offset-2 control-label"
                            for="editAccountId_{{account.id}}">
                         Account ID
                     </label>
@@ -122,7 +123,7 @@ beginPartial('content');
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label"
+                    <label class="col-sm-2 col-sm-offset-2 control-label"
                            for="editAccountName_{{account.id}}">
                         Name
                     </label>
@@ -139,7 +140,7 @@ beginPartial('content');
 
                 <div class="form-group">
 
-                    <label class="col-sm-2 control-label"
+                    <label class="col-sm-2 col-sm-offset-2 control-label"
                            for="editAccountAws_{{account.id}}">
                         AWS Key
                     </label>
@@ -152,6 +153,65 @@ beginPartial('content');
                                required
                                data-ng-minlength="{{fv.aws_key.length}}"
                                maxlength="{{fv.aws_key.length}}"
+                               type="text">
+                    </div>
+
+                </div>
+
+                <div class="form-group"
+                     data-ng-class="{'has-error' : accountForm.secret_key.$invalid}">
+
+                    <label class="col-sm-2 col-sm-offset-2 control-label"
+                           for="editAccountSecret_{{account.id}}">
+                        Secret Key
+                    </label>
+                    <div class="col-sm-5">
+
+                        <input class="form-control"
+                               name="secret_key"
+                               data-ng-model="account.secret_key"
+                               id="editAccountSecret_{{account.id}}"
+                               type="password"
+                               pattern="{{'.{' + fv.secret_key.length + '}'}}"
+                               required
+                               data-ng-minlength="{{fv.secret_key.length}}"
+                               maxlength="{{fv.secret_key.length}}"
+                               type="password">
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <div class="col-sm-5 col-sm-offset-4">
+
+                        <div class="checkbox">
+                            <label>
+                                <input id="masterAccountCheck_{{account.id}}"
+                                       class="masterAccountCheckbox"
+                                       data-ng-model="isMaster"
+                                       data-ng-checked="masterAccount.account_id == account.id"
+                                       data-ng-click="masterAccount.account_id = isMaster ? account.id : null"
+                                       type="checkbox">
+                                Master Account
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-group"
+                     data-ng-show="masterAccount.account_id == account.id">
+
+                    <label class="col-sm-2 col-sm-offset-2 control-label"
+                           for="billingBucket_{{account.id}}">
+                        Billing Bucket
+                    </label>
+                    <div class="col-sm-5">
+
+                        <input class="form-control"
+                               id="billingBucket_{{account.id}}"
+                               data-ng-model="masterAccount.billing_bucket"
                                type="text">
                     </div>
 
@@ -176,43 +236,16 @@ beginPartial('content');
                     </span>
                     <br>
 
-                    <label for="editAccountSecret_{{account.id}}">Secret
-                        Key</label>
-                    <input name="secret_key"
-                           data-ng-model="account.secret_key"
-                           id="editAccountSecret_{{account.id}}"
-                           type="password"
-                           pattern="{{'.{' + fv.secret_key.length + '}'}}"
-                           required
-                           data-ng-minlength="{{fv.secret_key.length}}"
-                           maxlength="{{fv.secret_key.length}}"
-                           type="password">
-
                     <span class="formError"
                           data-ng-show="accountForm.secret_key.$error.minlength">
                         The Secret Key must be {{fv.secret_key.length}} characters long.
                     </span>
                     <br>
 
-                    <label for="masterAccountCheck_{{account.id}}">Master
-                        Account</label>
-                    <input
-                        id="masterAccountCheck_{{account.id}}"
-                        class="masterAccountCheckbox"
-                        data-ng-model="isMaster"
-                        data-ng-checked="masterAccount.account_id == account.id"
-                        data-ng-click="masterAccount.account_id = isMaster ? account.id : null"
-                        type="checkbox">
 
                     <br>
 
-                    <div
-                        data-ng-show="masterAccount.account_id == account.id">
-                        <label for="billingBucket_{{account.id}}">Billing
-                            Bucket</label>
-                        <input id="billingBucket_{{account.id}}"
-                               data-ng-model="masterAccount.billing_bucket"
-                               type="text">
+                    <div>
                     </div>-->
             </form>
         </div>
