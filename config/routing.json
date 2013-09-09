@@ -24,7 +24,8 @@
             "/account/add"       : "Account.add",
             "/account/edit"      : "Account.edit",
             "/account/delete"    : "Account.delete",
-            "/analysis/overview" : "Analysis.overview"
+            "/analysis/overview" : "Analysis.overview",
+            "/dashboard"         : "Dashboard.index"
         }
     }
 }

@@ -19,6 +19,13 @@ beginPartial('menu');
               Mobile nav expander and logo
             -->
             <div class="navbar-header">
+                <button ng-show="menuOptions.length > 0" type="button"
+                        class="navbar-toggle st-left-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
                 <button ng-show="menuOptions.length > 0" type="button" class="navbar-toggle"
                         data-toggle="collapse"
                         data-target=".st-navbar-collapse">

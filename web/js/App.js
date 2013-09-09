@@ -8,14 +8,14 @@ app.controller('MenuController', function($scope) {
     var path = window.location.pathname,
         pathMenus = {
             '/'                   : [],
-            '/accounts|/analysis/overview' : [
+            '/accounts|/dashboard' : [
                 {
                     url  : '/accounts',
                     name : 'Accounts'
                 },
                 {
-                    url  : '/analysis/overview',
-                    name : 'Analysis'
+                    url  : '/dashboard',
+                    name : 'Dashboard'
                 }
             ]
         };

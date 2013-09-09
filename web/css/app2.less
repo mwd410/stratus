@@ -6,7 +6,9 @@
 @st-main-color : #019EE1;
 @st-dark-color: #0875c6;
 @st-muted-color : #acd4e5;
-@st-gray: #BBB;
+@st-light-gray: #BBB;
+@st-gray : #494949;
+@st-dark-gray : #3b3b3b;
 
 /**
  * MIXINS
@@ -56,8 +58,13 @@
  * MISC
  */
 
+html {
+  height : 100%;
+}
+
 body {
   padding-top : 50px;
+  height      : 100%;
 }
 
 .main-text {
@@ -80,19 +87,22 @@ body {
  * MAIN NAV
  */
 .st-navbar {
-  background-color : @st-main-color;
-  border-color     : @st-dark-color;
+  @main : @st-main-color;
+  @dark : @st-dark-color;
+  @muted : @st-muted-color;
+  background-color : @main;
+  border-color     : @dark;
   text-shadow      : 0 -1px 0 rgba(0, 0, 0, .15);
   box-shadow       : 0 1px 0 rgba(255, 255, 255, .1);
   .navbar-collapse {
-    border-color : @st-dark-color;
+    border-color : @dark;
   }
   .brand img {
     margin : 6px;
   }
   .navbar-nav {
     & > li > a {
-      color : @st-muted-color;
+      color : @muted;
       &:hover {
         color : #FFF;
       }
@@ -100,15 +110,15 @@ body {
     & > .active > a,
     & > .active > a:hover {
       color            : #FFF;
-      background-color : @st-dark-color;
+      background-color : @dark;
     }
   }
 
   .navbar-toggle {
-    border-color : @st-main-color;
+    border-color : @main;
     &:hover {
-      border-color     : @st-dark-color;
-      background-color : @st-dark-color;
+      border-color     : @dark;
+      background-color : @dark;
     }
   }
 }
@@ -164,10 +174,10 @@ body {
 }
 
 .st-account {
-  border  : 1px solid @st-gray;
+  border   : 1px solid @st-light-gray;
   .border-radius(8px);
-  padding : 5px;
-  overflow: hidden;
+  padding  : 5px;
+  overflow : hidden;
   &+.st-account {
     margin-top : 5px;
   }
@@ -190,7 +200,7 @@ body {
     margin-top : 5px;
   }
   .st-master-icon {
-    margin-left: 5px;
+    margin-left : 5px;
     .white-text;
   }
   .st-account-edit-btn:after {
@@ -202,11 +212,11 @@ body {
   }
   .st-account-body {
     .transition(0.25s linear all);
-    max-height: 0;
+    max-height : 0;
     .opacity(0);
-    overflow: hidden;
+    overflow   : hidden;
     .form-group:last-of-type {
-      margin-bottom: 0px;
+      margin-bottom : 0px;
     }
     .form-group:first-of-type {
       margin-top : 15px;
@@ -218,10 +228,77 @@ body {
   background-color : @st-main-color;
   color            : @st-muted-color;
   border-color     : @st-dark-color;
-  .box-shadow(0px 1px 1px, @st-gray);
+  .box-shadow(0px 1px 1px, @st-light-gray);
   &:hover {
     color            : #FFF;
     background-color : @st-main-color;
     border-color     : @st-dark-color;
+  }
+}
+
+/**
+ * LEFT SIDE NAV
+ */
+.st-left-nav {
+  overflow         : hidden;
+  display          : inline-block;
+  float            : left;
+  height           : 100%;
+  width            : 200px;
+  background-color : #DDD;
+  .box-shadow(inset -1px 0px 5px, @st-gray);
+  ul {
+    list-style : none;
+    padding    : 0;
+    margin     : 0;
+    & > li {
+      & > a {
+        display     : block;
+        padding     : 10px;
+        margin-left : 20px;
+        margin-top  : 5px;
+        .border-left-radius(5px);
+        .box-shadow(0 1px 5px, #000);
+        .transition(all 0.05s linear);
+        color       : @st-gray;
+        &.active, &:hover {
+          background-color : #fff;
+          margin-left      : 10px;
+          text-decoration  : none;
+          color            : #000;
+          margin-left      : 10px;
+        }
+      }
+    }
+  }
+}
+
+.st-left-toggle {
+  float        : left;
+  margin-left  : 15px;
+  margin-right : 0;
+}
+
+/**
+ * DASHBOARD
+ */
+.st-dash {
+  margin: 15px;
+  margin-left: 215px;
+  position: relative;
+  .widget-column {
+    padding: 0;
+  }
+  .widget {
+    position : absolute;
+    padding : 15px;
+    & > div {
+      border: 1px solid black;
+      height: 100%;
+    }
+    .st-widget-title {
+      border-bottom : 1px solid black;
+      height: 20px;
+    }
   }
 }
