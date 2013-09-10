@@ -2,13 +2,24 @@
 
 /**
  * VARS
+@st-brand-main : #6E0500;
+@st-brand-dark: #3B0300;
+@st-brand-muted: #3b1f1d;
+@st-brand-light : #B80900;
  */
-@st-main-color : #019EE1;
-@st-dark-color: #0875c6;
-@st-muted-color : #acd4e5;
+@st-brand-main : #00376e;
+@st-brand-dark: #001d3e;
+@st-brand-muted: #1f2d3d;
+@st-brand-light : #0036d1;
+@st-brand-text : #fff;
 @st-light-gray: #BBB;
 @st-gray : #494949;
-@st-dark-gray : #3b3b3b;
+@st-bg-main : #2B2B2B;
+@st-bg-dark : #252525;
+@st-bg-text-strong : #fff;
+@st-bg-text : #777;
+
+@st-shadow : #000;
 
 /**
  * MIXINS
@@ -59,24 +70,27 @@
  */
 
 html {
-  height : 100%;
+  height           : 100%;
+  background-color : @st-bg-main;
 }
 
 body {
-  padding-top : 50px;
-  height      : 100%;
+  padding-top      : 50px;
+  height           : 100%;
+  background-color : @st-bg-main;
+  color            : @st-bg-text;
 }
 
 .main-text {
-  color : @st-main-color;
+  color : @st-brand-main;
 }
 
 .dark-text {
-  color : @st-dark-color;
+  color : @st-brand-dark;
 }
 
 .muted-text {
-  color : @st-muted-color;
+  color : @st-brand-light;
 }
 
 .white-text {
@@ -87,13 +101,13 @@ body {
  * MAIN NAV
  */
 .st-navbar {
-  @main : @st-main-color;
-  @dark : @st-dark-color;
-  @muted : @st-muted-color;
+  @main : @st-brand-main;
+  @dark : @st-brand-dark;
+  @muted : @st-brand-light;
   background-color : @main;
   border-color     : @dark;
   text-shadow      : 0 -1px 0 rgba(0, 0, 0, .15);
-  box-shadow       : 0 1px 0 rgba(255, 255, 255, .1);
+  .box-shadow(0 1px 5px @st-shadow);
   .navbar-collapse {
     border-color : @dark;
   }
@@ -104,12 +118,12 @@ body {
     & > li > a {
       color : @muted;
       &:hover {
-        color : #FFF;
+        color : @st-brand-text;
       }
     }
     & > .active > a,
     & > .active > a:hover {
-      color            : #FFF;
+      color            : @st-brand-text;
       background-color : @dark;
     }
   }
@@ -168,22 +182,26 @@ body {
   & > div {
     font-weight : bold;
   }
+  color: @st-bg-text-strong;
   .spacer {
     width : 19px;
   }
 }
 
 .st-account {
-  border   : 1px solid @st-light-gray;
+  @bg              : @st-bg-dark;
+  border           : 1px solid #000;
   .border-radius(8px);
-  padding  : 5px;
-  overflow : hidden;
+  padding          : 5px;
+  overflow         : hidden;
+  color            : @st-bg-text-strong;
+  background-color : @bg;
   &+.st-account {
     margin-top : 5px;
   }
   &.is-master {
     .st-master-icon {
-      .main-text;
+      color : @st-brand-light;
     }
   }
   &.is-expanded {
@@ -201,14 +219,20 @@ body {
   }
   .st-master-icon {
     margin-left : 5px;
-    .white-text;
+    color       : @bg;
   }
-  .st-account-edit-btn:after {
-    content : 'Edit';
+  .st-account-edit-btn {
+    .st-btn;
+    &:after {
+      content : 'Edit';
+    }
   }
 
-  .st-account-delete-btn:after {
-    content : 'Delete';
+  .st-account-delete-btn {
+    .st-btn;
+    &:after {
+      content : 'Delete';
+    }
   }
   .st-account-body {
     .transition(0.25s linear all);
@@ -225,14 +249,15 @@ body {
 }
 
 .st-btn {
-  background-color : @st-main-color;
-  color            : @st-muted-color;
-  border-color     : @st-dark-color;
-  .box-shadow(0px 1px 1px, @st-light-gray);
-  &:hover {
-    color            : #FFF;
-    background-color : @st-main-color;
-    border-color     : @st-dark-color;
+  background-color : @st-brand-main;
+  color            : @st-brand-light;
+  border-color     : @st-brand-dark;
+  .box-shadow(0px 1px 1px, @st-shadow);
+  &:hover,
+  &:active {
+    color            : @st-brand-text;
+    background-color : @st-brand-main;
+    border-color     : @st-brand-dark;
   }
 }
 
@@ -245,12 +270,13 @@ body {
   float            : left;
   height           : 100%;
   width            : 200px;
-  background-color : #DDD;
-  .box-shadow(inset -1px 0px 5px, @st-gray);
+  background-color : @st-bg-dark;
+  .box-shadow(inset -1px 0px 5px, @st-shadow);
   ul {
     list-style : none;
     padding    : 0;
     margin     : 0;
+    margin-top : 10px;
     & > li {
       & > a {
         display     : block;
@@ -258,14 +284,14 @@ body {
         margin-left : 20px;
         margin-top  : 5px;
         .border-left-radius(5px);
-        .box-shadow(0 1px 5px, #000);
+        .box-shadow(0 1px 5px, @st-shadow);
         .transition(all 0.05s linear);
-        color       : @st-gray;
+        color       : @st-bg-text;
         &.active, &:hover {
-          background-color : #fff;
+          background-color : @st-bg-main;
           margin-left      : 10px;
           text-decoration  : none;
-          color            : #000;
+          color            : @st-bg-text-strong;
           margin-left      : 10px;
         }
       }
@@ -283,22 +309,22 @@ body {
  * DASHBOARD
  */
 .st-dash {
-  margin: 15px;
-  margin-left: 215px;
-  position: relative;
+  margin      : 15px;
+  margin-left : 215px;
+  position    : relative;
   .widget-column {
-    padding: 0;
+    padding : 0;
   }
   .widget {
     position : absolute;
-    padding : 15px;
+    padding  : 15px;
     & > div {
-      border: 1px solid black;
-      height: 100%;
+      border : 1px solid black;
+      height : 100%;
     }
     .st-widget-title {
       border-bottom : 1px solid black;
-      height: 20px;
+      height        : 20px;
     }
   }
 }

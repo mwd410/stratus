@@ -106,8 +106,21 @@ CREATE TABLE IF NOT EXISTS `widget_attribute` (
 CREATE TABLE IF NOT EXISTS `widget_default_attribute` (
     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
     `widget_type_id` BIGINT(20) UNSIGNED NOT NULL,
-    wi
-);
+    `widget_attribute_type_id` BIGINT(20) UNSIGNED NOT NULL,
+    `value` VARCHAR(256) NOT NULL,
+    PRIMARY KEY (`id`),
+    CONSTRAINT `fk_widget_default_attribute_widget_type1`
+    FOREIGN KEY (`widget_type_id`)
+    REFERENCES `widget_type` (`id`)
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT `fk_widget_default_attribute_widget_attribute_type1`
+    FOREIGN KEY (`widget_attribute_type_id`)
+    REFERENCES `widget_attribute_type` (`id`)
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+    ENGINE =InnoDB;
 
 ########################################################
 ##################### DATA INSERTS #####################

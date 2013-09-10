@@ -49,27 +49,29 @@ beginPartial('content');
         <!-- Collapsed Icons -->
         <div class="pull-right"
              data-ng-show="!isModifying()">
-            <button class="st-account-edit-btn btn btn-default btn-sm"
+            <button class="st-btn btn btn-default btn-sm"
                     data-ng-click="edit()"
                     type="button">
                 <span class="glyphicon glyphicon-pencil"></span>
+                Edit
             </button>
-            <button class="st-account-delete-btn btn btn-default btn-sm"
+            <button class="st-btn btn btn-default btn-sm"
 
                     type="button">
                 <span class="glyphicon glyphicon-remove"></span>
+                Delete
             </button>
         </div>
 
         <!-- Expanded Icons -->
         <div class="pull-right"
              data-ng-show="isEditing() || isAdding()">
-            <button class="btn btn-default btn-sm"
+            <button class="st-btn btn btn-default btn-sm"
                     data-ng-click="commit()">
                 <span class="glyphicon glyphicon-save"></span>
                 Save
             </button>
-            <button class="btn btn-default btn-sm"
+            <button class="st-btn btn btn-default btn-sm"
                     data-ng-click="cancel()">
                 <span class="glyphicon glyphicon-remove-circle"></span>
                 Cancel
