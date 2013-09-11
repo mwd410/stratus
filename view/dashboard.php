@@ -23,12 +23,40 @@ beginPartial('content');
 </div>
 
 <div class="st-dash">
-    <div class="widget"
-         data-ng-repeat="widget in widgets"
-         data-st-widget="widget">
-        <div>
-            <div class="st-widget-title">
-                1
+    <div>
+        <div class="st-widget-row" style="height:400px;">
+            <div class="st-widget-column col-md-4 col-md-offset-3">
+                <div class="st-widget" style="height:100%;">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Widget</h4>
+                        </div>
+                        <div class="panel-body">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="st-widget-column col-md-2">
+                <div class="st-widget" style="height:50%;">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Widget</h4>
+                        </div>
+                        <div class="panel-body">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="st-widget" style="height:50%;">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Widget</h4>
+                        </div>
+                        <div class="panel-body">
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

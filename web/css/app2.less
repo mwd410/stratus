@@ -4,22 +4,20 @@
  * VARS
 @st-brand-main : #6E0500;
 @st-brand-dark: #3B0300;
-@st-brand-muted: #3b1f1d;
 @st-brand-light : #B80900;
  */
-@st-brand-main : #00376e;
-@st-brand-dark: #001d3e;
-@st-brand-muted: #1f2d3d;
-@st-brand-light : #0036d1;
-@st-brand-text : #fff;
-@st-light-gray: #BBB;
-@st-gray : #494949;
+@st-brand-main : #0A316E;
+@st-brand-dark: #051A3B;
+@st-brand-light : #1052B8;
+@st-brand-text-strong : #fff;
+@st-brand-text : rgba(255, 255, 255, 0.5);
 @st-bg-main : #2B2B2B;
 @st-bg-dark : #252525;
 @st-bg-text-strong : #fff;
-@st-bg-text : #777;
+@st-bg-text : rgba(255, 255, 255, 0.3);
 
 @st-shadow : #000;
+@st-highlight : #999;
 
 /**
  * MIXINS
@@ -47,22 +45,48 @@
   transition         : @arguments;
 }
 
-.box-shadow(@style, @c) when (iscolor(@c)) {
-  box-shadow         : @style @c;
-  -webkit-box-shadow : @style @c;
-  -moz-box-shadow    : @style @c;
-}
-
-.box-shadow(@style, @alpha: 50%) when (isnumber(@alpha)) {
-  .box-shadow(@style, rgba(0, 0, 0, @alpha));
-}
-
 .border-radius (@radius: 5px) {
   -webkit-border-radius : @radius;
   -moz-border-radius    : @radius;
   -ms-border-radius     : @radius;
   -o-border-radius      : @radius;
   border-radius         : @radius;
+}
+
+.st-box-shadow(@a) {
+  -webkit-box-shadow : @arguments;
+  -moz-box-shadow    : @arguments;
+  box-shadow         : @arguments;
+}
+
+.st-pillow-emboss {
+  .st-box-shadow(0  1px 0px rgba(255, 255, 255, 0.3) inset,
+                 0 -1px 1px @st-shadow inset,
+                 0 -1px 1px @st-shadow,
+                 0  1px 0px rgba(255, 255, 255, 0.3););
+}
+
+.st-emboss {
+  .st-box-shadow(0 1px 0px rgba(255, 255, 255, 0.3) inset,
+                 0 1px 1px @st-shadow;);
+}
+
+.st-deboss {
+  .st-box-shadow(0 1px 0px rgba(255, 255, 255, 0.3),
+                 0 1px 1px @st-shadow inset;);
+}
+
+.gradient (@startColor: #eee, @endColor: white) {
+  background-color : @startColor;
+  background       : -webkit-gradient(linear, left top, left bottom, from(@startColor), to(@endColor));
+  background       : -webkit-linear-gradient(top, @startColor, @endColor);
+  background       : -moz-linear-gradient(top, @startColor, @endColor);
+  background       : -ms-linear-gradient(top, @startColor, @endColor);
+  background       : -o-linear-gradient(top, @startColor, @endColor);
+}
+
+.st-header-gradient {
+  .gradient(#fff, #ddd);
 }
 
 /**
@@ -103,7 +127,7 @@ body {
 .st-navbar {
   @main : @st-brand-main;
   @dark : @st-brand-dark;
-  @muted : @st-brand-light;
+  @muted : @st-brand-text;
   background-color : @main;
   border-color     : @dark;
   text-shadow      : 0 -1px 0 rgba(0, 0, 0, .15);
@@ -118,12 +142,12 @@ body {
     & > li > a {
       color : @muted;
       &:hover {
-        color : @st-brand-text;
+        color : @st-brand-text-strong;
       }
     }
     & > .active > a,
     & > .active > a:hover {
-      color            : @st-brand-text;
+      color            : @st-brand-text-strong;
       background-color : @dark;
     }
   }
@@ -182,7 +206,7 @@ body {
   & > div {
     font-weight : bold;
   }
-  color: @st-bg-text-strong;
+  color   : @st-bg-text-strong;
   .spacer {
     width : 19px;
   }
@@ -190,8 +214,8 @@ body {
 
 .st-account {
   @bg              : @st-bg-dark;
-  border           : 1px solid #000;
   .border-radius(8px);
+  .st-emboss;
   padding          : 5px;
   overflow         : hidden;
   color            : @st-bg-text-strong;
@@ -251,11 +275,12 @@ body {
 .st-btn {
   background-color : @st-brand-main;
   color            : @st-brand-light;
-  border-color     : @st-brand-dark;
-  .box-shadow(0px 1px 1px, @st-shadow);
+  //border-color     : @st-brand-dark;
+  border           : none;
+  .st-emboss;
   &:hover,
   &:active {
-    color            : @st-brand-text;
+    color            : @st-brand-text-strong;
     background-color : @st-brand-main;
     border-color     : @st-brand-dark;
   }
@@ -271,7 +296,7 @@ body {
   height           : 100%;
   width            : 200px;
   background-color : @st-bg-dark;
-  .box-shadow(inset -1px 0px 5px, @st-shadow);
+  .box-shadow(inset -1px 0px 5px @st-shadow);
   ul {
     list-style : none;
     padding    : 0;
@@ -284,7 +309,7 @@ body {
         margin-left : 20px;
         margin-top  : 5px;
         .border-left-radius(5px);
-        .box-shadow(0 1px 5px, @st-shadow);
+        .box-shadow(0 1px 5px @st-shadow);
         .transition(all 0.05s linear);
         color       : @st-bg-text;
         &.active, &:hover {
@@ -312,19 +337,43 @@ body {
   margin      : 15px;
   margin-left : 215px;
   position    : relative;
-  .widget-column {
+  padding     : 0;
+  & > div {
+    width            : 100%;
+    height           : 100%;
+    padding          : 4px;
+    .border-radius(5px);
+    background-color : @st-bg-dark;
+    .st-deboss;
+  }
+  .st-widget-row {
     padding : 0;
   }
-  .widget {
-    position : absolute;
-    padding  : 15px;
+  .st-widget-column {
+    padding : 0;
+    height  : 100%;
+  }
+  .st-widget {
+    @bg : @st-bg-main;
+    width   : 100%;
+    padding : 6px;
     & > div {
-      border : 1px solid black;
+      color : @st-bg-text;
+      background-color : @bg;
+      width  : 100%;
       height : 100%;
-    }
-    .st-widget-title {
-      border-bottom : 1px solid black;
-      height        : 20px;
+      border : none;
+      .st-emboss;
+      .border-radius(3px);
+      .panel-heading {
+        color : @st-bg-text-strong;
+        .gradient(@bg, @st-bg-dark);
+        border-color: #000;
+        border-top : 1px solid rgba(255, 255, 255, 0.3);
+        .st-box-shadow(0 1px 0 rgba(255, 255, 255, 0.3););
+      }
+      .panel-body {
+      }
     }
   }
 }
