@@ -1,0 +1,14 @@
+<div class="st-widget-column"
+     data-ng-style="{width : widgetColumn.width + '%'}">
+
+    <div data-ng-if="index > 0"
+         class="st-widget-column-dragger">
+        <div></div>
+    </div>
+
+    <div data-ng-repeat="widget in widgetColumn.widgets"
+         data-st-widget="widget"
+         data-index="$index">
+
+    </div>
+</div>

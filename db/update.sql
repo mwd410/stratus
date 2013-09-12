@@ -6,12 +6,12 @@ ALTER TABLE `users`
 ADD UNIQUE KEY (`email_address`),
 ADD UNIQUE KEY (`user_name`);
 
-CREATE TABLE IF NOT EXISTS `dashboard` (
+CREATE TABLE IF NOT EXISTS `widget_dashboard` (
     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
     `user_id` INT(11) NOT NULL,
     `name` VARCHAR(256) NOT NULL,
     PRIMARY KEY (`id`),
-    CONSTRAINT `fk_dashboard_user1`
+    CONSTRAINT `fk_widget_dashboard_user1`
     FOREIGN KEY (`user_id`)
     REFERENCES `users` (`user_id`)
         ON UPDATE NO ACTION
@@ -21,12 +21,12 @@ CREATE TABLE IF NOT EXISTS `dashboard` (
 
 CREATE TABLE IF NOT EXISTS `widget_row` (
     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `dashboard_id` BIGINT(20) UNSIGNED NOT NULL,
+    `widget_dashboard_id` BIGINT(20) UNSIGNED NOT NULL,
     `height` INT(10) UNSIGNED NOT NULL,
     PRIMARY KEY (`id`),
-    CONSTRAINT `fk_widget_row_dashboard1`
-    FOREIGN KEY (`dashboard_id`)
-    REFERENCES `dashboard` (`id`)
+    CONSTRAINT `fk_widget_row_widget_dashboard1`
+    FOREIGN KEY (`widget_dashboard_id`)
+    REFERENCES `widget_dashboard` (`id`)
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
 )

@@ -16,7 +16,10 @@
             "/js/controllers/DashboardController.js",
             "/js/directives/OverviewTd.js",
             "/js/directives/SortingTable.js",
-            "/js/directives/stDash.js"
+            "/js/directives/stDash.js",
+            "/js/directives/stWidgetRow.js",
+            "/js/directives/stWidgetColumn.js",
+            "/js/directives/stWidget.js"
         ],
         "css" : [
             "/bower_components/bootstrap/dist/css/bootstrap.css",
