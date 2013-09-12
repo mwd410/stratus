@@ -1,0 +1,28 @@
+<div class="st-dash">
+    <div> <!-- Wrapper Div for recessed area. -->
+        <div class="st-widget-row"
+             data-ng-repeat="widgetRow in dash.widgetRows"
+             data-ng-style="{height : widgetRow.height+'px'}">
+
+            <div class="st-widget-column"
+                 data-ng-repeat="widgetColumn in widgetRow.widgetColumns"
+                 data-ng-style="{width : widgetColumn.width + '%'}">
+
+                <div data-ng-if="$index > 0"
+                     class="st-widget-column-dragger">
+                    <div></div>
+                </div>
+
+                <div class="st-widget"
+                     data-ng-repeat="widget in widgetColumn.widgets"
+                     data-ng-style="{height : widget.height + '%'}">
+
+                    <div class="panel panel-default"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

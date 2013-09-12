@@ -13,8 +13,10 @@
             "/js/controllers/AnalysisPageController.js",
             "/js/controllers/AnalysisOverviewController.js",
             "/js/controllers/RegisterController.js",
+            "/js/controllers/DashboardController.js",
             "/js/directives/OverviewTd.js",
-            "/js/directives/SortingTable.js"
+            "/js/directives/SortingTable.js",
+            "/js/directives/stDash.js"
         ],
         "css" : [
             "/bower_components/bootstrap/dist/css/bootstrap.css",

@@ -75,7 +75,10 @@ beginPartial('content');
 </div>
 </div>
     -->
-<div data-st-dash="widgets"></div>
+<div data-ng-controller="DashboardController">
+
+    <div data-st-dash="dashboard"></div>
+    </div>
 <?php
 
 endPartial();

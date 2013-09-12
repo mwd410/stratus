@@ -84,5 +84,14 @@ var Utils = {
         for (var key in object) {
             fn.call(scope || object[key], object[key], key);
         }
+    },
+    pluck : function(array, property) {
+
+        var plucked = [];
+        Utils.each(array, function(item) {
+
+            plucked.push(item[property]);
+        });
+        return plucked;
     }
 };
