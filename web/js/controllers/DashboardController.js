@@ -13,29 +13,8 @@
                                 flex    : 1,
                                 widgets : [
                                     {
-                                        flex : 2
-                                    },
-                                    {
-                                        flex : 3
-                                    }
-                                ]
-                            },
-                            {
-                                flex    : 2,
-                                widgets : [
-                                    {
-                                        flex : 1
-                                    }
-                                ]
-                            },
-                            {
-                                flex    : 1,
-                                widgets : [
-                                    {
-                                        flex : 1
-                                    },
-                                    {
-                                        flex : 1
+                                        flex : 1,
+                                        tpl : '/js/directives/tpl/total-cost.html'
                                     }
                                 ]
                             }

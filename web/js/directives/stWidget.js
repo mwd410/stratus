@@ -7,7 +7,7 @@
             return {
                 templateUrl : '/js/directives/tpl/stWidget.html',
                 replace     : true,
-                require     : ['stWidget', '^stWidgetColumn', 'stDash'],
+                require     : ['stWidget', '^stWidgetColumn', '^stDash'],
                 scope       : {
                     widget : '=stWidget',
                     index  : '='
@@ -23,6 +23,7 @@
                         initX,
                         initY;
 
+                    /*
                     el.find('.panel-heading').bind('mousedown', function(event) {
 
                         var wrapper = $(this).parent('.st-widget-wrapper');
@@ -64,7 +65,7 @@
                                 position : 'static'
                             });
                         });
-                    });
+                    });*/
                 }
             };
         });

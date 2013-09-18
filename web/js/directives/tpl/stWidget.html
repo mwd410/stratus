@@ -10,7 +10,8 @@
         <div class="panel-heading">
             <h4 class="panel-title">Widget</h4>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" data-ng-init="templateUrl=widget.tpl">
+            <div data-ng-include="templateUrl"></div>
         </div>
     </div>
 </div>
