@@ -3,9 +3,24 @@
         "js" : [
             "/js/less.js",
             "/bower_components/jquery/jquery.min.js",
-            "/bower_components/bootstrap/dist/js/bootstrap.js",
+            "/bower_components/bootstrap/dist/js/bootstrap.min.js",
             "/bower_components/angular/angular.min.js",
-            "/bower_components/angular-animate/angular-animate.min.js",
+            "/bower_components/angular-animate/angular-animate.min.js"
+        ],
+        "css" : [
+            "/bower_components/bootstrap/dist/css/bootstrap.css"
+        ]
+    },
+    "prod" : {
+        "js" : [
+            "/js/stratus.min.js"
+        ],
+        "css" : [
+            "/css/stratus.min.css"
+        ]
+    },
+    "dev" : {
+        "js" : [
             "/js/App.js",
             "/js/controllers/AccountManagementController.js",
             "/js/controllers/AccountController.js",
@@ -21,14 +36,7 @@
             "/js/directives/stWidget.js"
         ],
         "css" : [
-            "/bower_components/bootstrap/dist/css/bootstrap.css",
-            {"rel":"stylesheet/less","href":"/css/app2.less"},
-            "/css/ng-grid.min.css"
-        ]
-    },
-    "prod" : {
-        "js" : [
-            "/js/stratus.min.js"
+            {"rel"  : "stylesheet/less", "href" : "/css/app2.less"}
         ]
     }
 }

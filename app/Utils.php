@@ -50,4 +50,17 @@ abstract class Utils {
         }
         return $array;
     }
+
+    public static function arrayIsIndexed($array) {
+
+        $i = 0;
+        foreach($array as $index => $value) {
+
+            if ($index !== $i) {
+                return false;
+            }
+            $i++;
+        }
+        return true;
+    }
 }

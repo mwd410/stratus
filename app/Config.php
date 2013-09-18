@@ -104,10 +104,15 @@ class Config implements Iterator {
             throw new Exception('Both the default and current environment values must be arrays or objects for getUnion().');
         }
 
-        //todo support for non associative arrays -- simply array_merge them.
-        foreach($envValue as $key => $value) {
-            $defValue[$key] = $value;
+        //assume if one is indexed the other is too.
+        if (Utils::arrayIsIndexed($envValue)) {
+            $defValue = array_merge($defValue, $envValue);
+        } else {
+            foreach ($envValue as $key => $value) {
+                $defValue[$key] = $value;
+            }
         }
+
 
         return $defValue;
     }

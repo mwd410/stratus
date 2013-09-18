@@ -125,7 +125,7 @@ class View {
 
         $config = self::getConfig();
 
-        $cssSheets = $config->get('css');
+        $cssSheets = $config->getUnion('css');
 
         foreach($cssSheets as $cssFile) {
 
@@ -149,7 +149,7 @@ class View {
 
         $config = self::getConfig();
 
-        $javaScripts = $config->get('js');
+        $javaScripts = $config->getUnion('js');
 
         foreach ($javaScripts as $jsFile) {
             echo '<script src="' . $jsFile . '"></script>';
