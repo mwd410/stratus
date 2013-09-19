@@ -3,16 +3,15 @@
 module.exports = function(grunt) {
 
     var viewConfig = grunt.file.readJSON('config/view.json'),
-        jsFiles = viewConfig.all.js.slice(),
-        cssFiles = viewConfig.all.css.slice();
+        jsFiles = viewConfig.dev.js.slice();
 
     for (var i = 0; i < jsFiles.length; ++i) {
         jsFiles[i] = 'web' + jsFiles[i];
     }
 
-    console.log(jsFiles);
     grunt.initConfig({
         pkg : grunt.file.readJSON('package.json'),
+
         uglify : {
             options : {
                 mangle : false,
@@ -26,14 +25,21 @@ module.exports = function(grunt) {
         },
         less : {
             options : {
-
+                yuicompress : true
+            },
+            prodTarget : {
+                files : {
+                    "web/css/stratus.min.css" : "web/css/less/app.less"
+                }
             }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grung-ngmin');
 
-    grunt.registerTask('default', ['uglify']);
+    grunt.registerTask('default', ['uglify', 'less']);
 
 
 };

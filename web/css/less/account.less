@@ -1,0 +1,73 @@
+/**
+ * ACCOUNT LIST
+ */
+.st-account-header {
+  padding : 20px 5px 10px 10px;
+  & > div {
+    font-weight : bold;
+  }
+  color   : @st-bg-text-strong;
+  .spacer {
+    width : 19px;
+  }
+}
+
+.st-account {
+  @bg              : @st-bg-dark;
+  .border-radius(8px);
+  .st-emboss;
+  padding          : 5px;
+  overflow         : hidden;
+  color            : @st-bg-text-strong;
+  background-color : @bg;
+  &+.st-account {
+    margin-top : 5px;
+  }
+  &.is-master {
+    .st-master-icon {
+      color : @st-brand-light;
+    }
+  }
+  &.is-expanded {
+    .st-account-body {
+      .transition(0.25s linear all);
+      max-height : 430px;
+      .opacity(100);
+    }
+  }
+  .spacer {
+    width : 14px;
+  }
+  .column {
+    margin-top : 5px;
+  }
+  .st-master-icon {
+    margin-left : 5px;
+    color       : @bg;
+  }
+  .st-account-edit-btn {
+    .st-btn;
+    &:after {
+      content : 'Edit';
+    }
+  }
+
+  .st-account-delete-btn {
+    .st-btn;
+    &:after {
+      content : 'Delete';
+    }
+  }
+  .st-account-body {
+    .transition(0.25s linear all);
+    max-height : 0;
+    .opacity(0);
+    overflow   : hidden;
+    .form-group:last-of-type {
+      margin-bottom : 0px;
+    }
+    .form-group:first-of-type {
+      margin-top : 15px;
+    }
+  }
+}

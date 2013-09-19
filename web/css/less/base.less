@@ -1,0 +1,45 @@
+/**
+ * MISC
+ */
+
+html {
+  height           : 100%;
+  background-color : @st-bg-main;
+}
+
+body {
+  padding-top      : 50px;
+  height           : 100%;
+  background-color : @st-bg-main;
+  color            : @st-bg-text;
+}
+
+.main-text {
+  color : @st-brand-main;
+}
+
+.dark-text {
+  color : @st-brand-dark;
+}
+
+.muted-text {
+  color : @st-brand-light;
+}
+
+.white-text {
+  color : #fff;
+}
+
+.st-btn {
+  background-color : @st-brand-main;
+  color            : @st-brand-light;
+  //border-color     : @st-brand-dark;
+  border           : none;
+  .st-emboss;
+  &:hover,
+  &:active {
+    color            : @st-brand-text-strong;
+    background-color : @st-brand-main;
+    border-color     : @st-brand-dark;
+  }
+}

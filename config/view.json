@@ -36,7 +36,7 @@
             "/js/directives/stWidget.js"
         ],
         "css" : [
-            {"rel"  : "stylesheet/less", "href" : "/css/app2.less"}
+            {"rel"  : "stylesheet/less", "href" : "/css/less/app.less"}
         ]
     }
 }
