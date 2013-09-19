@@ -2,6 +2,9 @@
 #################### SCHEMA CHANGES ####################
 ########################################################
 
+alter table account
+    add `id`
+
 ALTER TABLE `users`
 ADD UNIQUE KEY (`email_address`),
 ADD UNIQUE KEY (`user_name`);
@@ -131,3 +134,44 @@ CREATE TABLE IF NOT EXISTS `widget_default_attribute` (
 ########################################################
 ##################### VIEW CHANGES #####################
 ########################################################
+
+
+SELECT
+    sum(`cost`)
+FROM `billing_totals` `bt`
+    JOIN `account_v` `av`
+        ON `av`.`account_id` = `bt`.`master_account_id`
+WHERE `av`.`customer_id` = '7' AND
+      `bt`.`bill_month` = '2013-09';
+
+
+INSERT INTO `testdb`.`customer` (`id`, `name`)
+    SELECT
+        `b`.`id`,
+        `b`.`name`
+    FROM `stratus`.`customer` `b`;
+
+INSERT INTO `testdb`.`volume_info` (
+    `volume_id`,
+    `account_id`,
+    `instance_id`,
+    `mount_point`,
+    `snapshot`,
+    `region`,
+    `size`,
+    `status`,
+    `attach_date`,
+    `history_date`)
+    SELECT
+        `b`.`volume_id`,
+        `a`.`id`,
+        `b`.`instance_id`,
+        `b`.`mount_point`,
+        `b`.`snapshot`,
+        `b`.`region`,
+        `b`.`size`,
+        `b`.`status`,
+        `b`.`attach_date`,
+        `b`.`history_date`
+    FROM `stratus`.`volume_info` `b` JOIN `testdb`.`account` `a`
+            ON `a`.`account_id` = `b`.`account_id`;

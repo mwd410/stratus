@@ -12,9 +12,9 @@ CREATE TABLE `user` (
     `user_name` VARCHAR(40) NOT NULL,
     `password` VARCHAR(32) NOT NULL,
     `email_address` VARCHAR(60) NOT NULL,
-    `customer_id` MEDIUMINT(9) NOT NULL,
+    `customer_id` BIGINT(20) UNSIGNED NOT NULL,
     `deleted` INT(2) NOT NULL,
-    PRIMARY KEY (`user_id`),
+    PRIMARY KEY (`id`),
     UNIQUE KEY (`user_name`),
     UNIQUE KEY (`email_address`),
     KEY `fk_user_customer1` (`customer_id`),
@@ -28,12 +28,13 @@ CREATE TABLE `user` (
 
 CREATE TABLE `account` (
     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-    #TODO: varchar?
+    #TODO: varchar
     `account_id` BIGINT(20) NOT NULL,
-    `customer_id` MEDIUMINT(9) NOT NULL,
+    `customer_id` BIGINT(20) UNSIGNED NOT NULL,
     `account_name` VARCHAR(40) NOT NULL,
     `aws_key` VARCHAR(40) NOT NULL,
-    `secret_key` VARCHAR(40) NOT NULL,
+    `secret_key` VARCHAR(80) NOT NULL,
+    `deleted` INT(2) NOT NULL DEFAULT '0',
     PRIMARY KEY (`id`),
     UNIQUE KEY (`account_id`),
     # this will allow mysql to get the account_id
@@ -51,7 +52,7 @@ CREATE TABLE `account` (
 CREATE TABLE `instance_info` (
     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
     `instance_id` VARCHAR(40) NOT NULL,
-    `account_id` BIGINT(20) NOT NULL,
+    `account_id` BIGINT(20) UNSIGNED NOT NULL,
     `os` VARCHAR(40) DEFAULT NULL,
     `region` VARCHAR(40) NOT NULL,
     `image_id` VARCHAR(40) NOT NULL,
@@ -62,6 +63,8 @@ CREATE TABLE `instance_info` (
     `launch_date` DATE DEFAULT NULL,
     `tag` VARCHAR(40) DEFAULT NULL,
     `history_date` DATE NOT NULL,
+    `last_sync` VARCHAR(20) NOT NULL,
+    `running_hours` INT(10) NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY (`instance_id`, `history_date`),
     KEY `fk_instance_info_account1` (`account_id`),
@@ -93,7 +96,7 @@ CREATE TABLE `instance_pricing` (
 CREATE TABLE `reserved_info` (
     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
     `reservation_id` VARCHAR(40) NOT NULL,
-    `account_id` BIGINT(20) NOT NULL,
+    `account_id` BIGINT(20) UNSIGNED NOT NULL,
     `region` VARCHAR(40) NOT NULL,
     `instance_size` VARCHAR(40) NOT NULL,
     `duration` INT(11) DEFAULT NULL,
@@ -103,6 +106,7 @@ CREATE TABLE `reserved_info` (
     `qty` INT(11) DEFAULT NULL,
     `state` VARCHAR(40) DEFAULT NULL,
     `history_date` DATE NOT NULL,
+    `start_date` DATETIME NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY (`reservation_id`, `history_date`),
     CONSTRAINT `fk_reserved_info_account1` FOREIGN KEY (`account_id`)
@@ -114,8 +118,9 @@ CREATE TABLE `reserved_info` (
 
 
 CREATE TABLE `volume_info` (
+    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
     `volume_id` VARCHAR(40) NOT NULL,
-    `account_id` BIGINT(20) NOT NULL,
+    `account_id` BIGINT(20) UNSIGNED NOT NULL,
     `instance_id` VARCHAR(40) DEFAULT NULL,
     `mount_point` VARCHAR(40) NOT NULL,
     `snapshot` VARCHAR(40) NOT NULL,
@@ -124,7 +129,8 @@ CREATE TABLE `volume_info` (
     `status` VARCHAR(40) NOT NULL,
     `attach_date` DATE DEFAULT NULL,
     `history_date` DATE NOT NULL,
-    PRIMARY KEY (`volume_id`, `history_date`),
+    PRIMARY KEY (`id`),
+    UNIQUE KEY (`volume_id`, `history_date`),
     KEY `fk_volume_info_account1` (`account_id`),
     CONSTRAINT `fk_volume_info_account1` FOREIGN KEY (`account_id`)
     REFERENCES `account` (`id`)
@@ -148,7 +154,7 @@ CREATE TABLE `volume_pricing` (
 
 CREATE TABLE `instance_history` (
     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `account_id` BIGINT(20) NOT NULL,
+    `account_id` BIGINT(20) UNSIGNED NOT NULL,
     `region` VARCHAR(40) NOT NULL,
     `instance_size` VARCHAR(40) NOT NULL,
     `running_qty` INT(5) NOT NULL,
@@ -170,7 +176,7 @@ CREATE TABLE `instance_history` (
 
 CREATE TABLE `volume_history` (
     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `account_id` BIGINT(20) NOT NULL,
+    `account_id` BIGINT(20) UNSIGNED NOT NULL,
     `region` VARCHAR(40) NOT NULL,
     `total_size` FLOAT NOT NULL,
     `total_qty` INT NOT NULL,
@@ -179,7 +185,7 @@ CREATE TABLE `volume_history` (
     `history_date` DATE NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY (`account_id`, `history_date`, `region`, `status`),
-    KEY `volume_history_account1`  (`account_id`),
+    KEY `volume_history_account1` (`account_id`),
     CONSTRAINT `volume_history_account1` FOREIGN KEY (`account_id`)
     REFERENCES `account` (`id`)
         ON DELETE CASCADE
@@ -190,7 +196,7 @@ CREATE TABLE `volume_history` (
 
 CREATE TABLE `performance_info` (
     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `instance_id` BIGINT(20) NOT NULL,
+    `instance_id` BIGINT(20) UNSIGNED NOT NULL,
     `region` VARCHAR(40) NOT NULL,
     `stat_type` VARCHAR(40) NOT NULL,
     `stat_datapoint` VARCHAR(40) NOT NULL,
@@ -209,7 +215,7 @@ CREATE TABLE `performance_info` (
 
 CREATE TABLE `billing_info` (
     `payer_account_id` BIGINT(20) NOT NULL,
-    `account_id` BIGINT(20) NOT NULL,
+    `account_id` BIGINT(20) UNSIGNED NOT NULL,
     `record_type` VARCHAR(40) NOT NULL,
     `product_name` VARCHAR(128) NOT NULL,
     `rate_id` BIGINT(20) NOT NULL,
@@ -237,8 +243,8 @@ CREATE TABLE `billing_info` (
 
 CREATE TABLE `billing_totals` (
     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `master_account_id` BIGINT(20) NOT NULL,
-    `account_id` BIGINT(20) NOT NULL,
+    `master_account_id` BIGINT(20) UNSIGNED NOT NULL,
+    `account_id` BIGINT(20) UNSIGNED NOT NULL,
     `record_type` VARCHAR(40) NOT NULL,
     `description` TEXT(255) NOT NULL,
     `cost` FLOAT NOT NULL,
@@ -257,7 +263,7 @@ CREATE TABLE `billing_totals` (
 CREATE TABLE `billing_history` (
     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
     `payer_account_id` BIGINT(20) NOT NULL,
-    `account_id` BIGINT(20) NOT NULL,
+    `account_id` BIGINT(20) UNSIGNED NOT NULL,
     `product_name` VARCHAR(128) NOT NULL,
     `rate_id` BIGINT(20) NOT NULL,
     `subscription_id` BIGINT(20) NOT NULL,
@@ -284,8 +290,8 @@ CREATE TABLE `billing_history` (
 
 CREATE TABLE `master_account` (
     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `account_id` BIGINT(20) NOT NULL,
-    `customer_id` MEDIUMINT(9) NOT NULL,
+    `account_id` BIGINT(20) UNSIGNED NOT NULL,
+    `customer_id` BIGINT(20) UNSIGNED NOT NULL,
     `billing_bucket` VARCHAR(128) NOT NULL,
     `billing_file` VARCHAR(255) DEFAULT NULL,
     `imported_billing_file` VARCHAR(255) DEFAULT NULL,
@@ -308,7 +314,7 @@ CREATE TABLE `master_account` (
 
 CREATE TABLE `billing_file_details` (
     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `account_id` BIGINT(20) NOT NULL,
+    `account_id` BIGINT(20) UNSIGNED NOT NULL,
     `billing_file` VARCHAR(255) NOT NULL,
     `last_modified` DATETIME NOT NULL,
     `import_date` DATETIME DEFAULT NULL,
@@ -326,7 +332,7 @@ CREATE TABLE `billing_file_details` (
 CREATE TABLE `billing_reservations` (
     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
     `payer_account_id` BIGINT(20) NOT NULL,
-    `account_id` BIGINT(20) NOT NULL,
+    `account_id` BIGINT(20) UNSIGNED NOT NULL,
     `product_name` VARCHAR(128) NOT NULL,
     `rate_id` BIGINT(20) NOT NULL,
     `reserved` VARCHAR(2) NOT NULL,
@@ -347,7 +353,7 @@ CREATE TABLE `billing_reservations` (
 
 CREATE TABLE `chargeback` (
     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `account_id` BIGINT(20) NOT NULL,
+    `account_id` BIGINT(20) UNSIGNED NOT NULL,
     `product_name` VARCHAR(128) NOT NULL,
     `stake_holder` VARCHAR(40) NOT NULL,
     PRIMARY KEY (`id`),
@@ -359,7 +365,3 @@ CREATE TABLE `chargeback` (
         ON UPDATE CASCADE
 )
     ENGINE =InnoDB DEFAULT CHARSET = `latin1`;
-
-
-
-
