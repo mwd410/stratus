@@ -11,11 +11,27 @@ app.controller('MenuController', function($scope) {
             '/accounts|/dashboard' : [
                 {
                     url  : '/accounts',
-                    name : 'Accounts'
+                    name : 'Overview'
                 },
                 {
                     url  : '/dashboard',
-                    name : 'Dashboard'
+                    name : 'Breakdown'
+                },
+                {
+                    url : '/chargeback',
+                    name : 'Chargeback'
+                },
+                {
+                    url : '/alerts',
+                    name : 'Alerts'
+                },
+                {
+                    url : '/reports',
+                    name : 'Reports'
+                },
+                {
+                    url : '/savings',
+                    name : 'Savings Highlighter'
                 }
             ]
         };

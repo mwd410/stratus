@@ -8,7 +8,7 @@
   background-color : @main;
   border-color     : @dark;
   text-shadow      : 0 -1px 0 rgba(0, 0, 0, .15);
-  .box-shadow(0 1px 5px @st-shadow);
+  .box-shadow(0 1px 0px rgba(255, 255, 255, 0.3));
   .navbar-collapse {
     border-color : @dark;
   }
@@ -45,35 +45,68 @@
   overflow         : hidden;
   display          : inline-block;
   float            : left;
-  height           : 100%;
   width            : 200px;
-  background-color : @st-bg-dark;
-  .box-shadow(inset -1px 0px 5px @st-shadow);
-  ul {
+  margin-left      : 20px;
+  margin-top       : 20px;
+  &> ul {
+    border : 1px solid @st-bg-light;
     list-style : none;
     padding    : 0;
-    margin     : 0;
-    margin-top : 10px;
+    margin-bottom : 20px;
+    .border-radius(3px);
     & > li {
+      overflow: hidden;
+      & + li {
+        border-top: 1px solid @st-bg-light;
+        .box-shadow(0 -1px 1px rgba(0, 0, 0, 0.3) inset;);
+      }
       & > a {
         display     : block;
         padding     : 10px;
-        margin-left : 20px;
-        margin-top  : 5px;
-        .border-left-radius(5px);
-        .box-shadow(0 1px 5px @st-shadow);
-        .transition(all 0.05s linear);
+        margin-top  : 1px;
         color       : @st-bg-text;
         &.active, &:hover {
-          background-color : @st-bg-main;
-          margin-left      : 10px;
           text-decoration  : none;
           color            : @st-bg-text-strong;
-          margin-left      : 10px;
         }
       }
     }
   }
+  li {
+    &> ul {
+      list-style : none;
+      padding    : 0;
+      & > li > a {
+        display    : block;
+        padding    : 7px;
+        padding-left : 20px;
+        margin-top : 1px;
+        color      : @st-bg-text;
+        &:hover {
+          color: @st-bg-text-strong;
+        }
+      }
+      max-height: 0px;
+    }
+    &.active > ul {
+      max-height: 300px;
+    }
+  }
+  a:hover {
+    text-decoration: none;
+  }
+}
+
+.st-nav-title {
+  margin-top       : -1px;
+  background-color : @st-brand-main;
+  color            : @st-brand-text-strong;
+  .border-top-radius(3px);
+  .box-shadow(0 1px 0px rgba(255, 255, 255, 0.3) inset,
+              0 -1px 5px rgba(0, 0, 0, 0.3) inset;);
+  padding          : 10px;
+  text-align       : center;
+  font-size        : 15px;
 }
 
 .st-left-toggle {

@@ -1,9 +1,10 @@
 /**
  * DASHBOARD
  */
+
 .st-dash {
-  margin      : 15px;
-  margin-left : 215px;
+  margin      : 20px 235px;
+  margin-left : 235px;
   position    : relative;
   padding     : 0;
   & > div {
@@ -13,6 +14,20 @@
     .border-radius(5px);
     background-color : @st-bg-dark;
     .st-deboss;
+  }
+}
+
+.st-dash-title {
+  padding : 6px;
+  div {
+    .st-emboss;
+    padding          : 10px;
+    text-align       : center;
+    font-size        : 20px;
+    line-height      : 15px;
+    background-color : @st-brand-main;
+    color            : @st-brand-text-strong;
+    .border-radius(3px)
   }
 }
 
@@ -113,5 +128,30 @@
   }
   &:active {
     background : none;
+  }
+}
+
+.st-right-side {
+  float        : right;
+  width        : 200px;
+  margin-right : 20px;
+  margin-top   : 20px;
+  min-height   : 40px;
+  & > div {
+    &+div {
+      margin-top: 10px;
+    }
+    list-style : none;
+    padding    : 5px;
+    border     : 1px solid @st-bg-light;
+    .border-radius(10px);
+    &> div {
+      text-align : center;
+      &:first-of-type {
+        font-size     : 15px;
+        color         : @st-bg-text-strong;
+        margin-bottom : 3px;
+      }
+    }
   }
 }

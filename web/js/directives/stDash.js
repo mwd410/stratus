@@ -12,8 +12,6 @@
                 controller  : function() {
 
                 },
-                replace : true,
-                templateUrl : '/js/directives/tpl/stDash.html',
                 link        : function(scope, el, attrs, controller) {
 
                 }

@@ -13,8 +13,7 @@
                                 flex    : 1,
                                 widgets : [
                                     {
-                                        flex : 1,
-                                        tpl : '/js/directives/tpl/total-cost.html'
+                                        flex : 1
                                     }
                                 ]
                             }

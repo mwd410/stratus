@@ -5,12 +5,9 @@
         .directive('stWidget', function() {
 
             return {
-                templateUrl : '/js/directives/tpl/stWidget.html',
-                replace     : true,
                 require     : ['stWidget', '^stWidgetColumn', '^stDash'],
                 scope       : {
-                    widget : '=stWidget',
-                    index  : '='
+                    widget : '=stWidget'
                 },
                 controller  : function($scope) {
 

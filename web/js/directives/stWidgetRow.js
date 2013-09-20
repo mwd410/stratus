@@ -27,8 +27,6 @@
                         }, this);
                     };
                 },
-                replace     : true,
-                templateUrl : '/js/directives/tpl/stWidgetRow.html',
                 link        : function(scope, el, attrs, controllers) {
 
                     var rowController = controllers[0],

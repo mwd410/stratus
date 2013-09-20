@@ -19,6 +19,13 @@ $tbl_account = "account";
     <meta name="author" content="Stratus">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <?php
+    if (App::getEnv() === 'dev'):
+        ?>
+        <script>
+            var less = {env : "development"};
+        </script>
+    <?php endif; ?>
 </head>
 <body>
     <?php

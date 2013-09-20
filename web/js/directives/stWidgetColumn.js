@@ -23,8 +23,6 @@
                         }, this);
                     };
                 },
-                templateUrl : '/js/directives/tpl/stWidgetColumn.html',
-                replace     : true,
                 scope       : {
                     widgetColumn : '=stWidgetColumn',
                     index        : '='
