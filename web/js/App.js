@@ -31,7 +31,7 @@ app.controller('MenuController', function($scope) {
                 },
                 {
                     url : '/savings',
-                    name : 'Savings Highlighter'
+                    name : 'Savings'
                 }
             ]
         };
@@ -46,6 +46,16 @@ app.controller('MenuController', function($scope) {
         }
     }
 
+    $scope.expandedMenu = null;
+
+    $scope.expandMenu = function(menu) {
+
+        if ($scope.expandedMenu === menu) {
+            $scope.expandedMenu = null;
+        } else {
+            $scope.expandedMenu = menu;
+        }
+    };
 });
 
 app.filter('obstructed', function() {

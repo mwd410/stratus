@@ -12,47 +12,49 @@ beginPartial('menu');
 ?>
 
     <header data-ng-controller="MenuController"
-            class="navbar navbar-inverse navbar-fixed-top st-navbar"
+            class="st-navbar"
             role="banner">
-        <div class="container">
-            <!--
-              Mobile nav expander and logo
-            -->
-            <div class="navbar-header">
-                <button ng-show="menuOptions.length > 0" type="button"
-                        class="navbar-toggle st-left-toggle">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+        <div class="wrapper">
+            <div class="st-navbar-header">
+                <button data-ng-click="expandMenu('left')">
+                    <i class="icon-expand"></i>
                 </button>
-                <button ng-show="menuOptions.length > 0" type="button" class="navbar-toggle"
-                        data-toggle="collapse"
-                        data-target=".st-navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="brand" href="/">
+                <a class="st-brand" href="/">
                     <img src="/bootstrap/img/white-logo.png" width="80"/>
                 </a>
+                <button data-ng-click="expandMenu('main')">
+                    <i class="icon-ellipsis-vertical"></i>
+                </button>
+                <button class="for-config"
+                        data-ng-click="expandMenu('config')">
+                    <i class="icon-cog"></i>
+                </button>
             </div>
 
-            <!--
-              Navigation
-            -->
-            <nav class="collapse navbar-collapse st-navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li data-ng-repeat="option in menuOptions"
-                        ng-class="{true:'active',false:''}[option.url==currentPath]">
+            <div class="st-right-menu-nav"
+                 data-ng-class="{'is-expanded' : expandedMenu == 'main'}">
+                <nav>
+                    <ul>
+                        <li data-ng-repeat="option in menuOptions"
+                            ng-class="{'is-active': option.url==currentPath}">
 
-                        <a href="{{option.url}}">{{option.name}}</a>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
+                            <a href="{{option.url}}">{{option.name}}</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <nav class="st-config-menu"
+                 data-ng-class="{'is-expanded' : expandedMenu == 'config'}">
+                <ul>
                     <li>
-                        <a href="/logout">Logout</a>
+                        <a href="#">Profile</a>
+                    </li>
+                    <li>
+                        <a href="#">Providers</a>
+                    </li>
+                    <li>
+                        <a href="#">Logout</a>
                     </li>
                 </ul>
             </nav>
