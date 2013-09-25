@@ -3,8 +3,29 @@ var app = angular.module('App', [
     'ngAnimate'
 ]);
 
-app.controller('MenuController', function($scope) {
+app.service('NavService', function() {
 
+    return {
+        expandedMenu : null,
+        expandMenu : function(menu) {
+
+            if (this.expandedMenu === menu) {
+                this.expandedMenu = null;
+            } else {
+                this.expandedMenu = menu;
+            }
+        }
+    };
+});
+
+app.controller('LeftNavController', function($scope, NavService) {
+
+    $scope.menu = NavService;
+});
+
+app.controller('MenuController', function($scope, NavService) {
+
+    console.log(NavService);
     var path = window.location.pathname,
         pathMenus = {
             '/'                   : [],
@@ -46,16 +67,7 @@ app.controller('MenuController', function($scope) {
         }
     }
 
-    $scope.expandedMenu = null;
-
-    $scope.expandMenu = function(menu) {
-
-        if ($scope.expandedMenu === menu) {
-            $scope.expandedMenu = null;
-        } else {
-            $scope.expandedMenu = menu;
-        }
-    };
+    $scope.menu = NavService;
 });
 
 app.filter('obstructed', function() {

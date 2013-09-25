@@ -5,7 +5,9 @@ beginPartial('content');
 
 ?>
 
-    <div class="st-left-nav">
+    <div data-ng-controller="LeftNavController"
+         class="st-left-nav"
+         data-ng-class="{'is-expanded' : menu.expandedMenu == 'left'}">
         <ul>
             <li class="st-nav-title">Breakdown By</li>
             <li>
@@ -63,7 +65,7 @@ beginPartial('content');
         </div>
     </div>
 
-    <div data-ng-controller="DashboardController">
+    <div data-ng-controller="DashboardController" class="st-dash-wrapper">
         <div data-st-dash="dashboard"
              class="st-dash">
 

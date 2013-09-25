@@ -2,9 +2,13 @@
  * DASHBOARD
  */
 
+.st-dash-wrapper {
+  position : absolute;
+  top : 50px;
+  width : 100%;
+}
 .st-dash {
-  margin      : 20px 235px;
-  margin-left : 235px;
+  margin      : 20px;
   position    : relative;
   padding     : 0;
   & > div {
@@ -132,14 +136,14 @@
 }
 
 .st-right-side {
-  float        : right;
+  clear : both;
+  float        : left;
   width        : 200px;
-  margin-right : 20px;
-  margin-top   : 20px;
+  margin   : 20px;
   min-height   : 40px;
   & > div {
     &+div {
-      margin-top: 10px;
+      margin-top : 10px;
     }
     list-style : none;
     padding    : 5px;
@@ -153,5 +157,115 @@
         margin-bottom : 3px;
       }
     }
+  }
+}
+
+/**
+ * LEFT SIDE NAV
+ */
+.st-left-nav {
+  overflow    : hidden;
+  display     : inline-block;
+  float       : left;
+  width       : 200px;
+  margin-left : 20px;
+  margin-top  : 20px;
+  position    : absolute;
+  left        : -100%;
+  &.is-expanded {
+    left : 0;
+    & ~ div > .st-dash {
+      left : 220px;
+    }
+  }
+  & > ul {
+    border        : 1px solid @st-bg-light;
+    list-style    : none;
+    padding       : 0;
+    margin        : 0;
+    & + ul {
+      margin-top : 20px;
+    }
+    .border-radius(3px);
+    & > li {
+      overflow : hidden;
+      & + li {
+        border-top : 1px solid @st-bg-light;
+        .box-shadow(0 -1px 1px rgba(0, 0, 0, 0.3) inset;);
+      }
+      & > a {
+        display    : block;
+        padding    : 10px;
+        margin-top : 1px;
+        color      : @st-bg-text;
+        &.active, &:hover {
+          text-decoration : none;
+          color           : @st-bg-text-strong;
+        }
+      }
+    }
+  }
+  li {
+    &> ul {
+      list-style : none;
+      padding    : 0;
+      & > li > a {
+        display      : block;
+        padding      : 7px;
+        padding-left : 20px;
+        margin-top   : 1px;
+        color        : @st-bg-text;
+        &:hover {
+          color : @st-bg-text-strong;
+        }
+      }
+      max-height : 0px;
+    }
+    &.active > ul {
+      max-height : 300px;
+    }
+  }
+  a:hover {
+    text-decoration : none;
+  }
+}
+
+.st-nav-title {
+  margin-top       : -1px;
+  background-color : @st-brand-main;
+  color            : @st-brand-text-strong;
+  .border-top-radius(3px);
+  .box-shadow(0 1px 0px rgba(255, 255, 255, 0.3) inset,
+              0 -1px 5px rgba(0, 0, 0, 0.3) inset;);
+  padding          : 10px;
+  text-align       : center;
+  font-size        : 15px;
+}
+
+.st-left-toggle {
+  float        : left;
+  margin-left  : 15px;
+  margin-right : 0;
+}
+
+@media (min-width : @screen-md) {
+  .st-left-nav {
+    left : 0;
+    float : left;
+    position : static;
+  }
+  .st-dash {
+    margin-left: 240px;
+    left : 0;
+  }
+}
+
+@media (min-width : @screen-lg) {
+  .st-right-side {
+    float : right;
+    clear : none;
+  }
+  .st-dash {
+    margin-right : 240px;
   }
 }

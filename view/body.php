@@ -16,23 +16,23 @@ beginPartial('menu');
             role="banner">
         <div class="wrapper">
             <div class="st-navbar-header">
-                <button data-ng-click="expandMenu('left')">
+                <button data-ng-click="menu.expandMenu('left')">
                     <i class="icon-expand"></i>
                 </button>
                 <a class="st-brand" href="/">
                     <img src="/bootstrap/img/white-logo.png" width="80"/>
                 </a>
-                <button data-ng-click="expandMenu('main')">
+                <button data-ng-click="menu.expandMenu('main')">
                     <i class="icon-ellipsis-vertical"></i>
                 </button>
                 <button class="for-config"
-                        data-ng-click="expandMenu('config')">
+                        data-ng-click="menu.expandMenu('config')">
                     <i class="icon-cog"></i>
                 </button>
             </div>
 
             <div class="st-right-menu-nav"
-                 data-ng-class="{'is-expanded' : expandedMenu == 'main'}">
+                 data-ng-class="{'is-expanded' : menu.expandedMenu == 'main'}">
                 <nav>
                     <ul>
                         <li data-ng-repeat="option in menuOptions"
@@ -45,7 +45,7 @@ beginPartial('menu');
             </div>
 
             <nav class="st-config-menu"
-                 data-ng-class="{'is-expanded' : expandedMenu == 'config'}">
+                 data-ng-class="{'is-expanded' : menu.expandedMenu == 'config'}">
                 <ul>
                     <li>
                         <a href="#">Profile</a>
