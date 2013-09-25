@@ -1,6 +1,7 @@
 'use strict';
 var app = angular.module('App', [
-    'ngAnimate'
+    'ngAnimate',
+    'ui.router'
 ]);
 
 app.service('NavService', function() {
@@ -25,7 +26,6 @@ app.controller('LeftNavController', function($scope, NavService) {
 
 app.controller('MenuController', function($scope, NavService) {
 
-    console.log(NavService);
     var path = window.location.pathname,
         pathMenus = {
             '/'                   : [],
