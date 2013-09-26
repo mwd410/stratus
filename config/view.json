@@ -24,6 +24,7 @@
     "dev" : {
         "js" : [
             "/js/App.js",
+            "/js/services/NavService.js",
             "/js/controllers/AccountManagementController.js",
             "/js/controllers/AccountController.js",
             "/js/controllers/AnalysisPageController.js",

@@ -173,7 +173,7 @@
   position    : absolute;
   left        : -100%;
   &.is-expanded {
-    left : 0;
+    position : static;
     & ~ div > .st-dash {
       left : 220px;
     }
@@ -256,7 +256,7 @@
   }
   .st-dash {
     margin-left: 240px;
-    left : 0;
+    left : 0 !important;
   }
 }
 

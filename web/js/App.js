@@ -2,22 +2,43 @@
 var app = angular.module('App', [
     'ngAnimate',
     'ui.router'
-]);
+])
+    .config(function($stateProvider, $urlRouterProvider) {
 
-app.service('NavService', function() {
+        $urlRouterProvider.otherwise('/main/overview');
 
-    return {
-        expandedMenu : null,
-        expandMenu : function(menu) {
+        $stateProvider
+            .state('app', {
+                url : '/main',
+                templateUrl : 'partials/app.html'
+            })
+            .state('app.overview', {
+                url : '/overview',
+                templateUrl : 'partials/overview.html'
+            })
+            .state('app.breakdown', {
+                url : '/breakdown',
+                templateUrl : 'partials/breakdown.html'
+            })
+            .state('app.chargeback', {
+                url         : '/chargeback',
+                templateUrl : 'partials/chargeback.html'
+            })
+            .state('app.alerts', {
+                url         : '/alerts',
+                templateUrl : 'partials/alerts.html'
+            })
+            .state('app.reports', {
+                url         : '/reports',
+                templateUrl : 'partials/reports.html'
+            })
+            .state('app.savings', {
+                url         : '/savings',
+                templateUrl : 'partials/savings.html'
+            })
+        ;
+    });
 
-            if (this.expandedMenu === menu) {
-                this.expandedMenu = null;
-            } else {
-                this.expandedMenu = menu;
-            }
-        }
-    };
-});
 
 app.controller('LeftNavController', function($scope, NavService) {
 

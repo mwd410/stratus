@@ -3,6 +3,11 @@
 
 class DefaultController extends Controller {
 
+    public function appAction(Request $request) {
+
+        $this->render('app');
+    }
+
     public function indexAction(Request $request) {
 
         $this->render('login');
@@ -117,7 +122,7 @@ class DefaultController extends Controller {
         $success = $this->getUser()->authenticate($email, $password);
 
         if ($success) {
-            $this->forward('/accounts');
+            $this->forward('/app');
         } else {
             $this->forward('/');
         }

@@ -19,6 +19,7 @@
             "/register"          : "Default.register",
             "/isEmailAvailable"  : "Default.isEmailAvailable",
             "/logout"            : "Default.logout",
+            "/app"               : "Default.app",
             "/accounts"          : "Account.main",
             "/getAccounts"       : "Account.getAccounts",
             "/account/add"       : "Account.add",
