@@ -24,9 +24,10 @@
             <nav>
                 <ul>
                     <li data-ng-repeat="item in menuItems"
-                        ng-class="{'is-active': item.state == $state.current.name}">
+                        data-ng-class="{'is-active': item.state == $state.current.name}">
 
-                        <a ui-sref="{{item.state}}">{{item.name}}</a>
+                        <a data-ui-sref="{{item.state}}"
+                           data-ng-click="menu.expandMenu(null)">{{item.name}}</a>
                     </li>
                 </ul>
             </nav>
@@ -36,13 +37,15 @@
              data-ng-class="{'is-expanded' : menu.expandedMenu == 'config'}">
             <ul>
                 <li>
-                    <a href="#">Profile</a>
+                    <a data-ui-sref="app.profile"
+                       data-ng-click="menu.expandMenu(null)">Profile</a>
                 </li>
                 <li>
-                    <a href="#">Providers</a>
+                    <a data-ui-sref="app.providers"
+                       data-ng-click="menu.expandMenu(null)">Providers</a>
                 </li>
                 <li>
-                    <a href="#">Logout</a>
+                    <a href="/logout">Logout</a>
                 </li>
             </ul>
         </nav>

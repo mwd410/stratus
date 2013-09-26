@@ -36,6 +36,14 @@ var app = angular.module('App', [
                 url         : '/savings',
                 templateUrl : 'partials/savings.html'
             })
+            .state('app.profile', {
+                url : '/profile',
+                templateUrl: 'partials/profile.html'
+            })
+            .state('app.providers', {
+                url : '/providers',
+                templateUrl: 'partials/providers.html'
+            })
         ;
     });
 
