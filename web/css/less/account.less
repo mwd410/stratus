@@ -1,6 +1,101 @@
 /**
  * ACCOUNT LIST
  */
+.st-account-table {
+
+  position : absolute;
+  left     : 0;
+  width    : 100%;
+  height   : 0;
+
+  .first {
+    text-align : center;
+    width      : 40px;
+    display    : inline-block;
+  }
+
+  .name {
+    width   : 25%;
+    display : inline-block;
+  }
+
+  .external-id {
+    width   : 25%;
+    display : inline-block;
+  }
+
+  .external-key {
+    width   : 25%;
+    display : inline-block;
+  }
+
+  .buttons {
+    float : right;
+    button {
+      background : none;
+      border     : none;
+    }
+  }
+
+  section {
+    margin : 20px 20px 0 240px;
+    border : 1px solid @st-bg-light;
+    .border-radius(3px);
+  }
+
+  header {
+    margin-top       : -1px;
+    color            : @st-bg-text-strong;
+    .border-top-radius(3px);
+    background-color : @st-brand-main;
+    padding          : 10px;
+    .box-shadow(0 1px 0px rgba(255, 255, 255, 0.3) inset,
+                0 -1px 5px rgba(0, 0, 0, 0.3) inset;);
+  }
+
+  ul {
+    overflow-y: auto;
+    max-height: 500px;
+    list-style : none;
+    padding    : 0;
+    margin     : 0;
+    li:last-of-type {
+      .border-bottom-radius(3px);
+    }
+  }
+}
+
+.st-account-row {
+
+  padding    : 10px;
+  border-top : 1px solid @st-bg-light;
+  color      : @st-bg-text-strong;
+  .box-shadow(0 -1px 1px rgba(0, 0, 0, 0.3) inset);
+
+  .first {
+    color : rgba(255, 255, 255, 0);
+  }
+
+  .buttons {
+    button {
+      color : @st-bg-text;
+      &:hover {
+        color : @st-bg-text-strong;
+      }
+    }
+  }
+
+  .body {
+
+  }
+
+  &.is-master {
+    .first {
+      color : @st-brand-light;
+    }
+  }
+}
+
 .st-account-header {
   padding : 20px 5px 10px 10px;
   & > div {
@@ -28,7 +123,7 @@
       color : @st-brand-light;
     }
     .st-account-body form {
-      padding-bottom: 10px;
+      padding-bottom : 10px;
     }
   }
   &.is-expanded {

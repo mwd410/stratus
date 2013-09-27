@@ -44,3 +44,21 @@ body {
     border-color     : @st-brand-dark;
   }
 }
+
+::-webkit-scrollbar {
+  width : 12px;
+  .border-radius(10px);
+  background-color : @st-bg-dark;
+  border : 1px solid @st-bg-dark;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-thumb {
+  .box-shadow(inset 0 0 3px rgba(0, 0, 0, 0.5));
+
+}
+
+::-webkit-scrollbar-thumb {
+  background: @st-brand-dark;
+  .border-radius(10px);
+}
