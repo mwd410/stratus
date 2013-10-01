@@ -36,11 +36,12 @@
 
         </header>
 
-        <ul>
-            <li class="st-account-row"
-                data-ng-class="{'is-expanded' : isModifying(), 'is-master' : masterAccount.account_id == account.id}"
-                data-ng-repeat="account in accounts">
+        <ul st-auto-size>
+            <li data-ng-repeat="account in accounts"
+                data-st-account="account"
+                data-master="masterAccount">
 
+                <!--
                 <div class="first">
                     <i class="icon-star icon-large"></i>
                 </div>
@@ -66,9 +67,17 @@
                     </button>
                 </div>
 
-                <div class="body">
+                <div class="st-account-body"
+                     data-st-account-body>
 
-                </div>
+                    <form name="accountForm"
+                          action="/account/update"
+                          method="POST">
+
+
+                    </form>
+
+                </div>-->
             </li>
         </ul>
     </section>

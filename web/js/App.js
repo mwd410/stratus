@@ -1,23 +1,23 @@
 'use strict';
 var app = angular.module('App', [
-    'ngAnimate',
-    'ui.router'
-])
+        'ngAnimate',
+        'ui.router'
+    ])
     .config(function($stateProvider, $urlRouterProvider) {
 
         $urlRouterProvider.otherwise('/main/overview');
 
         $stateProvider
             .state('app', {
-                url : '/main',
+                url         : '/main',
                 templateUrl : 'partials/app.html'
             })
             .state('app.overview', {
-                url : '/overview',
+                url         : '/overview',
                 templateUrl : 'partials/overview.html'
             })
             .state('app.breakdown', {
-                url : '/breakdown',
+                url         : '/breakdown',
                 templateUrl : 'partials/breakdown.html'
             })
             .state('app.chargeback', {
@@ -37,12 +37,12 @@ var app = angular.module('App', [
                 templateUrl : 'partials/savings.html'
             })
             .state('app.profile', {
-                url : '/profile',
-                templateUrl: 'partials/profile.html'
+                url         : '/profile',
+                templateUrl : 'partials/profile.html'
             })
             .state('app.providers', {
-                url : '/providers',
-                templateUrl: 'partials/providers.html'
+                url         : '/providers',
+                templateUrl : 'partials/providers.html'
             })
         ;
     });
@@ -57,7 +57,7 @@ app.controller('MenuController', function($scope, NavService) {
 
     var path = window.location.pathname,
         pathMenus = {
-            '/'                   : [],
+            '/'                    : [],
             '/accounts|/dashboard' : [
                 {
                     url  : '/accounts',
@@ -68,19 +68,19 @@ app.controller('MenuController', function($scope, NavService) {
                     name : 'Breakdown'
                 },
                 {
-                    url : '/chargeback',
+                    url  : '/chargeback',
                     name : 'Chargeback'
                 },
                 {
-                    url : '/alerts',
+                    url  : '/alerts',
                     name : 'Alerts'
                 },
                 {
-                    url : '/reports',
+                    url  : '/reports',
                     name : 'Reports'
                 },
                 {
-                    url : '/savings',
+                    url  : '/savings',
                     name : 'Savings'
                 }
             ]
@@ -114,7 +114,7 @@ String.prototype.repeat = function(length) {
 
 //less.watch();
 var Utils = {
-    apply : function(obj, vals) {
+    apply   : function(obj, vals) {
         for (var key in vals) {
             obj[key] = vals[key];
         }
@@ -132,7 +132,7 @@ var Utils = {
         function(value) {
             return Object.prototype.toString.call(value) === '[object Array]';
         },
-    each : function(array, fn, scope) {
+    each    : function(array, fn, scope) {
 
         if (Utils.isArray(array)) {
 
@@ -152,7 +152,7 @@ var Utils = {
             fn.call(scope || object[key], object[key], key);
         }
     },
-    pluck : function(array, property) {
+    pluck   : function(array, property) {
 
         var plucked = [];
         Utils.each(array, function(item) {
@@ -161,4 +161,39 @@ var Utils = {
         });
         return plucked;
     }
+};
+
+
+$.fn.padding = function() {
+
+    var directions = ['top',
+                      'right',
+                      'bottom',
+                      'left'],
+        i,
+        direction,
+        dirPadding,
+        regex = /(\d+)(em)?/,
+        match,
+        unit,
+        value,
+        result = {};
+
+    for (i = 0; i < directions.length; ++i) {
+        direction = directions[i];
+
+        dirPadding = this.css('padding-' + direction);
+        match = dirPadding.match(regex);
+
+        value = match[1];
+        unit = match[2];
+
+        if (unit === 'em') {
+            value = ConvertEmToPx(value);
+        }
+
+        result[direction] = value;
+    }
+
+    return result;
 };

@@ -36,7 +36,9 @@
             "/js/directives/stDash.js",
             "/js/directives/stWidgetRow.js",
             "/js/directives/stWidgetColumn.js",
-            "/js/directives/stWidget.js"
+            "/js/directives/stWidget.js",
+            "/js/directives/stAccount.js",
+            "/js/directives/stAutoSize.js"
         ],
         "css" : [
             {"rel"  : "stylesheet/less", "href" : "/css/less/app.less"}

@@ -54,8 +54,8 @@
   }
 
   ul {
-    overflow-y: auto;
-    max-height: 500px;
+    position   : relative;
+    overflow-y : auto;
     list-style : none;
     padding    : 0;
     margin     : 0;
@@ -65,8 +65,10 @@
   }
 }
 
-.st-account-row {
+.st-account {
 
+  position   : relative;
+  min-height : 40px;
   padding    : 10px;
   border-top : 1px solid @st-bg-light;
   color      : @st-bg-text-strong;
@@ -77,16 +79,25 @@
   }
 
   .buttons {
+    .transition(opacity 0.3s ease-out);
     button {
-      color : @st-bg-text;
+      width      : 30px;
+      color      : @st-bg-text;
+      text-align : center;
       &:hover {
         color : @st-bg-text-strong;
       }
     }
   }
 
-  .body {
-
+  &.is-expanded {
+    & .st-account-row {
+      opacity    : 0;
+      max-height : 0;
+    }
+    & .st-account-body {
+      opacity : 1;
+    }
   }
 
   &.is-master {
@@ -107,6 +118,79 @@
   }
 }
 
+.st-account-row {
+  overflow   : hidden;
+  max-height : 20px;
+  .transition(opacity 0.3s ease,
+              max-height 0.3s ease;);
+}
+
+.st-account-body {
+
+  position      : relative;
+  overflow      : hidden;
+  max-height    : 0px;
+  width         : 100%;
+  padding-right : 64px;
+  padding-left  : 64px;
+  opacity       : 0;
+  .transition(opacity 0.3s ease,
+              max-height 0.3s ease;);
+
+  .buttons {
+    position : absolute;
+    right    : 0;
+    bottom   : 0;
+  }
+
+  form {
+
+    float : left;
+    width : 100%;
+
+    div {
+
+      & + div {
+        margin-top : 10px;
+      }
+
+      label {
+        float     : left;
+        min-width : 100px;
+        width     : 30%;
+        display   : inline-block;
+      }
+
+      input, select {
+        flaot : left;
+        width : 70%;
+      }
+      input[type="checkbox"] {
+        margin-left : 30%;
+        width       : 13px;
+        & + label {
+          float  : none;
+          margin : 0;
+        }
+      }
+      select {
+        height  : 25px;
+        padding : 2px;
+      }
+
+      div {
+        width : auto;
+
+        input {
+          display : inline-block;
+          width   : 100%;
+        }
+      }
+    }
+  }
+}
+
+/*
 .st-account {
   @bg              : @st-bg-dark;
   .border-radius(8px);
@@ -169,3 +253,4 @@
     }
   }
 }
+*/
