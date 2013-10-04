@@ -11,11 +11,11 @@ Dependencies
 
 After that is completed, you'll need to run:
 
-<init.sh>
+    init.sh
 
 in a shell or:
 
-<init.bat>
+    init.bat
 
 on windows.
 
