@@ -1,6 +1,7 @@
 {
   "name": "stratus-frontend",
   "version": "1.3.4",
+  "directory" : "web/",
   "dependencies": {
     "bootstrap": "git://github.com/twbs/bootstrap.git#~3.0.0",
     "angular": "git://github.com/angular/bower-angular.git#~1.2.0-rc.1",
