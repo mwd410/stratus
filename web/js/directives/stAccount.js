@@ -10,7 +10,7 @@
             SAVE = 4;
 
         return {
-            controller : function($scope) {
+            controller : function($scope, Provider) {
 
                 var state = CLOSED;
                 $scope.edit = function() {
@@ -35,16 +35,28 @@
                 $scope.cancel = function() {
 
                     state = CLOSED;
+
+                    ng.copy($scope.originalAccount, $scope.account);
+                    ng.copy($scope.originalMaster, $scope.master);
                 };
 
                 $scope.submit = function() {
 
                     state = SAVE;
                 };
+
+                $scope.setMaster = function(isMaster) {
+
+                    if (isMaster) {
+                        $scope.master.account_id = $scope.account.id;
+                    } else {
+                        $scope.master.account_id = null;
+                    }
+                };
             },
             scope : {
                 account : '=stAccount',
-                master  : '@'
+                master  : '='
             },
             templateUrl : '/js/directives/tpl/stAccount.html',
             replace : true,
@@ -78,6 +90,9 @@
                         ul.css('padding-bottom', '0');
                     }
                 };
+
+                scope.originalMaster = ng.copy(scope.master);
+                scope.originalAccount = ng.copy(scope.account);
 
                 scope.$watch('isModifying()', readjustSize);
 

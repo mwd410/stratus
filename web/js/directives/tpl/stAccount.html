@@ -1,5 +1,5 @@
 <li class="st-account"
-    data-ng-class="{'is-expanded' : isModifying(), 'is-master' : masterAccount.account_id == account.id}">
+    data-ng-class="{'is-expanded' : isModifying(), 'is-master' : master.account_id == account.id}">
 
     <div class="st-account-row">
 
@@ -98,19 +98,19 @@
                 <input id=master{{$index}}
                        name="is_master"
                        data-ng-model="isMaster"
-                       data-ng-checked="masterAccount.account_id == account.id"
+                       data-ng-checked="master.account_id == account.id"
                        data-ng-click="setMaster(isMaster)"
                        type="checkbox">
 
                 <label for="master{{$index}}">Master Account</label>
             </div>
 
-            <div>
+            <div data-ng-show="master.account_id == account.id">
                 <label for="billing_bucket{{$index}}">Billing Bucket</label>
 
                 <input id="billing_bucket{{$index}}"
                        name="billing_bucket"
-                       data-ng-model="masterAccount.billing_bucket"
+                       data-ng-model="master.billing_bucket"
                        type="text">
             </div>
         </form>
