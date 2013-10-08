@@ -27,7 +27,8 @@
             "/account/delete"    : "Account.delete",
             "/analysis/overview" : "Analysis.overview",
             "/dashboard"         : "Dashboard.index",
-            "/providers"         : "Provider.index"
+            "/providers"         : "Provider.index",
+            "/breakdown/menu"    : "Breakdown.menu"
         }
     }
 }

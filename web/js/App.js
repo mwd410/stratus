@@ -1,7 +1,8 @@
 'use strict';
 var app = angular.module('App', [
         'ngAnimate',
-        'ui.router'
+        'ui.router',
+        'app.breakdown'
     ])
     .config(function($stateProvider, $urlRouterProvider) {
 
@@ -48,7 +49,7 @@ var app = angular.module('App', [
     });
 
 
-app.controller('LeftNavController', function($scope, NavService) {
+app.controller('LeftNavController', function($scope, NavService, BreakdownMenuService) {
 
     $scope.menu = NavService;
 });
