@@ -18,6 +18,9 @@ class Account {
         'deleted'
     );
 
+    const EXTERNAL_ID = 'account_id';
+    const NAME = 'account_name';
+
     /**
      * @return string
      */
@@ -35,13 +38,17 @@ class Account {
         $keyString = self::getKeyString();
 
         return Query::create(Query::SELECT)
-               ->column('account_id as id')
+               ->column('id')
+               ->column(self::EXTERNAL_ID)
                ->column("AES_DECRYPT(account_name,'$keyString') as name")
                ->column("AES_DECRYPT(aws_key,'$keyString') as aws_key")
                ->column("AES_DECRYPT(secret_key,'$keyString') as secret_key")
                ->from('account');
     }
 
+    /**
+     * @return Select
+     */
     public static function getSelectAll() {
         return self::getBasicSelect()
                ->column('deleted')
@@ -56,7 +63,7 @@ class Account {
     public static function find($id) {
 
         return self::getSelectAll()
-               ->where('account_id = ?', $id);
+               ->where(self::EXTERNAL_ID . ' = ?', $id);
     }
 
     /**
@@ -75,10 +82,7 @@ class Account {
             $name = $key;
             if ($name == 'name') {
                 $name = 'account_name';
-            } else if ($name == 'id') {
-                $name = 'account_id';
             }
-
 
             switch ($name) {
                 case 'aws_key':
@@ -87,7 +91,7 @@ class Account {
                     $q->set("$name = AES_ENCRYPT(?, '$keyString')", $value);
                     break;
                 case 'customer_id':
-                case 'account_id':
+                case self::EXTERNAL_ID:
                     $q->where("$name = ?", $value);
                     break;
                 default:
@@ -115,21 +119,15 @@ class Account {
         foreach($data as $key => &$value) {
 
             $name = $key;
-            if ($name == 'name') {
-                $name = 'account_name';
-            } else if ($name == 'id') {
-                $name = 'account_id';
-            }
-
 
             switch ($name) {
                 case 'aws_key':
                 case 'secret_key':
-                case 'account_name':
+                case self::NAME:
                     $values[] = "AES_ENCRYPT(?, '$keyString')";
                     break;
                 case 'customer_id':
-                case 'account_id':
+                case self::EXTERNAL_ID:
                 case 'deleted':
                     $values[] = '?';
                     break;
@@ -166,7 +164,7 @@ class Account {
 
         $db = Database::getInstance();
 
-        if ($master['account_id'] == '0') {
+        if ($master[self::EXTERNAL_ID] == '0') {
             $sql = "
                         delete from master_account
                         where customer_id = ?";
@@ -174,10 +172,10 @@ class Account {
         } else {
             $sql = "
             replace into master_account
-            (account_id, customer_id, billing_bucket)
+            (".self::EXTERNAL_ID.", customer_id, billing_bucket)
             values (?, ?, ?)";
             $params = array(
-                $master['account_id'],
+                $master[self::EXTERNAL_ID],
                 $customerId,
                 $master['billing_bucket']
             );
@@ -191,11 +189,11 @@ class Account {
         Query::create(Query::UPDATE)
             ->from('account')
             ->set('deleted = 1')
-            ->where('account_id = ?', $id)
+            ->where(self::EXTERNAL_ID.' = ?', $id)
             ->where('customer_id = ?', $customerId)
             ->execute();
 
-        $sql = 'delete from master_account where account_id = ? and customer_id = ?';
+        $sql = 'delete from master_account where '.self::EXTERNAL_ID.' = ? and customer_id = ?';
 
         $params = array($id, $customerId);
         Database::getInstance()->execute($sql, $params);

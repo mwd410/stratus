@@ -65,7 +65,7 @@ class DefaultController extends Controller {
                 );
 
                 $createUser = Query::create(Query::INSERT)
-                    ->from('users');
+                    ->from('user');
                 $values = array();
                 foreach($user as $column => $value) {
                     $createUser->column($column);
@@ -97,7 +97,7 @@ class DefaultController extends Controller {
 
         $existing = Query::create(Query::SELECT)
             ->column('*')
-            ->from('users')
+            ->from('user')
             ->where('email_address like ?', $email)
             ->execute();
 

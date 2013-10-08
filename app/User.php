@@ -9,7 +9,7 @@ class User {
 
         $db = Database::getInstance();
 
-        $sql = 'select * from users where email_address = ? and password = ? and deleted = 0';
+        $sql = 'select * from user where email_address = ? and password = ? and deleted = 0';
         $params = array(
             $email,
             sha1($password));
@@ -53,7 +53,7 @@ class User {
 
     public function setup($sqlUser) {
 
-        $this->set('id', $sqlUser['user_id']);
+        $this->set('id', $sqlUser['id']);
         $this->set('username', $sqlUser['user_name']);
         $this->set('email', $sqlUser['email_address']);
         $this->set('customer_id', $sqlUser['customer_id']);

@@ -122,6 +122,11 @@ CREATE TABLE IF NOT EXISTS `widget_default_attribute` (
 )
     ENGINE =InnoDB;
 
+ALTER TABLE account
+CHANGE account_name name VARCHAR(40) NOT NULL,
+CHANGE account_id external_id VARCHAR(255) NOT NULL,
+ADD UNIQUE KEY (customer_id, name);
+
 ########################################################
 ##################### DATA INSERTS #####################
 ########################################################

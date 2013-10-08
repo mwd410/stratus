@@ -3,21 +3,12 @@
 
     ng.module('App')
         .controller('AccountManagementController', [
-            '$scope', '$http',
-            function($scope, $http) {
+            '$scope', '$http', 'AccountService',
+            function($scope, $http, AccountService) {
 
-                $scope.accounts = [];
+                $scope.accounts = AccountService.all;
 
                 $scope.newAccountId = '';
-
-                $http.get('/getAccounts').success(function(response) {
-
-                    $scope.accounts = response.accounts;
-
-                    $scope.masterAccount = response.masterAccount;
-
-                    $scope.commitMaster();
-                });
 
                 $scope.commitMaster = function() {
 

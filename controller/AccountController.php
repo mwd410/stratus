@@ -19,6 +19,8 @@ class AccountController extends Controller {
         $customerId = $this->getUser()->get('customer_id');
 
         $accounts = Account::getBasicSelect()
+            //->column('sp.name as service_provider_name')
+            //->join('service_provider sp on sp.id = service_provider_id')
             ->where("customer_id = ?", $customerId)
             ->where('deleted = 0')
             ->execute();

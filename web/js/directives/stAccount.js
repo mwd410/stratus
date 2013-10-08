@@ -10,7 +10,7 @@
             SAVE = 4;
 
         return {
-            controller : function($scope, Provider) {
+            controller : function($scope) {
 
                 var state = CLOSED;
                 $scope.edit = function() {
