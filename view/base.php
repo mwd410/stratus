@@ -10,7 +10,7 @@ $tbl_users = "users";
 $tbl_account = "account";
 ?>
 <!DOCTYPE html>
-<html lang="en" data-ng-app="App">
+<html lang="en" data-ng-app="app">
 <head>
     <title>Stratus</title>
 

@@ -12,5 +12,12 @@ class BreakdownController extends Controller {
     public function menuAction(Request $request) {
 
         $type = $request->getParam('type');
+
+        $menu = Query::create(Query::SELECT)
+            ->column('*')
+            ->from('service_type_menu_v')
+            ->execute();
+
+        $this->json($menu);
     }
 }
