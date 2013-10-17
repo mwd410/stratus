@@ -5,7 +5,7 @@ require_once('../app/init.php');
 
 $domain = $_SERVER['SERVER_NAME'];
 
-if ($domain == 'webapp.stratus-cloudservices.com') {
+if (stripos($domain, 'stratus-cloudservices.com') !== false) {
     $env = 'prod';
 } else {
     $env = 'dev';
