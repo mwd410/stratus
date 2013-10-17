@@ -195,14 +195,21 @@
         border-top : 1px solid @st-bg-light;
         .box-shadow(0 -1px 1px rgba(0, 0, 0, 0.3) inset;);
       }
-      & > a {
+      & > a,
+      & > button {
+        background : none;
+        border     : none;
+        outline    : none;
+        text-align : left;
+        width      : 100%;
         display    : block;
         padding    : 10px;
         color      : @st-bg-text;
-        &.active, &:hover {
-          text-decoration : none;
-          color           : @st-bg-text-strong;
-        }
+      }
+
+      &.is-active > button, & > button:hover {
+        text-decoration : none;
+        color           : @st-bg-text-strong;
       }
     }
   }
@@ -210,7 +217,12 @@
     &> ul {
       list-style : none;
       padding    : 0;
-      & > li > a {
+      & > li > a,
+      & > li > button {
+        background   : none;
+        border       : none;
+        text-align   : left;
+        outline      : none;
         display      : block;
         padding      : 7px;
         padding-left : 20px;
@@ -221,12 +233,21 @@
       }
       max-height : 0px;
     }
-    &.active > ul {
-      max-height : 300px;
+    &.is-active {
+      & > ul {
+        max-height : 300px;
+      }
+      & > button,
+      & > a {
+        text-decoration : none;
+        color           : @st-bg-text-strong;
+      }
     }
   }
-  a:hover {
+  a:hover,
+  button:hover {
     text-decoration : none;
+    color : @st-bg-text-strong;
   }
 }
 

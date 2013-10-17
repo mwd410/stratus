@@ -71,11 +71,39 @@
 angular.module('app').controller('LeftNavController', function($scope, NavService, BreakdownMenuService) {
 
     $scope.menu = NavService;
+    $scope.menus = [
+        {
+            title : 'Breakdown By',
+            items : [
+                {
+                    name : 'Service Provider',
+                    type : 'provider'
+                },
+                {
+                    name : 'Service Type',
+                    type : 'type'
+                }
+            ]
+        }
+    ];
 
-    BreakdownMenuService.getAll().success(function(result) {
+    function setType(type, title) {
 
-        $scope.leftMenuItems = result;
-    });
+        BreakdownMenuService.getAll(type).then(function(result) {
+
+            $scope.menus[1] = {
+                title : title,
+                items : result
+            };
+        });
+    }
+
+    $scope.itemClick = function(item) {
+
+        if (item.type) {
+            setType(item.type, item.name);
+        }
+    };
 });
 
 angular.module('app').controller('MenuController', function($scope, NavService) {

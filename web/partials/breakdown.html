@@ -1,38 +1,39 @@
-<div data-ng-controller="LeftNavController"
+<!--<div data-ng-controller="LeftNavController"
      class="st-left-nav"
+     data-st-left-nav="navConfig"
      data-ng-class="{'is-expanded' : menu.expandedMenu == 'left'}">
+
     <ul>
         <li class="st-nav-title">Breakdown By</li>
         <li>
-            <a href="#" class="active">Service Provider</a>
+            <a href="#" class="active" data-ng-click="setType('provider')">Service Provider</a>
         </li>
         <li>
-            <a href="#">Service Type</a>
+            <a href="#" data-ng-click="">Service Type</a>
         </li>
     </ul>
     <ul>
         <li class="st-nav-title">Providers</li>
+
         <li>
             <a href="#">All</a>
         </li>
-        <li class="active">
-            <a href="#" class="active">Amazon</a>
-            <ul>
-                <li>
-                    <a href="#">S3</a>
-                </li>
-                <li>
-                    <a href="#">EC Instances</a>
-                </li>
-                <li>
-                    <a href="#">EC2 Volumes</a>
+
+        <li data-ng-repeat="item in leftMenuItems">
+            <a href="#">{{item.name}}</a>
+            <ul ng-if="item.subItems.length > 0">
+                <li data-ng-repeat="subItem in item.subItems">
+                    <a href="#">{{subItem.name}}</a>
                 </li>
             </ul>
         </li>
-        <li>
-            <a href="#">Google</a>
-        </li>
     </ul>
+</div>-->
+
+<div data-ng-controller="LeftNavController">
+
+    <div data-st-left-nav="menus"
+         data-on-item-click="itemClick(item)"></div>
 </div>
 
 <div class="st-right-side">

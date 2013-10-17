@@ -1,0 +1,24 @@
+<div class="st-left-nav">
+
+    <ul data-ng-repeat="menu in menus">
+
+        <li class="st-nav-title"
+            data-ng-if="menu.title">{{menu.title}}</li>
+
+        <li data-ng-repeat="item in menu.items"
+            data-ng-class="{'is-active' : activeItem === item}">
+
+            <button data-ng-click="itemClick(item)">{{item.name}}</button>
+
+            <ul data-ng-if="item.subItems.length > 0">
+
+                <li data-ng-repeat="subItem in item.subItems"
+                    data-ng-class="{'is-active' : activeSubItem === subItem}">
+
+                    <button data-ng-click="subItemClick(subItem)">{{subItem.name}}</button>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+</div>
