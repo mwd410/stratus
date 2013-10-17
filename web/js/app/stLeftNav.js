@@ -27,9 +27,11 @@
             templateUrl : '/js/app/stLeftNav.html',
             replace     : true,
             scope       : {
-                onItemClick : '&',
-                onSubItemClick  : '&',
-                menus       : '=stLeftNav'
+                onItemClick    : '&',
+                onSubItemClick : '&',
+                menus          : '=stLeftNav',
+                activeItem     : '=?',
+                activeSubItem  : '=?'
             },
             link        : function(scope, el, attrs, ctrl) {
 

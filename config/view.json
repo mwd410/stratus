@@ -24,6 +24,7 @@
     "dev" : {
         "js" : [
             "/js/app/App.js",
+            "/js/app/LeftNavController.js",
             "/js/app/RegisterController.js",
             "/js/app/stAutoSize.js",
             "/js/app/stLeftNav.js",

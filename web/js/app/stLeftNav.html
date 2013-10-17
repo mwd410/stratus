@@ -1,9 +1,10 @@
 <div class="st-left-nav">
 
-    <ul data-ng-repeat="menu in menus">
+    <ul data-ng-repeat="menu in menus"
+        data-ng-show="menu.items.length > 0">
 
         <li class="st-nav-title"
-            data-ng-if="menu.title">{{menu.title}}</li>
+            data-ng-if="menu.name">{{menu.name}}</li>
 
         <li data-ng-repeat="item in menu.items"
             data-ng-class="{'is-active' : activeItem === item}">

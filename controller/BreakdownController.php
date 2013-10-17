@@ -22,8 +22,11 @@ class BreakdownController extends Controller {
                         ));
         }
 
+        $customerId = $this->getUser()->get('customer_id');
+
         $menuQuery = Query::create(Query::SELECT)
-                     ->from($menuInfo['view']);
+                     ->from($menuInfo['view'])
+                     ->where('customer_id = ?', $customerId);
 
         foreach ($menuInfo['columns'] as $column => $alias) {
 

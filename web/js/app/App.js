@@ -67,45 +67,6 @@
 
 })(window.angular);
 
-
-angular.module('app').controller('LeftNavController', function($scope, NavService, BreakdownMenuService) {
-
-    $scope.menu = NavService;
-    $scope.menus = [
-        {
-            title : 'Breakdown By',
-            items : [
-                {
-                    name : 'Service Provider',
-                    type : 'provider'
-                },
-                {
-                    name : 'Service Type',
-                    type : 'type'
-                }
-            ]
-        }
-    ];
-
-    function setType(type, title) {
-
-        BreakdownMenuService.getAll(type).then(function(result) {
-
-            $scope.menus[1] = {
-                title : title,
-                items : result
-            };
-        });
-    }
-
-    $scope.itemClick = function(item) {
-
-        if (item.type) {
-            setType(item.type, item.name);
-        }
-    };
-});
-
 angular.module('app').controller('MenuController', function($scope, NavService) {
 
     $scope.menu = NavService;
