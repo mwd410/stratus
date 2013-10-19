@@ -1,39 +1,8 @@
-<!--<div data-ng-controller="LeftNavController"
-     class="st-left-nav"
-     data-st-left-nav="navConfig"
-     data-ng-class="{'is-expanded' : menu.expandedMenu == 'left'}">
-
-    <ul>
-        <li class="st-nav-title">Breakdown By</li>
-        <li>
-            <a href="#" class="active" data-ng-click="setType('provider')">Service Provider</a>
-        </li>
-        <li>
-            <a href="#" data-ng-click="">Service Type</a>
-        </li>
-    </ul>
-    <ul>
-        <li class="st-nav-title">Providers</li>
-
-        <li>
-            <a href="#">All</a>
-        </li>
-
-        <li data-ng-repeat="item in leftMenuItems">
-            <a href="#">{{item.name}}</a>
-            <ul ng-if="item.subItems.length > 0">
-                <li data-ng-repeat="subItem in item.subItems">
-                    <a href="#">{{subItem.name}}</a>
-                </li>
-            </ul>
-        </li>
-    </ul>
-</div>-->
-
 <div data-ng-controller="LeftNavController">
 
-    <div data-st-left-nav="menus"
-         data-on-item-click="itemClick(item)"></div>
+    <div data-st-left-nav="breakdown.menus"
+         data-on-item-click="onMenuItemClick(item)"
+         data-is-item-active="isItemActive(item)"></div>
 </div>
 
 <div class="st-right-side">
@@ -61,7 +30,8 @@
 
 <div data-ng-controller="DashboardController" class="st-dash-wrapper">
     <div data-st-dash="dashboard"
-         class="st-dash">
+         class="st-dash"
+         data-ng-class="{'is-left-expanded' : isLeftExpanded()}">
 
         <div> <!-- Wrapper Div for recessed area. -->
 

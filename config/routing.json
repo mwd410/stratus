@@ -28,7 +28,7 @@
             "/analysis/overview" : "Analysis.overview",
             "/dashboard"         : "Dashboard.index",
             "/providers"         : "Provider.index",
-            "/breakdown/menu"    : "Breakdown.menu"
+            "/breakdown/update"  : "Breakdown.update"
         }
     }
 }

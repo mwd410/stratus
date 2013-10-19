@@ -11,37 +11,40 @@
                         params : {type : type}
                     }).then(function(response) {
 
-                        var data = response.data,
-                            result = [],
-                            items = {},
-                            subItems = {};
+                            var data = response.data,
+                                result = [],
+                                items = {},
+                                subItems = {};
 
-                        Utils.each(data, function(datum) {
+                            Utils.each(data, function(datum) {
 
-                            var item;
+                                var item;
 
-                            if (!items.hasOwnProperty(datum.id)) {
+                                if (!items.hasOwnProperty(datum.id)) {
 
-                                item = {
-                                    id : datum.id,
-                                    name : datum.name,
-                                    subItems : []
-                                };
+                                    item = {
+                                        id       : datum.id,
+                                        name     : datum.name,
+                                        type     : type,
+                                        subItems : []
+                                    };
 
-                                items[datum.id] = item;
-                                subItems[datum.id] = item.subItems;
+                                    items[datum.id] = item;
+                                    subItems[datum.id] = item.subItems;
 
-                                result.push(item);
-                            }
+                                    result.push(item);
+                                }
 
-                            subItems[datum.id].push({
-                                id : datum.sub_id,
-                                name : datum.sub_name
+                                subItems[datum.id].push({
+                                    id     : datum.id,
+                                    sub_id : datum.sub_id,
+                                    name   : datum.sub_name,
+                                    type   : type
+                                });
                             });
-                        });
 
-                        return result;
-                    });
+                            return result;
+                        });
                 }
             };
         });

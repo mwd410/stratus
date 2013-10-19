@@ -1,0 +1,8 @@
+<ul>
+    <li data-ng-repeat="item in menuItems"
+        data-ng-class="{'is-active': isActive(item)}">
+
+        <a data-ui-sref="{{item.state}}"
+           data-ng-click="menu.expandMenu(null)">{{item.name}}</a>
+    </li>
+</ul>

@@ -1,10 +1,10 @@
 (function(ng) {
     'use strict';
 
-    ng.module('app.nav').service('NavService', function() {
+    ng.module('app.nav').service('NavService', function($state) {
 
         var menus = {
-            app : [
+            app    : [
                 {
                     state : 'app.overview',
                     name  : 'Overview'
@@ -29,22 +29,83 @@
                     state : 'app.savings',
                     name  : 'Savings'
                 }
+            ],
+            config : [
+                {
+                    name    : 'Profile',
+                    iconCls : 'icon-cog',
+                    state   : 'app.profile'
+                },
+                {
+                    name    : 'Providers',
+                    state   : 'app.providers',
+                    iconCls : 'icon-list-ul'
+                },
+                {
+                    name    : 'Logout',
+                    iconCls : 'icon-signout',
+                    href    : '/logout'
+                }
             ]
         };
 
-        return {
-            expandedMenu : null,
-            expandMenu   : function(menu) {
+        var expandedMenu = null,
+            availableMenus = {
 
-                if (this.expandedMenu === menu) {
-                    this.expandedMenu = null;
+            };
+
+        return {
+            registerMenu   : function(menu) {
+
+                if (availableMenus[menu]) {
+                    throw new Error("You've registered the same menu twice: " + menu);
+                }
+
+                availableMenus[menu] = true;
+            },
+            isAvailable    : function(menu) {
+
+                return !!availableMenus[menu];
+            },
+            isExpanded     : function(menu) {
+
+                return expandedMenu === menu;
+            },
+            expandMenu     : function(menu) {
+
+                if (expandedMenu === menu) {
+                    expandedMenu = null;
                 } else {
-                    this.expandedMenu = menu;
+                    expandedMenu = menu;
                 }
             },
-            getMenuItems : function() {
+            getMenuItems   : function() {
 
-                return menus.app;
+                var items;
+
+                if ($state.current.name.slice(0, 3) === 'app') {
+                    items = menus.app;
+                }
+
+                availableMenus.main = items && items.length > 0;
+
+                return items;
+            },
+            getConfigItems : function($scope) {
+
+                var items;
+
+                if ($state.current.name.slice(0, 3) === 'app') {
+                    items = menus.config;
+                }
+
+                availableMenus.config = items && items.length > 0;
+
+                return items;
+            },
+            isActive       : function(item) {
+
+                return $state.current.name === item.state;
             }
         };
     });

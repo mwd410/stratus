@@ -4,37 +4,37 @@
     ng.module('app').directive('stLeftNav', function() {
 
         return {
-            controller  : function($scope) {
+            controller  : function($scope, NavService) {
 
-                $scope.activeItem = null;
-                $scope.activeSubItem = null;
+                NavService.registerMenu('left');
 
-                $scope.itemClick = function(item) {
+                $scope.isExpanded = function() {
 
-                    $scope.activeItem = item;
-                    $scope.activeSubItem = null;
-
-                    $scope.onItemClick({item : item});
-                };
-
-                $scope.subItemClick = function(subItem) {
-
-                    $scope.activeSubItem = subItem;
-
-                    $scope.onSubItemClick({subItem : subItem});
+                    return NavService.isExpanded('left');
                 };
             },
             templateUrl : '/js/app/stLeftNav.html',
             replace     : true,
             scope       : {
-                onItemClick    : '&',
-                onSubItemClick : '&',
-                menus          : '=stLeftNav',
-                activeItem     : '=?',
-                activeSubItem  : '=?'
+                menus           : '=stLeftNav',
+                onItemClick     : '&',
+                onSubItemClick  : '&',
+                isItemActive    : '&',
+                isSubItemActive : '&'
             },
-            link        : function(scope, el, attrs, ctrl) {
+            link : function(scope, el, attrs) {
 
+                if (!attrs.isSubItemActive) {
+                    scope.isSubItemActive = function(o) {
+                        return scope.isItemActive({item : o.subItem});
+                    };
+                }
+
+                if (!attrs.onSubItemClick) {
+                    scope.onSubItemClick = function(o) {
+                        scope.onItemClick({item : o.subItem});
+                    };
+                }
             }
         };
     });

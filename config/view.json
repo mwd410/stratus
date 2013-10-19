@@ -33,6 +33,7 @@
             "/js/app/account/AccountController.js",
             "/js/app/account/AccountService.js",
             "/js/app/breakdown/BreakdownMenuService.js",
+            "/js/app/breakdown/BreakdownService.js",
             "/js/app/dashboard/DashboardController.js",
             "/js/app/dashboard/stDash.js",
             "/js/app/dashboard/stWidgetRow.js",

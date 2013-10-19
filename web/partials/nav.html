@@ -4,48 +4,79 @@
 
     <div class="wrapper">
         <div class="st-navbar-header">
-            <button data-ng-click="menu.expandMenu('left')">
+            <!-- Left Menu Button -->
+            <button class="for-left"
+                    data-ng-if="isAvailable('left')"
+                    data-ng-click="expandMenu('left')">
                 <i class="icon-expand"></i>
             </button>
             <a class="st-brand" href="/">
                 <img src="/img/white-logo.png" width="80"/>
             </a>
-            <button data-ng-click="menu.expandMenu('main')">
+            <!-- Main Navigation Button -->
+            <button class="for-main"
+                    data-ng-if="isAvailable('main')"
+                    data-ng-click="expandMenu('main')">
                 <i class="icon-ellipsis-vertical"></i>
             </button>
-            <button class="for-config"
-                    data-ng-click="menu.expandMenu('config')">
+            <!-- Config Menu Button -->
+            <button data-ng-if="isAvailable('config')"
+                    class="for-config"
+                    data-ng-click="expandMenu('config')">
                 <i class="icon-cog"></i>
             </button>
         </div>
 
         <div class="st-right-menu-nav"
-             data-ng-class="{'is-expanded' : menu.expandedMenu == 'main'}">
+             data-ng-class="{'is-expanded' : isExpanded('main')}">
             <nav>
+                <!-- TODO: refactor this into template / directive? -->
                 <ul>
-                    <li data-ng-repeat="item in menuItems"
-                        data-ng-class="{'is-active': item.state == $state.current.name}">
+                    <li data-ng-repeat="item in menu.getMenuItems()"
+                        data-ng-class="{'is-active': isActive(item)}">
 
-                        <a data-ui-sref="{{item.state}}"
-                           data-ng-click="menu.expandMenu(null)">{{item.name}}</a>
+                        <a data-ng-if="item.state"
+                           data-ui-sref="{{item.state}}"
+                           data-ng-click="expandMenu(null)">
+                            <i data-ng-if="item.iconCls"
+                               class="{{item.iconCls}}"></i>
+                            {{item.name}}
+                        </a>
+
+                        <a data-ng-if="item.href"
+                           data-ng-href="{{item.href}}"
+                           data-ng-click="expandMenu(null)">
+                            <i data-ng-if="item.iconCls"
+                               class="{{item.iconCls}}"></i>
+                            {{item.name}}
+                        </a>
                     </li>
                 </ul>
             </nav>
         </div>
 
         <nav class="st-config-menu"
-             data-ng-class="{'is-expanded' : menu.expandedMenu == 'config'}">
+             data-ng-class="{'is-expanded' : isExpanded('config')}">
+
             <ul>
-                <li>
-                    <a data-ui-sref="app.profile"
-                       data-ng-click="menu.expandMenu(null)"><i class="icon-cog"></i> Profile</a>
-                </li>
-                <li>
-                    <a data-ui-sref="app.providers"
-                       data-ng-click="menu.expandMenu(null)"><i class="icon-list-ul"></i> Providers</a>
-                </li>
-                <li>
-                    <a href="/logout"><i class="icon-signout"></i> Logout</a>
+                <li data-ng-repeat="item in menu.getConfigItems()"
+                    data-ng-class="{'is-active': isActive(item)}">
+
+                    <a data-ng-if="item.state"
+                       data-ui-sref="{{item.state}}"
+                       data-ng-click="expandMenu(null)">
+                        <i data-ng-if="item.iconCls"
+                           class="{{item.iconCls}}"></i>
+                        {{item.name}}
+                    </a>
+
+                    <a data-ng-if="item.href"
+                       data-ng-href="{{item.href}}"
+                       data-ng-click="expandMenu(null)">
+                        <i data-ng-if="item.iconCls"
+                           class="{{item.iconCls}}"></i>
+                        {{item.name}}
+                    </a>
                 </li>
             </ul>
         </nav>

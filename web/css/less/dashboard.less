@@ -21,6 +21,9 @@
     background-color : @st-bg-dark;
     .st-deboss;
   }
+  &.is-left-expanded {
+    left : 220px;
+  }
 }
 
 .st-dash-title {
@@ -176,9 +179,6 @@
   left        : -100%;
   &.is-expanded {
     position : static;
-    & ~ div > .st-dash {
-      left : 220px;
-    }
   }
   & > ul {
     border     : 1px solid @st-bg-light;

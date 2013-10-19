@@ -9,8 +9,12 @@
                 scope       : {
                     dash : '=stDash'
                 },
-                controller  : function() {
+                controller  : function($scope, NavService) {
 
+                    $scope.isLeftExpanded = function() {
+
+                        return NavService.isExpanded('left');
+                    };
                 },
                 link        : function(scope, el, attrs, controller) {
 

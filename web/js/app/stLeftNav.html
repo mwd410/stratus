@@ -1,4 +1,5 @@
-<div class="st-left-nav">
+<div class="st-left-nav"
+     data-ng-class="{'is-expanded' : isExpanded()}">
 
     <ul data-ng-repeat="menu in menus"
         data-ng-show="menu.items.length > 0">
@@ -7,16 +8,18 @@
             data-ng-if="menu.name">{{menu.name}}</li>
 
         <li data-ng-repeat="item in menu.items"
-            data-ng-class="{'is-active' : activeItem === item}">
+            data-ng-class="{'is-active' : isItemActive({item : item})}">
 
-            <button data-ng-click="itemClick(item)">{{item.name}}</button>
+            <button data-ng-click="onItemClick({item : item, menu : menu})">{{item.name}}</button>
 
             <ul data-ng-if="item.subItems.length > 0">
 
                 <li data-ng-repeat="subItem in item.subItems"
-                    data-ng-class="{'is-active' : activeSubItem === subItem}">
+                    data-ng-class="{'is-active' : isSubItemActive({subItem : subItem})}">
 
-                    <button data-ng-click="subItemClick(subItem)">{{subItem.name}}</button>
+                    <button data-ng-click="onSubItemClick({subItem : subItem, item : item, menu : menu})">
+                        {{subItem.name}}
+                    </button>
                 </li>
             </ul>
         </li>

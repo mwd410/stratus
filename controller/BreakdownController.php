@@ -9,33 +9,107 @@
 
 class BreakdownController extends Controller {
 
-    public function menuAction(Request $request) {
+    public function updateAction(Request $request) {
+
+        $result = array();
+
+        $result['menu'] = $this->getMenu($request);
+
+        //$request['analysis'] = $this->getAnalysis($request);
+
+        $this->json($result);
+    }
+
+    private function getMenu(Request $request) {
+
+        $names = array(
+            'provider' => 'Service Provider',
+            'type'     => 'Service Type'
+        );
+
+        $items = array();
+
+        foreach ($names as $type => $name) {
+            $items[] = array(
+                'name' => $name,
+                'type' => $type
+            );
+        }
+
+        $result = array(
+            array(
+                'name'  => 'Breakdown By',
+                'items' => $items
+            )
+        );
 
         $type = $request->getParam('type');
 
-        $menuInfo = $this->getMenuInfo($type);
+        if ($type && isset($names[$type])) {
 
-        if (empty($menuInfo)) {
-            $this->json(array(
-                             'success' => false,
-                             'message' => ''
-                        ));
+            $menuInfo = $this->getMenuInfo($type);
+
+            $customerId = $this
+                ->getUser()
+                ->get('customer_id');
+
+            $menuQuery = Query::create(Query::SELECT)
+                ->column('? as type', $type)
+                ->from($menuInfo['view'])
+                ->where('customer_id = ?', $customerId);
+
+            foreach ($menuInfo['columns'] as $column => $alias) {
+
+                $menuQuery->column("$column as $alias");
+            }
+
+            $menuItems = $menuQuery->execute();
+
+            $result[] = array(
+                'name'  => $names[$type],
+                'items' => $this->flatMenuToTree($menuItems)
+            );
         }
 
-        $customerId = $this->getUser()->get('customer_id');
+        return $result;
+    }
 
-        $menuQuery = Query::create(Query::SELECT)
-                     ->from($menuInfo['view'])
-                     ->where('customer_id = ?', $customerId);
+    private function flatMenuToTree($menuItems) {
 
-        foreach ($menuInfo['columns'] as $column => $alias) {
+        $items = array();
+        $type = null;
 
-            $menuQuery->column("$column as $alias");
+        foreach ($menuItems as $item) {
+
+            $id = $item['id'];
+
+            if (!isset($items[$id])) {
+                $items[$id] = array(
+                    'id'   => $id,
+                    'name' => $item['name'],
+                    'type' => $item['type']
+                );
+            }
+
+            if (!$type) {
+                $type = $item['type'];
+            }
+
+            $item['name'] = $item['sub_name'];
+            unset($item['sub_name']);
+
+            $items[$id]['subItems'][] = $item;
         }
 
-        $menu = $menuQuery->execute();
+        $items = array_values($items);
 
-        $this->json($menu);
+        array_unshift($items, array(
+            'type' => $type,
+            'name' => 'All',
+            'id'   => null
+        ));
+
+        return $items;
     }
 
     private function getMenuInfo($type) {
@@ -62,5 +136,18 @@ class BreakdownController extends Controller {
         }
 
         return $result;
+    }
+
+    public function getAnalysis(Request $request) {
+
+        $type = $request->getParam('type');
+        $id = $request->getParam('id');
+        $subId = $request->getParam('subId');
+
+
+        if ($type === 'provider') {
+
+        }
+
     }
 }

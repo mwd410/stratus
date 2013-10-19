@@ -11,55 +11,7 @@ beginPartial('menu');
 
 ?>
 
-    <header data-ng-controller="MenuController"
-            class="st-navbar"
-            role="banner">
-        <div class="wrapper">
-            <div class="st-navbar-header">
-                <button data-ng-click="menu.expandMenu('left')">
-                    <i class="icon-expand"></i>
-                </button>
-                <a class="st-brand" href="/">
-                    <img src="/img/white-logo.png" width="80"/>
-                </a>
-                <button data-ng-click="menu.expandMenu('main')">
-                    <i class="icon-ellipsis-vertical"></i>
-                </button>
-                <button class="for-config"
-                        data-ng-click="menu.expandMenu('config')">
-                    <i class="icon-cog"></i>
-                </button>
-            </div>
-
-            <div class="st-right-menu-nav"
-                 data-ng-class="{'is-expanded' : menu.expandedMenu == 'main'}">
-                <nav>
-                    <ul>
-                        <li data-ng-repeat="option in menuOptions"
-                            ng-class="{'is-active': option.url==currentPath}">
-
-                            <a href="{{option.url}}">{{option.name}}</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-
-            <nav class="st-config-menu"
-                 data-ng-class="{'is-expanded' : menu.expandedMenu == 'config'}">
-                <ul>
-                    <li>
-                        <a href="#">Profile</a>
-                    </li>
-                    <li>
-                        <a href="#">Providers</a>
-                    </li>
-                    <li>
-                        <a href="#">Logout</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <div data-ng-include="'/partials/nav.html'"></div>
 <?php
 endPartial();
 

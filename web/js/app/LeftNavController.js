@@ -2,44 +2,38 @@
     'use strict';
 
     ng.module('app').controller('LeftNavController',
-        function($scope, NavService, BreakdownMenuService) {
+        function($scope, NavService, breakdown) {
 
-            $scope.menu = NavService;
+            $scope.breakdown = breakdown;
 
-            $scope.menus = [
-                {
-                    name  : 'Breakdown By',
-                    items : [
-                        {
-                            name : 'Service Provider',
-                            type : 'provider'
-                        },
-                        {
-                            name : 'Service Type',
-                            type : 'type'
-                        }
-                    ]
+            var last = null;
+
+            $scope.onMenuItemClick = function(item) {
+
+                last = item;
+
+                breakdown.update(item);
+            };
+
+            $scope.isItemActive = function(item) {
+
+                if (!last) {
+                    return false;
                 }
-            ];
 
-            function setType(item) {
-
-                BreakdownMenuService.getAll(item.type).then(function(result) {
-
-                    $scope.menus[1] = {
-                        name  : item.name,
-                        items : result
-                    };
-                });
-            }
-
-            setType($scope.menus[0].items[0]);
-
-            $scope.itemClick = function(item) {
-
-                if (item.type) {
-                    setType(item);
+                if (item.type !== last.type) {
+                    return false;
                 }
+
+                if (item.hasOwnProperty('id') && item.id !== last.id) {
+                    return false;
+                }
+
+                if (item.hasOwnProperty('sub_id') && item.sub_id != last.sub_id) {
+                    return false;
+                }
+
+                return true;
             };
         });
 
