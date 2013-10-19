@@ -23,8 +23,6 @@
                 update : function(item) {
 
                     var params = {
-                        // so we can get it later without a closure
-                        name   : item.name,
                         // 'provider' or 'type'
                         type   : item.type,
                         id     : item.id || null,

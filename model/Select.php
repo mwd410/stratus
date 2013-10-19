@@ -7,9 +7,11 @@ class Select extends Query {
         $result = parent::execute($params);
 
         if (!$result) {
-            throw new Exception(implode(': ', $this
-                                              ->getStatement()
-                                              ->errorInfo()));
+
+            $errors = $this->getStatement()->errorInfo();
+            $errors[] = $this->getSql();
+
+            throw new Exception(implode(': ', $errors));
         }
 
         return $this

@@ -25,7 +25,7 @@
                     return false;
                 }
 
-                if (item.hasOwnProperty('id') && item.id !== last.id) {
+                if (item.hasOwnProperty('id') && (item.id !== null && item.id !== last.id)) {
                     return false;
                 }
 

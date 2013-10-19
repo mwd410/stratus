@@ -19,6 +19,12 @@ abstract class Query {
     private $stmt;
     protected $isDistinct;
 
+    /**
+     * @param $type
+     *
+     * @return Query
+     * @throws Exception
+     */
     public static function create($type) {
 
         switch($type) {
@@ -51,8 +57,8 @@ abstract class Query {
             'join'   => array(),
             'where'  => array(),
             'group'  => array(),
-            //'order'  => array(),
-            //'limit'  => array(),
+            'order'  => array(),
+            'limit'  => array(),
         );
 
         $this->params = $this->parts;
@@ -105,11 +111,20 @@ abstract class Query {
         $this->params[$part] = array_merge($this->params[$part], $params);
     }
 
+    /**
+     * @return $this
+     */
     public function isDistinct() {
         $this->isDistinct = true;
         return $this;
     }
 
+    /**
+     * @param      $column
+     * @param null $params
+     *
+     * @return $this
+     */
     public function column($column, $params = null) {
 
         $this->addPart('column', $column);
@@ -118,6 +133,12 @@ abstract class Query {
         return $this;
     }
 
+    /**
+     * @param      $from
+     * @param null $params
+     *
+     * @return $this
+     */
     public function from($from, $params = null) {
 
         $this->setPart('from', $from);
@@ -126,6 +147,12 @@ abstract class Query {
         return $this;
     }
 
+    /**
+     * @param      $set
+     * @param null $params
+     *
+     * @return $this
+     */
     public function set($set, $params = null) {
 
         $this->addPart('set', $set);
@@ -134,6 +161,12 @@ abstract class Query {
         return $this;
     }
 
+    /**
+     * @param      $data
+     * @param null $params
+     *
+     * @return $this
+     */
     public function insert($data, $params = null) {
 
         $this->setPart('insert', $data);
@@ -142,6 +175,12 @@ abstract class Query {
         return $this;
     }
 
+    /**
+     * @param      $join
+     * @param null $params
+     *
+     * @return $this
+     */
     public function join($join, $params = null) {
 
         $this->addPart('join', 'join ' . $join);
@@ -150,6 +189,12 @@ abstract class Query {
         return $this;
     }
 
+    /**
+     * @param      $join
+     * @param null $params
+     *
+     * @return $this
+     */
     public function leftJoin($join, $params = null) {
 
         $this->addPart('join', 'left join ' . $join);
@@ -158,6 +203,12 @@ abstract class Query {
         return $this;
     }
 
+    /**
+     * @param      $where
+     * @param null $params
+     *
+     * @return $this
+     */
     public function where($where, $params = null) {
 
         $this->addPart('where', $where);
@@ -166,6 +217,12 @@ abstract class Query {
         return $this;
     }
 
+    /**
+     * @param      $group
+     * @param null $params
+     *
+     * @return $this
+     */
     public function groupBy($group, $params = null) {
 
         $this->addPart('group', $group);
@@ -174,6 +231,31 @@ abstract class Query {
         return $this;
     }
 
+    /**
+     * @param      $order
+     * @param null $params
+     *
+     * @return $this
+     */
+    public function orderBy($order, $params = null) {
+
+        $this->addPart('order', $order);
+        $this->addParams('order', array_slice(func_get_args(), 1));
+
+        return $this;
+    }
+
+    public function limit($limit, $params = null) {
+
+        $this->setPart('limit', $limit);
+        $this->addParams('order', array_slice(func_get_args(), 1));
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
     protected function getAllParts() {
 
         $parts = array();
@@ -234,6 +316,16 @@ abstract class Query {
     private function getGroupPart() {
 
         return 'group by ' . implode(', ', $this->parts['group']);
+    }
+
+    private function getOrderPart() {
+
+        return 'order by ' . implode(', ', $this->parts['order']);
+    }
+
+    private function getLimitPart() {
+
+        return 'limit ' . $this->parts['limit'][0];
     }
 
 }

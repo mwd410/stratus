@@ -15,12 +15,69 @@ class BreakdownController extends Controller {
 
         $result['menu'] = $this->getMenu($request);
 
-        //$request['analysis'] = $this->getAnalysis($request);
+        $result['analysis'] = $this->getAnalysis($request);
 
         $this->json($result);
     }
 
+    private $typeColumns = array(
+        'provider' => array(
+            'id'       => 'service_provider_id',
+            'name'     => 'service_provider_name',
+            'sub_id'   => 'service_product_id',
+            'sub_name' => 'service_product_name'
+        ),
+        'type'     => array(
+            'id'       => 'service_type_id',
+            'name'     => 'service_type_name',
+            'sub_id'   => 'service_type_category_id',
+            'sub_name' => 'service_type_category',
+        )
+    );
+
+    private $views = array(
+        'provider' => 'service_provider_menu_v',
+        'type'     => 'service_type_menu_v'
+    );
+
+    private function getColumn($type, $column) {
+
+        if (!isset($this->typeColumns[$type])) {
+            throw new Exception("Invalid type: '$type'.");
+        }
+
+        $columns = $this->typeColumns[$type];
+
+        return $columns[$column];
+    }
+
+    private function getColumns($type) {
+
+        if (!isset($this->typeColumns[$type])) {
+            throw new Exception("Invalid type: '$type'.");
+        }
+
+        return $this->typeColumns[$type];
+    }
+
+    private function getView($type) {
+
+        if (!isset($this->views[$type])) {
+            throw new Exception("Invalid type: '$type'.");
+        }
+
+        return $this->views[$type];
+    }
+
     private function getMenu(Request $request) {
+
+        $type = $request->getParam('type');
+
+        if ($type === false) {
+            // We don't want to update.
+            // send the least data possible.
+            return 0;
+        }
 
         $names = array(
             'provider' => 'Service Provider',
@@ -29,10 +86,10 @@ class BreakdownController extends Controller {
 
         $items = array();
 
-        foreach ($names as $type => $name) {
+        foreach ($names as $itemType => $name) {
             $items[] = array(
                 'name' => $name,
-                'type' => $type
+                'type' => $itemType
             );
         }
 
@@ -43,11 +100,10 @@ class BreakdownController extends Controller {
             )
         );
 
-        $type = $request->getParam('type');
-
         if ($type && isset($names[$type])) {
 
-            $menuInfo = $this->getMenuInfo($type);
+            $view = $this->getView($type);
+            $columns = $this->getColumns($type);
 
             $customerId = $this
                 ->getUser()
@@ -55,26 +111,28 @@ class BreakdownController extends Controller {
 
             $menuQuery = Query::create(Query::SELECT)
                 ->column('? as type', $type)
-                ->from($menuInfo['view'])
+                ->from($view)
                 ->where('customer_id = ?', $customerId);
 
-            foreach ($menuInfo['columns'] as $column => $alias) {
+            foreach ($columns as $alias => $column) {
 
                 $menuQuery->column("$column as $alias");
             }
 
-            $menuItems = $menuQuery->execute();
+            $flatMenu = $menuQuery->execute();
+
+            $menuItems = $this->flatToItems($flatMenu);
 
             $result[] = array(
                 'name'  => $names[$type],
-                'items' => $this->flatMenuToTree($menuItems)
+                'items' => $menuItems
             );
         }
 
         return $result;
     }
 
-    private function flatMenuToTree($menuItems) {
+    private function flatToItems($menuItems) {
 
         $items = array();
         $type = null;
@@ -103,51 +161,47 @@ class BreakdownController extends Controller {
 
         $items = array_values($items);
 
-        array_unshift($items, array(
-            'type' => $type,
-            'name' => 'All',
-            'id'   => null
-        ));
+        array_unshift($items,
+            array(
+                'type' => $type,
+                'name' => 'All',
+                'id'   => null
+            ));
 
         return $items;
-    }
-
-    private function getMenuInfo($type) {
-
-        $result = array();
-
-        if ($type === 'provider') {
-            $result['view'] = 'service_provider_menu_v';
-            $result['columns'] = array(
-                'service_provider_id'   => 'id',
-                'service_provider_name' => 'name',
-                'service_product_id'    => 'sub_id',
-                'service_product_name'  => 'sub_name'
-            );
-        } else if ($type === 'type') {
-
-            $result['view'] = 'service_type_menu_v';
-            $result['columns'] = array(
-                'service_type_id'          => 'id',
-                'service_type_name'        => 'name',
-                'service_type_category_id' => 'sub_id',
-                'service_type_category'    => 'sub_name'
-            );
-        }
-
-        return $result;
     }
 
     public function getAnalysis(Request $request) {
 
         $type = $request->getParam('type');
         $id = $request->getParam('id');
-        $subId = $request->getParam('subId');
+        $subId = $request->getParam('sub_id');
 
+        $customerId = $this->getUser()->get('customer_id');
 
-        if ($type === 'provider') {
+        $analysisQuery = Query::create(Query::SELECT)
+            ->column('history_date')
+            ->column('sum(cost) as total')
+            ->from('billing_history_v')
+            ->where('customer_id = ?', $customerId)
+            ->groupBy('history_date')
+            ->orderBy('history_date asc')
+            ->limit(30);
 
+        if ($type !== null && $id !== null) {
+
+            $idColumn = $this->getColumn($type, 'id');
+
+            $analysisQuery->where($idColumn . ' = ?', $id);
+
+            if ($subId !== null) {
+
+                $subIdColumn = $this->getColumn($type, 'sub_id');
+
+                $analysisQuery->where($subIdColumn . ' = ?', $subId);
+            }
         }
 
+        return $analysisQuery->execute();
     }
 }
