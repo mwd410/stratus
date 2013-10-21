@@ -2,7 +2,7 @@
     'use strict';
 
     ng.module('app.dashboard')
-        .controller('DashboardController', function($scope, NavService) {
+        .controller('DashboardController', function($scope, breakdown) {
 
             $scope.dashboard = {
                 widgetRows : [

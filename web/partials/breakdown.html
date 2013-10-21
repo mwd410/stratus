@@ -1,4 +1,4 @@
-<div data-ng-controller="LeftNavController">
+<div data-ng-controller="BreakdownNavCtrl">
 
     <div data-st-left-nav="breakdown.menus"
          data-on-item-click="onMenuItemClick(item)"
@@ -35,9 +35,9 @@
 
         <div> <!-- Wrapper Div for recessed area. -->
 
-            <div class="st-dash-title">
+            <div data-ng-if="getTitle()" class="st-dash-title">
                 <div>
-                    Service Provider - Amazon
+                    {{ getTitle() }}
                 </div>
             </div>
 

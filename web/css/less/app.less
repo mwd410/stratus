@@ -8,3 +8,22 @@
 @import "nav.less";
 @import "account.less";
 @import "dashboard.less";
+
+
+
+
+.page {
+  position: absolute;
+  left : 100%;
+
+  .is-left-sliding {
+    left : -100% !important;
+    &.is-active {
+      left : 0;
+    }
+  }
+
+  &.is-active {
+    left : 0;
+  }
+}

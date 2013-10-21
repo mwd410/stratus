@@ -1,7 +1,7 @@
 (function(ng) {
     'use strict';
 
-    ng.module('app').controller('LeftNavController',
+    ng.module('app.breakdown').controller('BreakdownNavCtrl',
         function($scope, NavService, breakdown) {
 
             $scope.breakdown = breakdown;

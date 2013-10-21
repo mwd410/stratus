@@ -24,13 +24,13 @@
             },
             link : function(scope, el, attrs) {
 
-                if (!attrs.isSubItemActive) {
+                if (attrs.isItemActive && !attrs.isSubItemActive) {
                     scope.isSubItemActive = function(o) {
                         return scope.isItemActive({item : o.subItem});
                     };
                 }
 
-                if (!attrs.onSubItemClick) {
+                if (attrs.onItemClick && !attrs.onSubItemClick) {
                     scope.onSubItemClick = function(o) {
                         scope.onItemClick({item : o.subItem});
                     };

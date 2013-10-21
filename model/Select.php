@@ -4,14 +4,13 @@ class Select extends Query {
 
     public function execute($params = array()) {
 
-        $result = parent::execute($params);
+        $result = $this->executeQuery($params);
 
         if (!$result) {
 
-            $errors = $this->getStatement()->errorInfo();
-            $errors[] = $this->getSql();
+            $error = implode(': ', $this->getStatement()->errorInfo()) . $this;
 
-            throw new Exception(implode(': ', $errors));
+            throw new Exception($error);
         }
 
         return $this

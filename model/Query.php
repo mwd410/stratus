@@ -77,7 +77,17 @@ abstract class Query {
         return $this->getStatement()->errorInfo();
     }
 
+    /**
+     * @param array $params
+     *
+     * @return bool|array
+     */
     public function execute($params = array()) {
+
+        return $this->executeQuery($params);
+    }
+
+    public function executeQuery($params = array()) {
 
         $sql = $this->getSql();
         $db = Database::getInstance();
@@ -270,14 +280,14 @@ abstract class Query {
         return $parts;
     }
 
-    private function getAllParams($params = array()) {
+    private function getAllParams($lastParams = array()) {
 
         $allParams = array();
 
         foreach($this->params as $params) {
             $allParams = array_merge($allParams, $params);
         }
-        return array_merge($allParams, $params);
+        return array_merge($allParams, $lastParams);
     }
 
     private function getColumnPart() {
@@ -326,6 +336,29 @@ abstract class Query {
     private function getLimitPart() {
 
         return 'limit ' . $this->parts['limit'][0];
+    }
+
+    public function __toString() {
+
+        $sql = $this->getSql();
+        $sql = trim($sql);
+
+        if (substr($sql, -1) !== ';') {
+            $sql .= ';';
+        }
+
+        $params = $this->getAllParams();
+
+        foreach($params as $index => $param) {
+
+            if (is_null($param)) {
+                $params[$index] = 'NULL';
+            } else if ($param === false) {
+                $params[$index] = '0';
+            }
+        }
+
+        return $sql . ' [' . implode(', ',$params) . ']';
     }
 
 }

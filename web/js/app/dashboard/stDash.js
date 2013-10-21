@@ -9,11 +9,15 @@
                 scope       : {
                     dash : '=stDash'
                 },
-                controller  : function($scope, NavService) {
+                controller  : function($scope, NavService, breakdown) {
 
                     $scope.isLeftExpanded = function() {
 
                         return NavService.isExpanded('left');
+                    };
+
+                    $scope.getTitle = function() {
+                        return breakdown.title;
                     };
                 },
                 link        : function(scope, el, attrs, controller) {
