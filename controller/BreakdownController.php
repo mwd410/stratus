@@ -41,9 +41,10 @@ class BreakdownController extends Controller {
 
         foreach ($this->typeNames as $itemType => $name) {
             $items[] = array(
-                'name' => $name,
-                'type' => $itemType,
-                'title' => $name
+                'name'     => $name,
+                'type'     => $itemType,
+                'title'    => $name,
+                'isActive' => $itemType == $type
             );
         }
 
@@ -90,10 +91,10 @@ class BreakdownController extends Controller {
 
         array_unshift($menuItems,
             array(
-                'type'    => $type,
-                'name'    => 'All',
-                'type_id' => null,
-                'title'   => $this->typeNames[$type]
+                'type'     => $type,
+                'name'     => 'All',
+                'title'    => $this->typeNames[$type],
+                'isActive' => !$this->getRequest()->getParam('id')
             ));
 
         return array(
@@ -105,6 +106,7 @@ class BreakdownController extends Controller {
     private function flatToItems($menuItems) {
 
         $items = array();
+        $request = $this->getRequest();
 
         foreach ($menuItems as $item) {
 
@@ -115,23 +117,29 @@ class BreakdownController extends Controller {
                 $item['type_name']
             );
 
+            $isActive = $id == $request->getParam('id');
+
             if (!isset($items[$id])) {
                 $items[$id] = array(
-                    'id'    => $id,
-                    'name'  => $item['type_name'],
-                    'type'  => $item['type'],
-                    'title' => implode(' - ', $titleParts),
+                    'id'       => $id,
+                    'name'     => $item['type_name'],
+                    'type'     => $item['type'],
+                    'title'    => implode(' - ', $titleParts),
+                    'isActive' => $isActive,
                 );
             }
 
             $titleParts[] = $item['sub_type_name'];
 
+            $isActive = $isActive && $item['sub_type_id'] == $request->getParam('sub_id');
+
             $items[$id]['subItems'][] = array(
-                'type'   => $item['type'],
-                'id'     => $id,
-                'sub_id' => $item['sub_type_id'],
-                'name'   => $item['sub_type_name'],
-                'title'  => implode(' - ', $titleParts)
+                'type'     => $item['type'],
+                'id'       => $id,
+                'sub_id'   => $item['sub_type_id'],
+                'name'     => $item['sub_type_name'],
+                'title'    => implode(' - ', $titleParts),
+                'isActive' => $isActive
             );
         }
 
