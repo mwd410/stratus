@@ -5,34 +5,26 @@
         .directive('stWidgetColumn', function(Utils) {
 
             return {
-                require     : ['stWidgetColumn', '^stWidgetRow'],
                 controller  : function($scope) {
 
-                    var totalFlex;
+                },
+                scope       : {
+                    widgetColumn : '=stWidgetColumn'
+                },
+                link        : function(scope, el, attrs, controllers) {
 
-                    this.init = function(column) {
+                    if (scope.widgetColumn.widgets) {
 
-                        totalFlex = Utils.pluck(column.widgets, 'flex')
+                        var totalFlex = Utils.pluck(scope.widgetColumn.widgets, 'flex')
                             .reduce(function(prev, curr) {
 
                                 return parseInt(prev, 10) + parseInt(curr, 10);
                             });
-                        Utils.each(column.widgets, function(widget) {
+                        Utils.each(scope.widgetColumn.widgets, function(widget) {
 
                             widget.height = 100 * widget.flex / totalFlex;
                         }, this);
-                    };
-                },
-                scope       : {
-                    widgetColumn : '=stWidgetColumn',
-                    index        : '='
-                },
-                link        : function(scope, el, attrs, controllers) {
-
-                    var columnController = controllers[0],
-                        rowController = controllers[1];
-
-                    columnController.init(scope.widgetColumn);
+                    }
                 }
             };
         });

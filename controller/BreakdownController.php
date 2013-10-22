@@ -192,7 +192,7 @@ class BreakdownController extends Controller {
         $subId = $request->getParam('sub_id');
 
         if (!$type) {
-            return array();
+            return false;
         }
 
         $customerId = $this->getUser()->get('customer_id');
@@ -226,6 +226,8 @@ class BreakdownController extends Controller {
 
         if (count($result) > 0) {
             $result = $result[0];
+        } else {
+            $result = false;
         }
 
         return $result;

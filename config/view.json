@@ -24,7 +24,6 @@
     "dev" : {
         "js" : [
             "/js/app/App.js",
-            "/js/app/LeftNavController.js",
             "/js/app/RegisterController.js",
             "/js/app/stAutoSize.js",
             "/js/app/stLeftNav.js",
@@ -32,13 +31,15 @@
             "/js/app/account/AccountManagementController.js",
             "/js/app/account/AccountController.js",
             "/js/app/account/AccountService.js",
+            "/js/app/breakdown/BreakdownCtrl.js",
             "/js/app/breakdown/BreakdownMenuService.js",
             "/js/app/breakdown/BreakdownService.js",
-            "/js/app/dashboard/DashboardController.js",
+            "/js/app/breakdown/BreakdownNavCtrl.js",
             "/js/app/dashboard/stDash.js",
             "/js/app/dashboard/stWidgetRow.js",
             "/js/app/dashboard/stWidgetColumn.js",
             "/js/app/dashboard/stWidget.js",
+            "/js/app/dashboard/WidgetService.js",
             "/js/app/nav/NavService.js",
             "/js/app/nav/NavController.js",
             "/js/app/utils/Utils.js"

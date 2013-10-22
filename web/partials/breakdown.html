@@ -5,6 +5,7 @@
          data-is-item-active="isItemActive(item)"></div>
 </div>
 
+        <!--
 <div class="st-right-side">
     <div>
         <div>Monthly Projection</div>
@@ -26,9 +27,9 @@
         <div>$14,355.32</div>
         <div>32% MoM</div>
     </div>
-</div>
+</div>-->
 
-<div data-ng-controller="DashboardController" class="st-dash-wrapper">
+<div data-ng-controller="BreakdownCtrl" class="st-dash-wrapper">
     <div data-st-dash="dashboard"
          class="st-dash"
          data-ng-class="{'is-left-expanded' : isLeftExpanded()}">
@@ -46,11 +47,10 @@
                  class="st-widget-row"
                  data-ng-style="{height : widgetRow.height+'px'}">
 
-                <div
-                        data-ng-repeat="widgetColumn in widgetRow.widgetColumns"
-                        data-st-widget-column="widgetColumn"
-                        class="st-widget-column"
-                        data-ng-style="{width : widgetColumn.width + '%'}">
+                <div data-ng-repeat="widgetColumn in widgetRow.widgetColumns"
+                     data-st-widget-column="widgetColumn"
+                     class="st-widget-column"
+                     data-ng-style="{width : widgetColumn.width + '%'}">
 
                     <div data-ng-if="$index > 0"
                          class="st-widget-column-dragger">
@@ -67,13 +67,11 @@
                             <div></div>
                         </div>
 
-                        <div class="st-widget-wrapper panel panel-default">
-                            <div data-ng-if="widget.title"
-                                 class="panel-heading">
-                                <h4 class="panel-title">
-                                    {{widget.title}}</h4>
-                            </div>
-                            <div class="panel-body">
+                        <div class="st-widget-wrapper">
+                            <header data-ng-if="widget.title">
+                                <h4>{{widget.title}}</h4>
+                            </header>
+                            <div>
                                 <div data-ng-if="widget.tpl"
                                      data-ng-include="widget.tpl"></div>
                             </div>

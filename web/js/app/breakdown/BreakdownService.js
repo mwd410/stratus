@@ -25,13 +25,11 @@
                                 service.title = item.title;
                             }
 
-                            updateMenu(response);
+                            service.menus = response.data.menu;
+
+                            service.projection = response.data.projection;
                         });
                 }
-            },
-            updateMenu = function(response) {
-
-                service.menus = response.data.menu;
             };
 
         service.update();

@@ -5,64 +5,66 @@
         .directive('stWidget', function() {
 
             return {
-                require     : ['stWidget', '^stWidgetColumn', '^stDash'],
-                scope       : {
+                scope     : {
                     widget : '=stWidget'
                 },
-                controller  : function($scope) {
+                controller : function($scope, widget) {
 
+                    $scope.widgetService = widget;
+
+                    $scope.$watch('widgetService.getData(widget.type)', function(data) {
+                        if (data) {
+                            $scope.widget.tpl = '/partials/widget/' + $scope.widget.type + '.html';
+                            $scope.widget.data = data;
+                        }
+                    });
                 },
-                link        : function(scope, el, attrs, controllers) {
+                link      : function(scope, el, attrs, controllers) {
 
-                    var widgetController = controllers[0],
-                        columnController = controllers[1],
-                        padding = el.css('padding'),
-                        initX,
-                        initY;
 
                     /*
-                    el.find('.panel-heading').bind('mousedown', function(event) {
+                     el.find('.panel-heading').bind('mousedown', function(event) {
 
-                        var wrapper = $(this).parent('.st-widget-wrapper');
+                     var wrapper = $(this).parent('.st-widget-wrapper');
 
-                        wrapper.css({
-                                position : 'absolute',
-                                left     : 6,
-                                top      : 6,
-                                width    : el.width(),
-                                height   : el.height(),
-                                'z-index' : 1000
-                            });
+                     wrapper.css({
+                     position : 'absolute',
+                     left     : 6,
+                     top      : 6,
+                     width    : el.width(),
+                     height   : el.height(),
+                     'z-index' : 1000
+                     });
 
-                        initX = event.pageX;
-                        initY = event.pageY;
+                     initX = event.pageX;
+                     initY = event.pageY;
 
-                        $(document).on('mousemove', function(event) {
+                     $(document).on('mousemove', function(event) {
 
-                            wrapper.css({
-                                left : 6 + (event.pageX - initX),
-                                top  : 6 + (event.pageY - initY)
-                            });
+                     wrapper.css({
+                     left : 6 + (event.pageX - initX),
+                     top  : 6 + (event.pageY - initY)
+                     });
 
-                            if (window.getSelection) {
-                                if (window.getSelection().empty) {  // Chrome
-                                    window.getSelection().empty();
-                                } else if (window.getSelection().removeAllRanges) {  // Firefox
-                                    window.getSelection().removeAllRanges();
-                                }
-                            } else if (document.selection) {  // IE?
-                                document.selection.empty();
-                            }
-                        });
+                     if (window.getSelection) {
+                     if (window.getSelection().empty) {  // Chrome
+                     window.getSelection().empty();
+                     } else if (window.getSelection().removeAllRanges) {  // Firefox
+                     window.getSelection().removeAllRanges();
+                     }
+                     } else if (document.selection) {  // IE?
+                     document.selection.empty();
+                     }
+                     });
 
-                        $(document).bind('mouseup', function() {
+                     $(document).bind('mouseup', function() {
 
-                            $(document).off('mousemove');
-                            wrapper.css({
-                                position : 'static'
-                            });
-                        });
-                    });*/
+                     $(document).off('mousemove');
+                     wrapper.css({
+                     position : 'static'
+                     });
+                     });
+                     });*/
                 }
             };
         });

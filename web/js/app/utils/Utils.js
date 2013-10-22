@@ -32,7 +32,7 @@
                                 return i;
                             }
                         }
-                    } else {
+                    } else if (array) {
                         fn.call(scope || array, array, 0, 1);
                     }
                     return true;
