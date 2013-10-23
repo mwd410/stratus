@@ -5,6 +5,7 @@
         .directive('stWidget', function() {
 
             return {
+                require   : ['stWidget', '^stDash'],
                 scope     : {
                     widget : '=stWidget'
                 },
@@ -14,13 +15,16 @@
 
                     $scope.$watch('widgetService.getData(widget.type)', function(data) {
                         if (data) {
-                            $scope.widget.tpl = '/partials/widget/' + $scope.widget.type + '.html';
+                            $scope.widget.tpl = '/partials/widget/' + $scope.widget.templateFile;
                             $scope.widget.data = data;
                         }
                     });
                 },
                 link      : function(scope, el, attrs, controllers) {
 
+                    var dashCtrl = controllers[1];
+
+                    dashCtrl.registerWidget(scope.widget);
 
                     /*
                      el.find('.panel-heading').bind('mousedown', function(event) {

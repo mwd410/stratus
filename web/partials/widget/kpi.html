@@ -1,0 +1,11 @@
+<div class="st-widget-eom-projection">
+    <header>{{widget.miniTitle}}</header>
+
+    <div data-ng-if="widget.data.kpi" title="{{widget.data.kpi_title}}" >
+        <span>{{ widget.data.kpi }}</span>
+    </div>
+
+    <div data-ng-if="widget.data.mom_title" title="{{ widget.data.mom_title }}">
+        <span>{{ widget.data.mom | number:0 }}% MoM</span>
+    </div>
+</div>

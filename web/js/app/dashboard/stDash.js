@@ -7,7 +7,8 @@
             return {
                 require : 'stDash',
                 scope       : {
-                    dash : '=stDash'
+                    dash : '=stDash',
+                    registerWidget : '&'
                 },
                 controller  : function($scope, NavService, breakdown) {
 
@@ -18,6 +19,11 @@
 
                     $scope.getTitle = function() {
                         return breakdown.title;
+                    };
+
+                    this.registerWidget = function(widget) {
+
+                        $scope.registerWidget({widget : widget});
                     };
                 },
                 link        : function(scope, el, attrs, controller) {

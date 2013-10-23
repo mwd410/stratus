@@ -17,6 +17,8 @@ class BreakdownController extends Controller {
 
         $result['analysis'] = $this->getAnalysis($request);
 
+        $result['widgets'] = $this->getWidgets($request);
+
         $result['projection'] = $this->getProjection($request);
 
         $this->json($result);
@@ -158,7 +160,7 @@ class BreakdownController extends Controller {
 
         $analysisQuery = Query::create(Query::SELECT)
             ->column('history_date')
-            ->column('sum(cost) as total')
+            ->column('format(ifnull(sum(cost), 0), 2) as total')
             ->from('billing_history_v')
             ->where('customer_id = ?', $customerId)
             ->groupBy('history_date')
@@ -167,30 +169,50 @@ class BreakdownController extends Controller {
 
         if ($type !== null && $id !== null) {
 
-            $columns = array(
-                'provider' => array(
-                    'id'     => 'service_provider_id',
-                    'sub_id' => 'service_product_id'
-                ),
-                'type'     => array(
-                    'id'     => 'service_type_id',
-                    'sub_id' => 'service_type_category_id'
-                )
-            );
+            $columns = BillingHistoryView::getColumns($type);
 
-            $idColumn = $columns[$type]['id'];
+            $idColumn = $columns['id'];
 
             $analysisQuery->where($idColumn . ' = ?', $id);
 
             if ($subId !== null) {
 
-                $subIdColumn = $columns[$type]['sub_id'];
+                $subIdColumn = $columns['sub_id'];
 
                 $analysisQuery->where($subIdColumn . ' = ?', $subId);
             }
         }
 
         return $analysisQuery->execute();
+    }
+
+    public function getWidgets(Request $request) {
+
+        $widgets = $request->getParam('widgets');
+
+        if (!is_array($widgets)) {
+            $widgets = array($widgets);
+        }
+        $result = array();
+
+        foreach ($widgets as $widget) {
+
+            switch ($widget) {
+                case 'lastMonthSpend':
+                    $widgetData = $this->getLastMonthSpend($request);
+                    break;
+                case 'eomProjection':
+                    $widgetData = $this->getProjection($request);
+                    break;
+                default:
+                    $widgetData = null;
+                    break;
+            }
+
+            $result[$widget] = $widgetData;
+        }
+
+        return $result;
     }
 
     public function getProjection(Request $request) {
@@ -215,8 +237,8 @@ class BreakdownController extends Controller {
         }
 
         $projectionQuery = Query::create(Query::SELECT)
-            ->column('sum(estimate) as projection')
-            ->column('history_date as last_updated')
+            ->column('concat("$", format(ifnull(sum(estimate), 0), 2)) as kpi')
+            ->column('concat("Last Updated: ", history_date) as kpi_title')
             ->from($typeViews[$type])
             ->where('customer_id = ?', $customerId);
 
@@ -237,6 +259,46 @@ class BreakdownController extends Controller {
         } else {
             $result = false;
         }
+
+        return $result;
+    }
+
+    public function getLastMonthSpend(Request $request) {
+
+        $type = $request->getParam('type');
+        $id = $request->getParam('id');
+        $subId = $request->getParam('sub_id');
+
+        if (!$type) {
+            return false;
+        }
+
+        $columns = BillingHistoryView::getColumns($type);
+        $customerId = $this->getUser()->get('customer_id');
+
+        $query = Query::create(Query::SELECT)
+            ->column('concat("$", format(ifnull(sum(cost), 0), 2)) as kpi')
+            ->from('billing_history_v')
+            ->where('customer_id = ?', $customerId)
+            ->where('month(history_date) + 1 = month(now())');
+
+        if ($id != null) {
+
+            $idColumn = $columns['id'];
+
+            $query->where($idColumn . ' = ?', $id);
+
+            if ($subId != null) {
+
+                $subIdColumn = $columns['sub_id'];
+
+                $query->where($subIdColumn . ' = ?', $subId);
+            }
+        }
+
+        $result = $query->execute();
+
+        $result = $result[0];
 
         return $result;
     }

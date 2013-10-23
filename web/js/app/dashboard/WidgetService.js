@@ -8,7 +8,9 @@
 
                 switch(type) {
                     case 'eomProjection':
-                        return breakdown.projection;
+                        return breakdown.widgetData.eomProjection;
+                    case 'lastMonthSpend':
+                        return breakdown.widgetData.lastMonthSpend;
                 }
             }
         };
