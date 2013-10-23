@@ -32,10 +32,32 @@
                                 ]
                             },
                             {
-                                flex : 1
+                                flex : 1,
+                                widgets : [
+                                    {
+                                        flex         : 1,
+                                        miniTitle    : '30 Day Rolling Average',
+                                        type         : 'rollingAverage',
+                                        params       : {
+                                            days : 30
+                                        },
+                                        templateFile : 'kpi.html'
+                                    }
+                                ]
                             },
                             {
-                                flex : 1
+                                flex : 1,
+                                widgets : [
+                                    {
+                                        flex         : 1,
+                                        miniTitle    : '7 Day Rolling Average',
+                                        type         : 'rollingAverage',
+                                        params       : {
+                                            days : 7
+                                        },
+                                        templateFile : 'kpi.html'
+                                    }
+                                ]
                             }
                         ]
                     }
@@ -46,6 +68,8 @@
 
                 breakdown.registerWidget(widget);
             };
+
+            $scope.breakdown = breakdown;
         });
 
 })(window.angular);

@@ -8,7 +8,8 @@
                 require : 'stDash',
                 scope       : {
                     dash : '=stDash',
-                    registerWidget : '&'
+                    registerWidget : '&',
+                    widgetService : '='
                 },
                 controller  : function($scope, NavService, breakdown) {
 

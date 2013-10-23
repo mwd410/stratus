@@ -39,7 +39,6 @@
             "/js/app/dashboard/stWidgetRow.js",
             "/js/app/dashboard/stWidgetColumn.js",
             "/js/app/dashboard/stWidget.js",
-            "/js/app/dashboard/WidgetService.js",
             "/js/app/nav/NavService.js",
             "/js/app/nav/NavController.js",
             "/js/app/utils/Utils.js"

@@ -7,24 +7,22 @@
             return {
                 require   : ['stWidget', '^stDash'],
                 scope     : {
-                    widget : '=stWidget'
+                    widget : '=stWidget',
+                    widgetService : '='
                 },
-                controller : function($scope, widget) {
+                controller : function($scope) {
 
-                    $scope.widgetService = widget;
-
-                    $scope.$watch('widgetService.getData(widget.type)', function(data) {
-                        if (data) {
-                            $scope.widget.tpl = '/partials/widget/' + $scope.widget.templateFile;
-                            $scope.widget.data = data;
-                        }
-                    });
                 },
                 link      : function(scope, el, attrs, controllers) {
 
-                    var dashCtrl = controllers[1];
+                    scope.widgetService.registerWidget(scope.widget);
 
-                    dashCtrl.registerWidget(scope.widget);
+                    scope.$watch('widgetService.getData(widget)', function(data) {
+                        if (data) {
+                            scope.widget.tpl = '/partials/widget/' + scope.widget.templateFile;
+                            scope.widget.data = data;
+                        }
+                    });
 
                     /*
                      el.find('.panel-heading').bind('mousedown', function(event) {

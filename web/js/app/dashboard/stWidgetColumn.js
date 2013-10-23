@@ -9,7 +9,8 @@
 
                 },
                 scope       : {
-                    widgetColumn : '=stWidgetColumn'
+                    widgetColumn : '=stWidgetColumn',
+                    widgetService : '='
                 },
                 link        : function(scope, el, attrs, controllers) {
 

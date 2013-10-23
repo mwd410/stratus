@@ -31,7 +31,8 @@
 
 <div data-ng-controller="BreakdownCtrl" class="st-dash-wrapper">
     <div data-st-dash="dashboard"
-         register-widget="registerWidget(widget)"
+         data-register-widget="registerWidget(widget)"
+         data-widget-service="breakdown"
          class="st-dash"
          data-ng-class="{'is-left-expanded' : isLeftExpanded()}">
 
@@ -45,11 +46,13 @@
 
             <div data-ng-repeat="widgetRow in dash.widgetRows"
                  data-st-widget-row="widgetRow"
+                 data-widget-service="widgetService"
                  class="st-widget-row"
                  data-ng-style="{height : widgetRow.height+'px'}">
 
                 <div data-ng-repeat="widgetColumn in widgetRow.widgetColumns"
                      data-st-widget-column="widgetColumn"
+                     data-widget-service="widgetService"
                      class="st-widget-column"
                      data-ng-style="{width : widgetColumn.width + '%'}">
 
@@ -60,6 +63,7 @@
 
                     <div data-ng-repeat="widget in widgetColumn.widgets"
                          data-st-widget="widget"
+                         data-widget-service="widgetService"
                          class="st-widget"
                          data-ng-style="{height : widget.height + '%'}">
 

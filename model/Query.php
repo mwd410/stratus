@@ -122,7 +122,7 @@ abstract class Query {
     }
 
     /**
-     * @return $this
+     * @return Query
      */
     public function isDistinct() {
         $this->isDistinct = true;
@@ -133,7 +133,7 @@ abstract class Query {
      * @param      $column
      * @param null $params
      *
-     * @return $this
+     * @return Query
      */
     public function column($column, $params = null) {
 
@@ -147,7 +147,7 @@ abstract class Query {
      * @param      $from
      * @param null $params
      *
-     * @return $this
+     * @return Query
      */
     public function from($from, $params = null) {
 
@@ -161,7 +161,7 @@ abstract class Query {
      * @param      $set
      * @param null $params
      *
-     * @return $this
+     * @return Query
      */
     public function set($set, $params = null) {
 
@@ -175,7 +175,7 @@ abstract class Query {
      * @param      $data
      * @param null $params
      *
-     * @return $this
+     * @return Query
      */
     public function insert($data, $params = null) {
 
@@ -189,7 +189,7 @@ abstract class Query {
      * @param      $join
      * @param null $params
      *
-     * @return $this
+     * @return Query
      */
     public function join($join, $params = null) {
 
@@ -203,7 +203,7 @@ abstract class Query {
      * @param      $join
      * @param null $params
      *
-     * @return $this
+     * @return Query
      */
     public function leftJoin($join, $params = null) {
 
@@ -217,7 +217,7 @@ abstract class Query {
      * @param      $where
      * @param null $params
      *
-     * @return $this
+     * @return Query
      */
     public function where($where, $params = null) {
 
@@ -231,7 +231,7 @@ abstract class Query {
      * @param      $group
      * @param null $params
      *
-     * @return $this
+     * @return Query
      */
     public function groupBy($group, $params = null) {
 
@@ -245,7 +245,7 @@ abstract class Query {
      * @param      $order
      * @param null $params
      *
-     * @return $this
+     * @return Query
      */
     public function orderBy($order, $params = null) {
 
@@ -255,6 +255,12 @@ abstract class Query {
         return $this;
     }
 
+    /**
+     * @param      $limit
+     * @param null $params
+     *
+     * @return Query
+     */
     public function limit($limit, $params = null) {
 
         $this->setPart('limit', $limit);

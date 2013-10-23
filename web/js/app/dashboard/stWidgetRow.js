@@ -6,7 +6,8 @@
 
             return {
                 scope       : {
-                    widgetRow : '=stWidgetRow'
+                    widgetRow : '=stWidgetRow',
+                    widgetService : '='
                 },
                 controller  : function($scope) {
 

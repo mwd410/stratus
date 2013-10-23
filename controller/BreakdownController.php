@@ -19,8 +19,6 @@ class BreakdownController extends Controller {
 
         $result['widgets'] = $this->getWidgets($request);
 
-        $result['projection'] = $this->getProjection($request);
-
         $this->json($result);
     }
 
@@ -28,6 +26,28 @@ class BreakdownController extends Controller {
         'provider' => 'Service Provider',
         'type'     => 'Service Type'
     );
+
+    public function getFilteredResult(Query $query, Request $request, array $columns) {
+
+        $id = $request->getParam('id');
+        $subId = $request->getParam('sub_id');
+
+        if ($id != null) {
+
+            $idColumn = $columns['id'];
+
+            $query->where($idColumn . ' = ?', $id);
+
+            if ($subId != null) {
+
+                $subIdColumn = $columns['sub_id'];
+
+                $query->where($subIdColumn . ' = ?', $subId);
+            }
+        }
+
+        return $query->execute();
+    }
 
     private function getMenu(Request $request) {
 
@@ -153,8 +173,6 @@ class BreakdownController extends Controller {
     public function getAnalysis(Request $request) {
 
         $type = $request->getParam('type');
-        $id = $request->getParam('id');
-        $subId = $request->getParam('sub_id');
 
         $customerId = $this->getUser()->get('customer_id');
 
@@ -167,20 +185,12 @@ class BreakdownController extends Controller {
             ->orderBy('history_date asc')
             ->limit(30);
 
-        if ($type !== null && $id !== null) {
+
+        if ($type != null) {
 
             $columns = BillingHistoryView::getColumns($type);
 
-            $idColumn = $columns['id'];
-
-            $analysisQuery->where($idColumn . ' = ?', $id);
-
-            if ($subId !== null) {
-
-                $subIdColumn = $columns['sub_id'];
-
-                $analysisQuery->where($subIdColumn . ' = ?', $subId);
-            }
+            return $this->getFilteredResult($analysisQuery, $request, $columns);
         }
 
         return $analysisQuery->execute();
@@ -190,26 +200,38 @@ class BreakdownController extends Controller {
 
         $widgets = $request->getParam('widgets');
 
+        $widgets = json_decode($widgets, true);
+
+        if (is_null($widgets)) {
+            return null;
+        }
+
         if (!is_array($widgets)) {
             $widgets = array($widgets);
         }
         $result = array();
 
-        foreach ($widgets as $widget) {
+        foreach ($widgets as $guid => $widget) {
 
-            switch ($widget) {
+            $widgetType = $widget['type'];
+            $widgetParams = $widget['params'];
+
+            switch ($widgetType) {
                 case 'lastMonthSpend':
                     $widgetData = $this->getLastMonthSpend($request);
                     break;
                 case 'eomProjection':
                     $widgetData = $this->getProjection($request);
                     break;
+                case 'rollingAverage':
+                    $widgetData = $this->getRollingAverage($request, $widgetParams);
+                    break;
                 default:
                     $widgetData = null;
                     break;
             }
 
-            $result[$widget] = $widgetData;
+            $result[$guid] = $widgetData;
         }
 
         return $result;
@@ -218,8 +240,6 @@ class BreakdownController extends Controller {
     public function getProjection(Request $request) {
 
         $type = $request->getParam('type');
-        $id = $request->getParam('id');
-        $subId = $request->getParam('sub_id');
 
         if (!$type) {
             return false;
@@ -242,17 +262,12 @@ class BreakdownController extends Controller {
             ->from($typeViews[$type])
             ->where('customer_id = ?', $customerId);
 
-        if ($id !== null) {
+        $columns = array(
+            'id' => 'type_id',
+            'sub_id' => 'sub_type_id'
+        );
 
-            $projectionQuery->where('type_id = ?', $id);
-
-            if ($subId !== null) {
-
-                $projectionQuery->where('sub_type_id = ?', $subId);
-            }
-        }
-
-        $result = $projectionQuery->execute();
+        $result = $this->getFilteredResult($projectionQuery, $request, $columns);
 
         if (count($result) > 0) {
             $result = $result[0];
@@ -266,8 +281,6 @@ class BreakdownController extends Controller {
     public function getLastMonthSpend(Request $request) {
 
         $type = $request->getParam('type');
-        $id = $request->getParam('id');
-        $subId = $request->getParam('sub_id');
 
         if (!$type) {
             return false;
@@ -282,24 +295,34 @@ class BreakdownController extends Controller {
             ->where('customer_id = ?', $customerId)
             ->where('month(history_date) + 1 = month(now())');
 
-        if ($id != null) {
-
-            $idColumn = $columns['id'];
-
-            $query->where($idColumn . ' = ?', $id);
-
-            if ($subId != null) {
-
-                $subIdColumn = $columns['sub_id'];
-
-                $query->where($subIdColumn . ' = ?', $subId);
-            }
-        }
-
-        $result = $query->execute();
+        $result = $this->getFilteredResult($query, $request, $columns);
 
         $result = $result[0];
 
         return $result;
     }
+
+    public function getRollingAverage(Request $request, array $params) {
+
+        $type = $request->getParam('type');
+        $days = $params['days'];
+
+        if (!$type || !is_numeric($days)) {
+            return false;
+        }
+
+        $columns = BillingHistoryView::getColumns($type);
+        $customerId = $this->getUser()->get('customer_id');
+
+        $query = Query::create(Query::SELECT)
+            ->column('concat("$", format(ifnull(sum(cost), 0), 2)) as kpi')
+            ->from('billing_history_v')
+            ->where('customer_id = ?', $customerId)
+            ->where("history_date > date_sub(now(), interval ? day)", $days);
+
+        $result = $this->getFilteredResult($query, $request, $columns);
+
+        return $result[0];
+    }
+
 }

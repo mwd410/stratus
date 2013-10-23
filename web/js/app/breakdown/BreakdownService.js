@@ -1,7 +1,7 @@
-(function(ng) {
+(function(ng, undefined) {
     'use strict';
 
-    ng.module('app.breakdown').service('breakdown', function($http) {
+    ng.module('app.breakdown').service('breakdown', function($http, Utils) {
 
         var service = {
                 menus          : [],
@@ -12,16 +12,14 @@
                     if (item) {
                         params = {
                             // 'provider' or 'type'
-                            type        : item.type,
-                            id          : item.id || null,
-                            sub_id      : item.sub_id || null,
-                            'widgets[]' : Object.keys(widgets)
+                            type    : item.type,
+                            id      : item.id || null,
+                            sub_id  : item.sub_id || null,
+                            widgets : JSON.stringify(widgets)
                         };
                     }
 
-                    $http.get('/breakdown/update', {
-                        params : params
-                    }).then(function(response) {
+                    $http.post('/breakdown/update', params).then(function(response) {
 
                             if (item) {
                                 service.title = item.title;
@@ -35,7 +33,21 @@
                 widgetData     : {},
                 registerWidget : function(widget) {
 
-                    widgets[widget.type] = widget;
+                    var guid;
+                    //Just in case there's happens to be the same guid produced twice.
+                    while (widgets[guid = Utils.guid()]) {}
+
+                    //A unique identifier so each widget knows what data to get.
+                    //This also takes care of multiple widgets of the same type
+                    //with different parameters.
+                    widget.guid = guid;
+                    widget.params = widget.params || null;
+
+                    widgets[widget.guid] = widget;
+                },
+                getData        : function(widget) {
+
+                    return service.widgetData[widget.guid];
                 }
             },
             widgets = {};
