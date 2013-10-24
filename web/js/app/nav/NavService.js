@@ -57,10 +57,6 @@
         return {
             registerMenu   : function(menu) {
 
-                if (availableMenus[menu]) {
-                    throw new Error("You've registered the same menu twice: " + menu);
-                }
-
                 availableMenus[menu] = true;
             },
             isAvailable    : function(menu) {

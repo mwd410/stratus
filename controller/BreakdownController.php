@@ -9,17 +9,31 @@
 
 class BreakdownController extends Controller {
 
+    private $titleParts = array();
+
     public function updateAction(Request $request) {
 
         $result = array();
 
         $result['menu'] = $this->getMenu($request);
 
+        $result['title'] = $this->getTitle();
+
         $result['analysis'] = $this->getAnalysis($request);
 
         $result['widgets'] = $this->getWidgets($request);
 
         $this->json($result);
+    }
+
+    private function addTitlePart($part) {
+
+        $this->titleParts[] = $part;
+    }
+
+    private function getTitle() {
+
+        return implode(' - ', $this->titleParts);
     }
 
     private $typeNames = array(
@@ -62,12 +76,17 @@ class BreakdownController extends Controller {
         $items = array();
 
         foreach ($this->typeNames as $itemType => $name) {
+            $itemIsActive = $itemType == $type;
             $items[] = array(
                 'name'     => $name,
                 'type'     => $itemType,
                 'title'    => $name,
-                'isActive' => $itemType == $type
-            );
+                'isActive' => $itemIsActive
+        );
+
+            if ($itemIsActive) {
+                $this->addTitlePart($name);
+            }
         }
 
         $result = array(
@@ -111,13 +130,14 @@ class BreakdownController extends Controller {
 
         $menuItems = $this->flatToItems($flatMenu);
 
-        array_unshift($menuItems,
-            array(
-                'type'     => $type,
-                'name'     => 'All',
-                'title'    => $this->typeNames[$type],
-                'isActive' => !$this->getRequest()->getParam('id')
-            ));
+        $allItem = array(
+            'type'     => $type,
+            'name'     => 'All',
+            'title'    => $this->typeNames[$type],
+            'isActive' => !$this->getRequest()->getParam('id')
+        );
+
+        array_unshift($menuItems, $allItem);
 
         return array(
             'name'  => $this->typeNames[$type],
@@ -149,13 +169,17 @@ class BreakdownController extends Controller {
                     'title'    => implode(' - ', $titleParts),
                     'isActive' => $isActive,
                 );
+
+                if ($isActive) {
+                    $this->addTitlePart($items[$id]['name']);
+                }
             }
 
             $titleParts[] = $item['sub_type_name'];
 
             $isActive = $isActive && $item['sub_type_id'] == $request->getParam('sub_id');
 
-            $items[$id]['subItems'][] = array(
+            $subItem = array(
                 'type'     => $item['type'],
                 'id'       => $id,
                 'sub_id'   => $item['sub_type_id'],
@@ -163,6 +187,12 @@ class BreakdownController extends Controller {
                 'title'    => implode(' - ', $titleParts),
                 'isActive' => $isActive
             );
+
+            $items[$id]['subItems'][] = $subItem;
+
+            if ($isActive) {
+                $this->addTitlePart($subItem['name']);
+            }
         }
 
         $items = array_values($items);
@@ -224,7 +254,8 @@ class BreakdownController extends Controller {
                     $widgetData = $this->getProjection($request);
                     break;
                 case 'rollingAverage':
-                    $widgetData = $this->getRollingAverage($request, $widgetParams);
+                    $widgetData = $this->getRollingAverage($request,
+                        $widgetParams);
                     break;
                 default:
                     $widgetData = null;
@@ -263,11 +294,13 @@ class BreakdownController extends Controller {
             ->where('customer_id = ?', $customerId);
 
         $columns = array(
-            'id' => 'type_id',
+            'id'     => 'type_id',
             'sub_id' => 'sub_type_id'
         );
 
-        $result = $this->getFilteredResult($projectionQuery, $request, $columns);
+        $result = $this->getFilteredResult($projectionQuery,
+            $request,
+            $columns);
 
         if (count($result) > 0) {
             $result = $result[0];
@@ -330,7 +363,7 @@ class BreakdownController extends Controller {
         }
 
         return array(
-            'kpi' => '$' . number_format($sum / (count($result) ?: 1) , 2)
+            'kpi' => '$' . number_format($sum / (count($result) ? : 1), 2)
         );
     }
 

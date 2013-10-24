@@ -21,21 +21,20 @@
 
                     $http.post('/breakdown/update', params).then(function(response) {
 
-                            if (item) {
-                                service.title = item.title;
-                            }
+                        service.title = response.data.title;
 
-                            service.menus = response.data.menu;
+                        service.menus = response.data.menu;
 
-                            ng.copy(response.data.widgets, service.widgetData);
-                        });
+                        ng.copy(response.data.widgets, service.widgetData);
+                    });
                 },
                 widgetData     : {},
                 registerWidget : function(widget) {
 
                     var guid;
                     //Just in case there's happens to be the same guid produced twice.
-                    while (widgets[guid = Utils.guid()]) {}
+                    while (widgets[guid = Utils.guid()]) {
+                    }
 
                     //A unique identifier so each widget knows what data to get.
                     //This also takes care of multiple widgets of the same type

@@ -31,10 +31,10 @@
 
 <div data-ng-controller="BreakdownCtrl" class="st-dash-wrapper">
     <div data-st-dash="dashboard"
-         data-register-widget="registerWidget(widget)"
          data-widget-service="breakdown"
          class="st-dash"
-         data-ng-class="{'is-left-expanded' : isLeftExpanded()}">
+         data-ng-class="{'is-left-expanded' : isLeftExpanded()}"
+         data-ng-show="getTitle()">
 
         <div> <!-- Wrapper Div for recessed area. -->
 

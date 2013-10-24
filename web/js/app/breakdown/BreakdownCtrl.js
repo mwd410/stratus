@@ -7,6 +7,21 @@
             $scope.dashboard = {
                 widgetRows : [
                     {
+                        height : 300,
+                        widgetColumns : [
+                            {
+                                flex : 1,
+                                widgets : [
+                                    {
+                                        flex : 1,
+                                        title : 'Daily Cost',
+                                        type : 'dailyCost'
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
                         height        : 70,
                         widgetColumns : [
                             {
@@ -62,11 +77,6 @@
                         ]
                     }
                 ]
-            };
-
-            $scope.registerWidget = function(widget) {
-
-                breakdown.registerWidget(widget);
             };
 
             $scope.breakdown = breakdown;

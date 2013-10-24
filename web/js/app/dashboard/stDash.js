@@ -8,27 +8,21 @@
                 require : 'stDash',
                 scope       : {
                     dash : '=stDash',
-                    registerWidget : '&',
                     widgetService : '='
                 },
-                controller  : function($scope, NavService, breakdown) {
+                controller  : function($scope, NavService) {
 
                     $scope.isLeftExpanded = function() {
 
                         return NavService.isExpanded('left');
                     };
 
-                    $scope.getTitle = function() {
-                        return breakdown.title;
-                    };
-
-                    this.registerWidget = function(widget) {
-
-                        $scope.registerWidget({widget : widget});
-                    };
                 },
-                link        : function(scope, el, attrs, controller) {
+                link        : function(scope, el, attrs, ctrl) {
 
+                    scope.getTitle = function() {
+                        return scope.widgetService.title;
+                    };
                 }
             };
         });
