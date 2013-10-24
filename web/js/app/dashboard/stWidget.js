@@ -5,22 +5,54 @@
         .directive('stWidget', function() {
 
             return {
-                require   : ['stWidget', '^stDash'],
-                scope     : {
-                    widget : '=stWidget',
+                require    : ['stWidget', '^stDash'],
+                scope      : {
+                    widget        : '=stWidget',
                     widgetService : '='
                 },
-                controller : function($scope) {
+                controller : function($scope, $injector) {
 
+                    function resize(el) {
+
+                        var wrapper = el.find('.st-widget-wrapper'),
+                            header = wrapper.find('> header'),
+                            body = wrapper.find('> div'),
+                            height = wrapper.height() - (header.outerHeight() || 0);
+
+                        body.innerHeight(height);
+                    }
+
+                    this.inject = function(el) {
+
+                        if ($scope.widget.tplService) {
+                            $injector.invoke([
+                                $scope.widget.tplService,
+                                function(service) {
+
+                                    resize(el);
+
+                                    service.apply($scope.widget, el);
+                                }
+                            ]);
+                        }
+                    };
                 },
-                link      : function(scope, el, attrs, controllers) {
+                link       : function(scope, el, attrs, controllers) {
 
+                    var ctrl = controllers[0];
                     scope.widgetService.registerWidget(scope.widget);
 
                     scope.$watch('widgetService.getData(widget)', function(data) {
                         if (data) {
                             scope.widget.tpl = '/partials/widget/' + scope.widget.templateFile;
                             scope.widget.data = data;
+
+
+                            setTimeout(function() {
+
+                                ctrl.inject(el);
+
+                            }, 100);
                         }
                     });
 

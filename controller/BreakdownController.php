@@ -19,8 +19,6 @@ class BreakdownController extends Controller {
 
         $result['title'] = $this->getTitle();
 
-        $result['analysis'] = $this->getAnalysis($request);
-
         $result['widgets'] = $this->getWidgets($request);
 
         $this->json($result);
@@ -200,7 +198,7 @@ class BreakdownController extends Controller {
         return $items;
     }
 
-    public function getAnalysis(Request $request) {
+    public function getDailyCost(Request $request, $params) {
 
         $type = $request->getParam('type');
 
@@ -215,22 +213,29 @@ class BreakdownController extends Controller {
             ->orderBy('history_date asc')
             ->limit(30);
 
-
         if ($type != null) {
 
             $columns = BillingHistoryView::getColumns($type);
 
-            return $this->getFilteredResult($analysisQuery, $request, $columns);
+            $result = $this->getFilteredResult($analysisQuery, $request, $columns);
+        } else {
+            $result = $analysisQuery->execute();
         }
 
-        return $analysisQuery->execute();
+        foreach($result as &$row) {
+            $row['total'] = floatval($row['total']);
+        }
+
+        return $result;
     }
 
     public function getWidgets(Request $request) {
 
         $widgets = $request->getParam('widgets');
 
-        $widgets = json_decode($widgets, true);
+        if (is_string($widgets)) {
+            $widgets = json_decode($widgets, true);
+        }
 
         if (is_null($widgets)) {
             return null;
@@ -254,8 +259,10 @@ class BreakdownController extends Controller {
                     $widgetData = $this->getProjection($request);
                     break;
                 case 'rollingAverage':
-                    $widgetData = $this->getRollingAverage($request,
-                        $widgetParams);
+                    $widgetData = $this->getRollingAverage($request, $widgetParams);
+                    break;
+                case 'dailyCost':
+                    $widgetData = $this->getDailyCost($request, $widgetParams);
                     break;
                 default:
                     $widgetData = null;

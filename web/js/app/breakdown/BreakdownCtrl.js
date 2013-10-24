@@ -7,15 +7,17 @@
             $scope.dashboard = {
                 widgetRows : [
                     {
-                        height : 300,
+                        height        : 300,
                         widgetColumns : [
                             {
-                                flex : 1,
+                                flex    : 1,
                                 widgets : [
                                     {
-                                        flex : 1,
-                                        title : 'Daily Cost',
-                                        type : 'dailyCost'
+                                        flex  : 1,
+                                        title : 'Total Cost of Instances (Monthly View)',
+                                        type  : 'dailyCost',
+                                        templateFile : 'bigGraph.html',
+                                        tplService : 'dailyCost'
                                     }
                                 ]
                             }
@@ -47,7 +49,7 @@
                                 ]
                             },
                             {
-                                flex : 1,
+                                flex    : 1,
                                 widgets : [
                                     {
                                         flex         : 1,
@@ -61,7 +63,7 @@
                                 ]
                             },
                             {
-                                flex : 1,
+                                flex    : 1,
                                 widgets : [
                                     {
                                         flex         : 1,

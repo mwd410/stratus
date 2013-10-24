@@ -15,7 +15,7 @@
                             type    : item.type,
                             id      : item.id || null,
                             sub_id  : item.sub_id || null,
-                            widgets : JSON.stringify(widgets)
+                            widgets : widgets
                         };
                     }
 
@@ -42,7 +42,10 @@
                     widget.guid = guid;
                     widget.params = widget.params || null;
 
-                    widgets[widget.guid] = widget;
+                    widgets[widget.guid] = {
+                        type : widget.type,
+                        params : widget.params
+                    };
                 },
                 getData        : function(widget) {
 
