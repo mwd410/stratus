@@ -315,14 +315,23 @@ class BreakdownController extends Controller {
         $customerId = $this->getUser()->get('customer_id');
 
         $query = Query::create(Query::SELECT)
-            ->column('concat("$", format(ifnull(sum(cost), 0), 2)) as kpi')
+            ->column('ifnull(sum(cost), 0) as cost')
             ->from('billing_history_v')
-            ->where('customer_id = ?', $customerId)
-            ->where("history_date > date_sub(now(), interval ? day)", $days);
+            ->where('customer_id = ' . $customerId)
+            ->where('month(history_date) + 1 = month(now())')
+            ->groupBy('history_date');
 
         $result = $this->getFilteredResult($query, $request, $columns);
 
-        return $result[0];
+        $sum = 0;
+
+        foreach ($result as $row) {
+            $sum += $row['cost'];
+        }
+
+        return array(
+            'kpi' => '$' . number_format($sum / (count($result) ?: 1) , 2)
+        );
     }
 
 }
