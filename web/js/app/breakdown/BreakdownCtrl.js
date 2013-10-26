@@ -7,31 +7,14 @@
             $scope.dashboard = {
                 widgetRows : [
                     {
-                        height        : 300,
-                        widgetColumns : [
-                            {
-                                flex    : 1,
-                                widgets : [
-                                    {
-                                        flex  : 1,
-                                        title : 'Total Spend per Day',
-                                        type  : 'dailyCost',
-                                        templateFile : 'bigGraph.html',
-                                        tplService : 'dailyCost'
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        height        : 70,
+                        height        : 105,
                         widgetColumns : [
                             {
                                 flex    : 1,
                                 widgets : [
                                     {
                                         flex         : 1,
-                                        miniTitle    : 'Monthly Projection',
+                                        miniTitle    : 'Monthly Spend',
                                         type         : 'eomProjection',
                                         templateFile : 'kpi.html'
                                     }
@@ -73,6 +56,23 @@
                                             days : 7
                                         },
                                         templateFile : 'kpi.html'
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        height        : 300,
+                        widgetColumns : [
+                            {
+                                flex    : 1,
+                                widgets : [
+                                    {
+                                        flex         : 1,
+                                        title        : 'Total Spend per Day',
+                                        type         : 'dailyCost',
+                                        templateFile : 'bigGraph.html',
+                                        tplService   : 'dailyCost'
                                     }
                                 ]
                             }

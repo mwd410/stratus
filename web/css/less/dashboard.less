@@ -29,6 +29,7 @@
 .st-dash-title {
     padding : 6px;
     & > div {
+        position: relative;
         .st-emboss;
         padding          : 10px;
         text-align       : center;
@@ -39,9 +40,10 @@
         .border-radius(3px);
 
         select {
-            float     : left;
             font-size : 14px;
-            margin    : -2px;
+            position: absolute;
+            left : 8px;
+            top : 8px;
         }
     }
 }

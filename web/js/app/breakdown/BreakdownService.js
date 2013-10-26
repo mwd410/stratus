@@ -23,6 +23,8 @@
 
                         service.title = response.data.title;
 
+                        service.lastTitle = response.data.lastTitle;
+
                         service.menus = response.data.menu;
 
                         ng.copy(response.data.widgets, service.widgetData);

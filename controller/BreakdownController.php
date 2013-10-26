@@ -17,9 +17,11 @@ class BreakdownController extends Controller {
 
         $result['menu'] = $this->getMenu($request);
 
+        $result['widgets'] = $this->getWidgets($request);
+
         $result['title'] = $this->getTitle();
 
-        $result['widgets'] = $this->getWidgets($request);
+        $result['lastTitle'] = end($this->titleParts);
 
         $this->json($result);
     }
@@ -297,8 +299,9 @@ class BreakdownController extends Controller {
         }
 
         $projectionQuery = Query::create(Query::SELECT)
-            ->column('concat("$", format(ifnull(sum(estimate), 0), 2)) as kpi')
-            ->column('concat("Last Updated: ", history_date) as kpi_title')
+            ->column('format(ifnull(sum(estimate), 0), 2) as value')
+            ->column('concat("Last Updated : ", history_date) as tooltip')
+            ->column('"Projection :" as label')
             ->from($typeViews[$type])
             ->where('customer_id = ?', $customerId);
 
@@ -307,14 +310,43 @@ class BreakdownController extends Controller {
             'sub_id' => 'sub_type_id'
         );
 
-        $result = $this->getFilteredResult($projectionQuery,
-            $request,
-            $columns);
+        $result = $this->getFilteredResult($projectionQuery, $request, $columns);
 
-        if (count($result) > 0) {
-            $result = $result[0];
-        } else {
+        if (count($result) == 0) {
             $result = false;
+        } else {
+
+            $lastMonthQuery = Query::create(Query::SELECT)
+                ->column('format(ifnull(sum(cost), 0), 2) as value')
+                ->column('"Last Month :" as label')
+                ->from('billing_history_v')
+                ->where('customer_id = ?', $customerId)
+                ->where('month(history_date) = month(now() - interval 30 day)')
+                ->where('year(history_date) = year(now() - interval 30 day)');
+
+            $columns = BillingHistoryView::getColumns($type);
+
+            $lastMonth = $this->getFilteredResult($lastMonthQuery, $request, $columns);
+
+            $result = array_merge($result, $lastMonth);
+
+            $spend = floatval($result[0]['value']);
+            $lastSpend = floatval($result[1]['value']);
+
+            if ($lastSpend == 0) {
+                $diff = '0.00';
+            } else {
+                $diff = number_format(($spend - $lastSpend) / $lastSpend, 2);
+            }
+
+            foreach($result as &$datum) {
+                $datum['value'] = '$'.$datum['value'];
+            }
+
+            $result[] = array(
+                'value' => $diff . '%',
+                'label' => "MoM Change :"
+            );
         }
 
         return $result;

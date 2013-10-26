@@ -76,7 +76,7 @@
 
                         <div class="st-widget-wrapper">
                             <header data-ng-if="widget.title">
-                                <h4>{{widget.title}}</h4>
+                                <h4>{{ [widgetService.lastTitle, widget.title].join(' - ') }}</h4>
                             </header>
                             <div>
                                 <div data-ng-if="widget.tpl"
