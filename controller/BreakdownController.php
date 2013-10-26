@@ -209,6 +209,8 @@ class BreakdownController extends Controller {
             ->column('format(ifnull(sum(cost), 0), 2) as total')
             ->from('billing_history_v')
             ->where('customer_id = ?', $customerId)
+            ->where('history_date >= curdate() - interval 30 day')
+            ->where('history_date < curdate()')
             ->groupBy('history_date')
             ->orderBy('history_date asc')
             ->limit(30);

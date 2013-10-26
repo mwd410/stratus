@@ -4,15 +4,16 @@
     ng.module('app.dashboard')
         .service('dailyCost', function(Utils) {
 
-            var body = $('body'),
-                bgColor = body.css('background-color'),
-                bgText = body.css('color'),
+            var colors = Utils.getLessVars('color'),
                 options = {
                     chart   : {
                         defaultSeriesType : 'line',
                         zoomType          : 'x',
-                        backgroundColor   : body.css('background-color')
+                        backgroundColor   : colors.bgMain
                     },
+                    colors      : [
+                        colors.brandLight
+                    ],
                     plotOptions : {
                         line : {
                             events : {
@@ -33,7 +34,7 @@
                     },
                     xAxis   : {
                         title         : {
-                            text   : 'Date',
+                            text   : null,
                             offset : 25,
                             style  : {
                                 color         : '#fff',
@@ -55,7 +56,7 @@
                     },
                     yAxis   : {
                         title  : {
-                            text  : 'Cost($)',
+                            text  : null,
                             style : {
                                 color         : '#fff',
                                 'font-weight' : 'normal'
@@ -65,9 +66,11 @@
                             formatter : function() {
                                 return '$' + this.value;
                             }
-                        }
+                        },
+                        min : 0
                     },
                     legend  : {
+                        enabled : false,
                         layout         : 'vertical',
                         align          : 'right',
                         verticalAlign  : 'top',
@@ -75,15 +78,15 @@
                         y              : 100,
                         borderWidth    : 1,
                         itemStyle      : {
-                            color : bgText
+                            color : colors.bgText
                         },
                         itemHoverStyle : {
-                            color : '#fff'
+                            color : colors.bgTextStrong
                         }
                     },
                     tooltip : {
                         valuePrefix : '$',
-                        backgroundColor : 'rgba(43, 43, 43, 0.85)',
+                        backgroundColor : colors.bgMain,
                         style : {
                             color : '#fff'
                         }

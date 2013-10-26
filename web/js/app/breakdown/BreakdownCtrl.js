@@ -14,7 +14,7 @@
                                 widgets : [
                                     {
                                         flex  : 1,
-                                        title : 'Total Cost of Instances (Monthly View)',
+                                        title : 'Total Spend per Day',
                                         type  : 'dailyCost',
                                         templateFile : 'bigGraph.html',
                                         tplService : 'dailyCost'
