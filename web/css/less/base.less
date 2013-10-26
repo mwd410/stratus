@@ -3,62 +3,62 @@
  */
 
 html {
-  height           : 100%;
-  background-color : @st-bg-main;
+    height           : 100%;
+    background-color : @st-bg-main;
 }
 
 body {
-  padding-top      : 50px;
-  height           : 100%;
-  background-color : @st-bg-main;
-  overflow-x : hidden;
-  color            : @st-bg-text;
+    padding-top      : 50px;
+    height           : 100%;
+    background-color : @st-bg-main;
+    overflow-x       : hidden;
+    color            : @st-bg-text;
 }
 
 .main-text {
-  color : @st-brand-main;
+    color : @st-brand-main;
 }
 
 .dark-text {
-  color : @st-brand-dark;
+    color : @st-brand-dark;
 }
 
 .muted-text {
-  color : @st-brand-light;
+    color : @st-brand-light;
 }
 
 .white-text {
-  color : #fff;
+    color : #fff;
 }
 
 .st-btn {
-  background-color : @st-brand-main;
-  color            : @st-brand-light;
-  //border-color     : @st-brand-dark;
-  border           : none;
-  .st-emboss;
-  &:hover,
-  &:active {
-    color            : @st-brand-text-strong;
     background-color : @st-brand-main;
-    border-color     : @st-brand-dark;
-  }
+    color            : @st-brand-light;
+    //border-color     : @st-brand-dark;
+    border           : none;
+    .st-emboss;
+    &:hover,
+    &:active {
+        color            : @st-brand-text-strong;
+        background-color : @st-brand-main;
+        border-color     : @st-brand-dark;
+    }
 }
 
 ::-webkit-scrollbar {
-  width : 12px;
-  .border-radius(10px);
-  background-color : @st-bg-dark;
-  border : 1px solid @st-bg-dark;
+    width            : 12px;
+    .border-radius(10px);
+    background-color : @st-bg-dark;
+    border           : 1px solid @st-bg-dark;
 }
 
 ::-webkit-scrollbar-track,
 ::-webkit-scrollbar-thumb {
-  .box-shadow(inset 0 0 3px rgba(0, 0, 0, 0.5));
+    .box-shadow(inset 0 0 3px rgba(0, 0, 0, 0.5));
 
 }
 
 ::-webkit-scrollbar-thumb {
-  background: @st-brand-dark;
-  .border-radius(10px);
+    background : @st-brand-dark;
+    .border-radius(10px);
 }

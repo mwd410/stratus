@@ -1,7 +1,7 @@
 (function(ng, undefined) {
     'use strict';
 
-    ng.module('app.breakdown').service('breakdown', function($http, Utils) {
+    ng.module('app.breakdown').service('breakdown', function($http, Utils, AccountService) {
 
         var service = {
                 menus          : [],

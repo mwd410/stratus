@@ -40,6 +40,8 @@
 
             <div data-ng-if="getTitle()" class="st-dash-title">
                 <div>
+                    <select data-ng-model="widgetService.selectedAccount"
+                            data-ng-options="item.name for item in accounts"></select>
                     {{ getTitle() }}
                 </div>
             </div>

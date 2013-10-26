@@ -18,8 +18,8 @@ class Account {
         'deleted'
     );
 
-    const EXTERNAL_ID = 'account_id';
-    const NAME = 'account_name';
+    const EXTERNAL_ID = 'external_id';
+    const NAME = 'name';
 
     /**
      * @return string
@@ -40,7 +40,7 @@ class Account {
         return Query::create(Query::SELECT)
                ->column('id')
                ->column(self::EXTERNAL_ID)
-               ->column("AES_DECRYPT(account_name,'$keyString') as name")
+               ->column("AES_DECRYPT(".self::NAME.",'$keyString') as name")
                ->column("AES_DECRYPT(aws_key,'$keyString') as aws_key")
                ->column("AES_DECRYPT(secret_key,'$keyString') as secret_key")
                ->from('account');

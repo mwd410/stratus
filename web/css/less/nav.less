@@ -42,208 +42,208 @@
 }*/
 
 .st-navbar {
-  background-color : @st-brand-main;
-  border-bottom    : 1px solid @st-brand-dark;
-  position         : relative;
-  height           : 50px;
-  position         : fixed;
-  top              : 0;
-  left             : 0;
-  width            : 100%;
-  z-index          : 1000;
-  .wrapper {
-    height    : 100%;
-    max-width : @screen-lg;
-    margin    : 0 auto;
-  }
-  .box-shadow(0 1px 0 rgba(255, 255, 255, 0.1););
-  .st-brand {
-    float   : left;
-    display : inline-block;
-    img {
-      float   : left;
-      margin  : 6px;
-      display : inline-block;
+    background-color : @st-brand-main;
+    border-bottom    : 1px solid @st-brand-dark;
+    position         : relative;
+    height           : 50px;
+    position         : fixed;
+    top              : 0;
+    left             : 0;
+    width            : 100%;
+    z-index          : 1000;
+    .wrapper {
+        height    : 100%;
+        max-width : @screen-lg;
+        margin    : 0 auto;
     }
-  }
-  .st-right-menu-nav {
-    position   : absolute;
-    width      : 100%;
-    right      : 0;
-    top        : 50px;
-    max-height : 0px;
-    overflow   : hidden;
-    &.is-expanded {
-      .transition(0.2s linear all);
-      max-height : 500px;
-    }
-    button {
-      width       : 50px;
-      height      : 50px;
-      float       : right;
-      font-size   : 36px;
-      line-height : 50px;
-      margin      : 0;
-      color       : @st-brand-text-strong;
-      background  : none;
-      border      : none;
-      display     : inline-block;
-      &:hover, &:active, &.is-active {
-        background : @st-brand-dark;
-      }
-    }
-    nav {
-      width            : 100%;
-      margin           : 0;
-      background-color : @st-brand-main;
-      border-top       : 1px solid rgba(255, 255, 255, 0.1);
-      border-bottom    : 1px solid @st-brand-dark;
-      ul {
-        height     : 100%;
-        list-style : none;
-        display    : block;
-        padding    : 0;
-        width      : 100%;
-        margin     : 0;
-        li {
-          width : 100%;
-          a {
-            display  : block;
-            padding  : 10px 15px;
-            width    : 100%;
-            position : relative;
-            color    : @st-brand-text;
-            &:hover {
-              text-decoration : none;
-              color           : @st-brand-text-strong;
-            }
-          }
-          &.is-active > a {
-            color            : @st-brand-text-strong;
-            background-color : @st-brand-dark;
-          }
-        }
-      }
-    }
-  }
-  @media (min-width : @screen-sm) {
-    .st-right-menu-nav {
-      float      : left;
-      position   : static;
-      width      : auto;
-      max-height : 400px;
-      nav {
-        background : none;
-        margin     : 0 !important;
-        border     : none;
-        float      : left;
-        & > ul {
-          & > li {
+    .box-shadow(0 1px 0 rgba(255, 255, 255, 0.1););
+    .st-brand {
+        float   : left;
+        display : inline-block;
+        img {
+            float   : left;
+            margin  : 6px;
             display : inline-block;
-            width   : auto;
-            & > a {
-              padding : 15px;
-            }
-          }
         }
-      }
     }
-  }
+    .st-right-menu-nav {
+        position   : absolute;
+        width      : 100%;
+        right      : 0;
+        top        : 50px;
+        max-height : 0px;
+        overflow   : hidden;
+        &.is-expanded {
+            .transition(0.2s linear all);
+            max-height : 500px;
+        }
+        button {
+            width       : 50px;
+            height      : 50px;
+            float       : right;
+            font-size   : 36px;
+            line-height : 50px;
+            margin      : 0;
+            color       : @st-brand-text-strong;
+            background  : none;
+            border      : none;
+            display     : inline-block;
+            &:hover, &:active, &.is-active {
+                background : @st-brand-dark;
+            }
+        }
+        nav {
+            width            : 100%;
+            margin           : 0;
+            background-color : @st-brand-main;
+            border-top       : 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom    : 1px solid @st-brand-dark;
+            ul {
+                height     : 100%;
+                list-style : none;
+                display    : block;
+                padding    : 0;
+                width      : 100%;
+                margin     : 0;
+                li {
+                    width : 100%;
+                    a {
+                        display  : block;
+                        padding  : 10px 15px;
+                        width    : 100%;
+                        position : relative;
+                        color    : @st-brand-text;
+                        &:hover {
+                            text-decoration : none;
+                            color           : @st-brand-text-strong;
+                        }
+                    }
+                    &.is-active > a {
+                        color            : @st-brand-text-strong;
+                        background-color : @st-brand-dark;
+                    }
+                }
+            }
+        }
+    }
+    @media (min-width : @screen-sm) {
+        .st-right-menu-nav {
+            float      : left;
+            position   : static;
+            width      : auto;
+            max-height : 400px;
+            nav {
+                background : none;
+                margin     : 0 !important;
+                border     : none;
+                float      : left;
+                & > ul {
+                    & > li {
+                        display : inline-block;
+                        width   : auto;
+                        & > a {
+                            padding : 15px;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 .st-navbar-header {
-  .st-brand {
-    float : left;
-  }
-  button {
-    &.for-left {
-      float        : left;
-      margin-right : 15px;
+    .st-brand {
+        float : left;
     }
-    float       : right;
-    width       : 50px;
-    height      : 50px;
-    font-size   : 28px;
-    line-height : 50px;
-    margin      : 0;
-    color       : @st-brand-text-strong;
-    background  : none;
-    border      : none;
-    display     : inline-block;
-    &:hover, &:active {
-      background : @st-brand-dark;
+    button {
+        &.for-left {
+            float        : left;
+            margin-right : 15px;
+        }
+        float       : right;
+        width       : 50px;
+        height      : 50px;
+        font-size   : 28px;
+        line-height : 50px;
+        margin      : 0;
+        color       : @st-brand-text-strong;
+        background  : none;
+        border      : none;
+        display     : inline-block;
+        &:hover, &:active {
+            background : @st-brand-dark;
+        }
+        @media (min-width : @screen-sm) {
+            &.for-main {
+                display : none;
+            }
+        }
+        @media (min-width : @screen-md) {
+            &.for-left {
+                display : none;
+            }
+        }
     }
-    @media (min-width : @screen-sm) {
-      &.for-main {
-        display : none;
-      }
-    }
-    @media (min-width : @screen-md) {
-      &.for-left {
-        display: none;
-      }
-    }
-  }
 }
 
 .st-config-menu {
-  position   : absolute;
-  top        : 50px;
-  right      : 0;
-  max-height : 0px;
-  overflow   : hidden;
-  .transition(0.2s linear all);
-  &.is-expanded {
-    max-height : 400px;
-  }
-  ul {
-    background-color : @st-bg-dark;
-    min-width        : 200px;
-    border           : 1px solid @st-bg-light;
-    text-shadow      : 0 -1px 0 rgba(0, 0, 0, .15);
-    padding          : 10px;
-    display          : block;
-    list-style       : none;
-    padding          : 0;
-    margin           : 0;
-  }
-  a {
-    display : block;
-    padding : 10px;
-    color   : @st-bg-text;
-    &:hover, &:active {
-      color           : @st-bg-text-strong;
-      text-decoration : none;
+    position   : absolute;
+    top        : 50px;
+    right      : 0;
+    max-height : 0px;
+    overflow   : hidden;
+    .transition(0.2s linear all);
+    &.is-expanded {
+        max-height : 400px;
     }
-  }
+    ul {
+        background-color : @st-bg-dark;
+        min-width        : 200px;
+        border           : 1px solid @st-bg-light;
+        text-shadow      : 0 -1px 0 rgba(0, 0, 0, .15);
+        padding          : 10px;
+        display          : block;
+        list-style       : none;
+        padding          : 0;
+        margin           : 0;
+    }
+    a {
+        display : block;
+        padding : 10px;
+        color   : @st-bg-text;
+        &:hover, &:active {
+            color           : @st-bg-text-strong;
+            text-decoration : none;
+        }
+    }
 }
 
 @media (min-width : @screen-lg) {
-  .st-navbar-header button.for-config {
-    display : none;
-  }
+    .st-navbar-header button.for-config {
+        display : none;
+    }
 
-  .st-config-menu {
-    position   : static;
-    float      : right;
-    background : none;
-    padding    : 0;
-    border     : none;
-    overflow   : visible;
-    ul {
-      background : none;
-      border     : none;
+    .st-config-menu {
+        position   : static;
+        float      : right;
+        background : none;
+        padding    : 0;
+        border     : none;
+        overflow   : visible;
+        ul {
+            background : none;
+            border     : none;
+        }
+        li {
+            display : inline-block;
+        }
+        a {
+            padding : 15px;
+            color   : @st-brand-text;
+            &:hover, &:active {
+                color : @st-bg-text-strong;
+            }
+        }
     }
-    li {
-      display : inline-block;
-    }
-    a {
-      padding : 15px;
-      color   : @st-brand-text;
-      &:hover, &:active {
-        color : @st-bg-text-strong;
-      }
-    }
-  }
 }
 
