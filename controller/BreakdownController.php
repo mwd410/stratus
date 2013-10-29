@@ -587,8 +587,8 @@ class BreakdownController extends Controller {
             $selectColumn = $table['select'];
 
             $query = Query::create(Query::SELECT)
-                ->column('format(sum(bhv.cost), 2) as total')
                 ->column($selectColumn . ' as name')
+                ->column('format(sum(bhv.cost), 2) as total')
                 ->from('billing_history_v bhv')
                 ->join('account a on a.id = bhv.account_id')
                 ->where('a.deleted = 0')
@@ -608,11 +608,14 @@ class BreakdownController extends Controller {
                 }
             }
 
-            $result = $query->execute();
+            $result = $query->execute(array(), PDO::FETCH_NUM);
 
             $data[] = array(
-                'title' => $table['title'],
-                'data'  => $result
+                'headers' => array(
+                    $table['title'],
+                    'Spend'
+                ),
+                'data'    => $result
             );
         }
 

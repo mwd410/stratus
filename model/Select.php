@@ -2,7 +2,7 @@
 
 class Select extends Query {
 
-    public function execute($params = array()) {
+    public function execute($params = array(), $style = PDO::FETCH_ASSOC) {
 
         $result = $this->executeQuery($params);
 
@@ -15,7 +15,7 @@ class Select extends Query {
 
         return $this
                ->getStatement()
-               ->fetchAll(PDO::FETCH_ASSOC);
+               ->fetchAll($style);
     }
 
     public function getSql() {
