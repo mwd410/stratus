@@ -1,45 +1,76 @@
 CREATE OR REPLACE VIEW service_provider_v AS
     SELECT
         sp.id                         AS id,
-        ifnull(tsp.tag_name, sp.name) AS name
+        ifnull(tsp.tag_name, sp.name) AS name,
+        sp.name                       AS original_name
     FROM service_provider sp
         LEFT JOIN tag_service_provider tsp
             ON tsp.name = sp.name
-    ORDER BY sp.id
-;
+    ORDER BY sp.id;
 
 CREATE OR REPLACE VIEW service_provider_product_v AS
     SELECT
         sp.id                          AS id,
         ifnull(tspp.tag_name, sp.name) AS name,
+        sp.name                        AS original_name,
         sp.service_provider_id         AS service_provider_id,
         sp.service_type_id             AS service_type_id
     FROM service_product sp
         LEFT JOIN tag_service_provider_product tspp
             ON tspp.name = sp.name
-    ORDER BY sp.id
-;
+    ORDER BY sp.id;
 
 CREATE OR REPLACE VIEW service_type_v AS
     SELECT
         st.id                         AS id,
-        ifnull(tst.tag_name, st.name) AS name
+        ifnull(tst.tag_name, st.name) AS name,
+        st.name                       AS original_name
     FROM service_type st
         LEFT JOIN tag_service_type tst
             ON st.name = tst.name
-    ORDER BY st.id
-;
+    ORDER BY st.id;
 
 CREATE OR REPLACE VIEW service_type_category_v AS
     SELECT
         stc.id                          AS id,
         ifnull(tstc.tag_name, stc.name) AS name,
+        stc.name                        AS original_name,
         stc.service_type_id             AS service_type_id
     FROM service_type_category stc
         LEFT JOIN tag_service_type_category tstc
             ON stc.name = tstc.name
-    ORDER BY stc.id
-;
+    ORDER BY stc.id;
+
+CREATE OR REPLACE VIEW billing_history_v AS
+    SELECT
+        bh.id                    AS id,
+        bh.description           AS description,
+        bh.operation             AS operation,
+        bh.usage_type            AS usage_type,
+        bh.history_date          AS history_date,
+        bh.cost                  AS cost,
+        a.customer_id            AS customer_id,
+        bh.account_id            AS account_id,
+        stcv.id                  AS service_type_category_id,
+        stcv.name                AS service_type_category_name,
+        stcv.service_type_id     AS service_type_id,
+        stv.name                 AS service_type_name,
+        sppv.service_provider_id AS service_provider_id,
+        spv.name                 AS service_provider_name,
+        sppv.id                  AS service_product_id,
+        sppv.name                AS service_provider_product_name
+    FROM billing_history bh
+        JOIN service_type_category_v stcv
+            ON stcv.id = bh.service_type_category_id
+        JOIN service_provider_product_v sppv
+            ON sppv.original_name = bh.product_name
+        JOIN service_provider_v spv
+            ON spv.id = sppv.service_provider_id
+        JOIN service_type_v stv
+            ON stv.id = stcv.service_type_id
+        JOIN account a
+            ON a.id = bh.account_id
+    ORDER BY bh.history_date;
 
 CREATE OR REPLACE VIEW service_provider_menu_v AS
     SELECT
@@ -54,8 +85,7 @@ CREATE OR REPLACE VIEW service_provider_menu_v AS
         JOIN service_provider_v sp
             ON sp.id = spm.service_provider_id
         JOIN service_provider_product_v spp
-            ON spp.id = spsm.service_product_id
-;
+            ON spp.id = spsm.service_product_id;
 
 CREATE OR REPLACE VIEW service_type_menu_v AS
     SELECT
@@ -70,8 +100,7 @@ CREATE OR REPLACE VIEW service_type_menu_v AS
         JOIN service_type_v stv
             ON stv.id = stm.service_type_id
         JOIN service_type_category_v stcv
-            ON stcv.id = stsm.service_type_category_id
-;
+            ON stcv.id = stsm.service_type_category_id;
 
 CREATE OR REPLACE VIEW service_provider_projection_v AS
     SELECT
@@ -91,8 +120,7 @@ CREATE OR REPLACE VIEW service_provider_projection_v AS
         JOIN service_provider_product_v sppv
             ON sppv.id = spp.service_product_id
         JOIN service_provider_v spv
-            ON spv.id = sppv.service_provider_id
-;
+            ON spv.id = sppv.service_provider_id;
 
 CREATE OR REPLACE VIEW service_type_projection_v AS
     SELECT
@@ -112,5 +140,4 @@ CREATE OR REPLACE VIEW service_type_projection_v AS
         JOIN service_type_category_v stcv
             ON stcv.id = stp.service_type_category_id
         JOIN service_type_v stv
-            ON stv.id = stcv.service_type_id
-;
+            ON stv.id = stcv.service_type_id;

@@ -1,0 +1,16 @@
+<div class="st-widget-top-spend" data-ng-repeat="table in widget.data">
+    <table>
+        <thead>
+            <tr>
+                <th>{{ table.title }}</th>
+                <th>Total Spend</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-ng-repeat="row in table.data">
+                <td>{{ row.name }}</td>
+                <td>{{ row.total }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

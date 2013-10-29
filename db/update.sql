@@ -20,10 +20,3 @@
 
 source db/views.sql
 
-
-SELECT
-    format(sum(cost), 2)                       AS value,
-    history_date > curdate() - INTERVAL 30 DAY AS month_index
-FROM billing_history_v
-WHERE history_date > curdate() - INTERVAL 60 DAY
-GROUP BY month_index;

@@ -77,6 +77,22 @@
                                 ]
                             }
                         ]
+                    },
+                    {
+                        height : 800,
+                        widgetColumns : [
+                            {
+                                flex : 1,
+                                widgets : [
+                                    {
+                                        flex : 1,
+                                        title : 'Top Spenders',
+                                        type : 'topSpend',
+                                        templateFile : 'topSpend.html'
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 ]
             };

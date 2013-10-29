@@ -227,7 +227,7 @@ class BreakdownController extends Controller {
                     $widgetData = $this->getDailyCost($request, $widgetParams);
                     break;
                 case 'monthToDate':
-                    $widgetData = $this->monthToDate($request);
+                    $widgetData = $this->getMonthToDate($request);
                     break;
                 case 'monthlySpend':
                     $widgetData = $this->getMonthlySpend($request);
@@ -235,6 +235,9 @@ class BreakdownController extends Controller {
                 case 'rollingAverage':
                     $widgetData = $this->getRollingAverage($request,
                         $widgetParams);
+                    break;
+                case 'topSpend':
+                    $widgetData = $this->getTopSpend($request);
                     break;
                 default:
                     $widgetData = null;
@@ -360,7 +363,7 @@ class BreakdownController extends Controller {
         return $result;
     }
 
-    public function monthToDate(Request $request) {
+    public function getMonthToDate(Request $request) {
 
         $type = $request->getParam('type');
 
@@ -464,7 +467,8 @@ class BreakdownController extends Controller {
 
         $query = Query::create(Query::SELECT)
             ->column('format(ifnull(sum(cost), 0), 2) as cost')
-            ->column('history_date > (curdate() - interval ? day) as month_index', $days)
+            ->column('history_date > (curdate() - interval ? day) as month_index',
+                $days)
             ->from('billing_history_v')
             ->where('customer_id = ?', $customerId)
             ->where('history_date > curdate() - interval ? day', $days * 2)
@@ -495,7 +499,7 @@ class BreakdownController extends Controller {
             $data[$index]['count'] += 1;
         }
 
-        foreach($data as &$datum) {
+        foreach ($data as &$datum) {
 
             if ($datum['count'] == 0) {
                 $avg = 0;
@@ -522,6 +526,95 @@ class BreakdownController extends Controller {
             'value' => $diff . '%',
             'label' => 'Rolling Change'
         );
+
+        return $data;
+    }
+
+    private function getTopSpend(Request $request) {
+
+        $type = $request->getParam('type');
+        $id = $request->getParam('id');
+        $subId = $request->getParam('sub_id');
+
+        if (!$type) {
+            return null;
+        }
+
+        $columns = BillingHistoryView::getColumns($type);
+        $keyString = Config::from('config')->get('keystring');
+
+        $titles = array(
+            'provider' => array(
+                'id'     => 'Service Provider',
+                'sub_id' => 'Service Provider Product'
+            ),
+            'type'     => array(
+                'id'     => 'Service Type',
+                'sub_id' => 'Service Type Category',
+            )
+        );
+
+        $tables = array(
+            array(
+                'group'   => 'bhv.' . $columns['id'],
+                'select'  => 'bhv.' . $columns['name'],
+                'title'   => $titles[$type]['id'],
+                'include' => $id == null
+            ),
+            array(
+                'group'   => 'bhv.' . $columns['sub_id'],
+                'select'  => 'bhv.' . $columns['sub_name'],
+                'title'   => $titles[$type]['sub_id'],
+                'include' => $subId == null
+            ),
+            array(
+                'group'   => 'account_id',
+                'select'  => "aes_decrypt(a.name, '$keyString')",
+                'title'   => 'Account',
+                'include' => true
+            )
+        );
+
+        $data = array();
+
+        foreach ($tables as $table) {
+
+            if (!$table['include']) {
+                continue;
+            }
+
+            $groupColumn = $table['group'];
+            $selectColumn = $table['select'];
+
+            $query = Query::create(Query::SELECT)
+                ->column('format(sum(bhv.cost), 2) as total')
+                ->column($selectColumn . ' as name')
+                ->from('billing_history_v bhv')
+                ->join('account a on a.id = bhv.account_id')
+                ->where('a.deleted = 0')
+                ->groupBy($groupColumn);
+
+            if ($id != null) {
+
+                $idColumn = 'bhv.' . $columns['id'];
+
+                $query->where($idColumn . ' = ?', $id);
+
+                if ($subId != null) {
+
+                    $subIdColumn = 'bhv.' . $columns['sub_id'];
+
+                    $query->where($subIdColumn . ' = ?', $subId);
+                }
+            }
+
+            $result = $query->execute();
+
+            $data[] = array(
+                'title' => $table['title'],
+                'data'  => $result
+            );
+        }
 
         return $data;
     }

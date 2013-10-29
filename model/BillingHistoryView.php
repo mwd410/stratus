@@ -11,16 +11,20 @@ class BillingHistoryView {
 
     private static $columns = array(
         'provider' => array(
-            'id'     => 'service_provider_id',
-            'sub_id' => 'service_product_id'
+            'id'       => 'service_provider_id',
+            'sub_id'   => 'service_product_id',
+            'name'     => 'service_provider_name',
+            'sub_name' => 'service_provider_product_name'
         ),
         'type'     => array(
-            'id'     => 'service_type_id',
-            'sub_id' => 'service_type_category_id'
+            'id'       => 'service_type_id',
+            'sub_id'   => 'service_type_category_id',
+            'name'     => 'service_type_name',
+            'sub_name' => 'service_type_category_name'
         )
     );
 
-    public static function getColumns($type){
+    public static function getColumns($type) {
 
         if (!isset(self::$columns[$type])) {
             throw new Exception('$type parameter null');
