@@ -588,7 +588,7 @@ class BreakdownController extends Controller {
 
             $query = Query::create(Query::SELECT)
                 ->column($selectColumn . ' as name')
-                ->column('format(sum(bhv.cost), 2) as total')
+                ->column('concat("$", format(sum(bhv.cost), 2)) as total')
                 ->from('billing_history_v bhv')
                 ->join('account a on a.id = bhv.account_id')
                 ->where('a.deleted = 0')

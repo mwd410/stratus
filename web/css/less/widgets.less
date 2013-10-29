@@ -8,13 +8,25 @@
     }
 
     .the-value {
-        color : @st-bg-text-strong;
-        font-size: 16px;
+        color     : @st-bg-text-strong;
+        font-size : 16px;
     }
 }
 
 .st-widget-top-spend {
     table {
-        width: 100%;
+        color : @st-bg-text-strong;
+        border-collapse: collapse;
+        width  : 100%;
+        +table {
+            margin-top: 15px;
+        }
+        td, th {
+            padding : 6px 24px;
+            border : 1px solid @st-bg-light;
+            &:last-of-type {
+                width : 25%;
+            }
+        }
     }
 }
