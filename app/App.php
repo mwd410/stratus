@@ -33,6 +33,8 @@ class App {
 
         session_start();
 
+        date_default_timezone_set('America/New_York');
+
         if (!isset($_SESSION)) {
             $_SESSION = array();
         }
@@ -41,5 +43,10 @@ class App {
 
         $url = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '/';
         $this->routing->route($url);
+    }
+
+    public static function log($logFile, $msg) {
+
+        error_log(date('Y-m-d H:i:s') . ": $msg\n", 3, '../log/'.$logFile.'.log');
     }
 }

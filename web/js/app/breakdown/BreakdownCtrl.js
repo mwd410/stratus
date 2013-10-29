@@ -7,7 +7,7 @@
             $scope.dashboard = {
                 widgetRows : [
                     {
-                        height        : 105,
+                        height        : 110,
                         widgetColumns : [
                             {
                                 flex    : 1,
@@ -15,7 +15,7 @@
                                     {
                                         flex         : 1,
                                         miniTitle    : 'Monthly Spend',
-                                        type         : 'eomProjection',
+                                        type         : 'monthlySpend',
                                         templateFile : 'kpi.html'
                                     }
                                 ]
@@ -25,8 +25,8 @@
                                 widgets : [
                                     {
                                         flex         : 1,
-                                        miniTitle    : 'Last Month Spend',
-                                        type         : 'lastMonthSpend',
+                                        miniTitle    : 'MTD Spend',
+                                        type         : 'monthToDate',
                                         templateFile : 'kpi.html'
                                     }
                                 ]

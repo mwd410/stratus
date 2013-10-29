@@ -94,6 +94,10 @@ abstract class Query {
 
         $this->stmt = $db->getConnection()->prepare($sql);
 
+        if (Config::from('config')->get('sql_log') === true) {
+            App::log('sql', $this);
+        }
+
         return $this->stmt->execute($this->getAllParams($params));
     }
 

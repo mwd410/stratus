@@ -82,7 +82,7 @@ class BreakdownController extends Controller {
                 'type'     => $itemType,
                 'title'    => $name,
                 'isActive' => $itemIsActive
-        );
+            );
 
             if ($itemIsActive) {
                 $this->addTitlePart($name);
@@ -200,39 +200,6 @@ class BreakdownController extends Controller {
         return $items;
     }
 
-    public function getDailyCost(Request $request, $params) {
-
-        $type = $request->getParam('type');
-
-        $customerId = $this->getUser()->get('customer_id');
-
-        $analysisQuery = Query::create(Query::SELECT)
-            ->column('history_date')
-            ->column('format(ifnull(sum(cost), 0), 2) as total')
-            ->from('billing_history_v')
-            ->where('customer_id = ?', $customerId)
-            ->where('history_date >= curdate() - interval 30 day')
-            ->where('history_date < curdate()')
-            ->groupBy('history_date')
-            ->orderBy('history_date asc')
-            ->limit(30);
-
-        if ($type != null) {
-
-            $columns = BillingHistoryView::getColumns($type);
-
-            $result = $this->getFilteredResult($analysisQuery, $request, $columns);
-        } else {
-            $result = $analysisQuery->execute();
-        }
-
-        foreach($result as &$row) {
-            $row['total'] = floatval($row['total']);
-        }
-
-        return $result;
-    }
-
     public function getWidgets(Request $request) {
 
         $widgets = $request->getParam('widgets');
@@ -256,17 +223,18 @@ class BreakdownController extends Controller {
             $widgetParams = $widget['params'];
 
             switch ($widgetType) {
-                case 'lastMonthSpend':
-                    $widgetData = $this->getLastMonthSpend($request);
-                    break;
-                case 'eomProjection':
-                    $widgetData = $this->getProjection($request);
-                    break;
-                case 'rollingAverage':
-                    $widgetData = $this->getRollingAverage($request, $widgetParams);
-                    break;
                 case 'dailyCost':
                     $widgetData = $this->getDailyCost($request, $widgetParams);
+                    break;
+                case 'monthToDate':
+                    $widgetData = $this->monthToDate($request);
+                    break;
+                case 'monthlySpend':
+                    $widgetData = $this->getMonthlySpend($request);
+                    break;
+                case 'rollingAverage':
+                    $widgetData = $this->getRollingAverage($request,
+                        $widgetParams);
                     break;
                 default:
                     $widgetData = null;
@@ -279,7 +247,42 @@ class BreakdownController extends Controller {
         return $result;
     }
 
-    public function getProjection(Request $request) {
+    public function getDailyCost(Request $request, $params) {
+
+        $type = $request->getParam('type');
+
+        $customerId = $this->getUser()->get('customer_id');
+
+        $analysisQuery = Query::create(Query::SELECT)
+            ->column('history_date')
+            ->column('format(ifnull(sum(cost), 0), 2) as total')
+            ->from('billing_history_v')
+            ->where('customer_id = ?', $customerId)
+            ->where('history_date >= curdate() - interval 30 day')
+            ->where('history_date < curdate()')
+            ->groupBy('history_date')
+            ->orderBy('history_date asc')
+            ->limit(30);
+
+        if ($type != null) {
+
+            $columns = BillingHistoryView::getColumns($type);
+
+            $result = $this->getFilteredResult($analysisQuery,
+                $request,
+                $columns);
+        } else {
+            $result = $analysisQuery->execute();
+        }
+
+        foreach ($result as &$row) {
+            $row['total'] = floatval($row['total']);
+        }
+
+        return $result;
+    }
+
+    public function getMonthlySpend(Request $request) {
 
         $type = $request->getParam('type');
 
@@ -300,8 +303,8 @@ class BreakdownController extends Controller {
 
         $projectionQuery = Query::create(Query::SELECT)
             ->column('format(ifnull(sum(estimate), 0), 2) as value')
-            ->column('concat("Last Updated : ", history_date) as tooltip')
-            ->column('"Projection :" as label')
+            ->column('concat("Last Updated", history_date) as tooltip')
+            ->column('"Projection" as label')
             ->from($typeViews[$type])
             ->where('customer_id = ?', $customerId);
 
@@ -310,7 +313,9 @@ class BreakdownController extends Controller {
             'sub_id' => 'sub_type_id'
         );
 
-        $result = $this->getFilteredResult($projectionQuery, $request, $columns);
+        $result = $this->getFilteredResult($projectionQuery,
+            $request,
+            $columns);
 
         if (count($result) == 0) {
             $result = false;
@@ -318,7 +323,7 @@ class BreakdownController extends Controller {
 
             $lastMonthQuery = Query::create(Query::SELECT)
                 ->column('format(ifnull(sum(cost), 0), 2) as value')
-                ->column('"Last Month :" as label')
+                ->column('"Last Month" as label')
                 ->from('billing_history_v')
                 ->where('customer_id = ?', $customerId)
                 ->where('month(history_date) = month(now() - interval 30 day)')
@@ -326,7 +331,9 @@ class BreakdownController extends Controller {
 
             $columns = BillingHistoryView::getColumns($type);
 
-            $lastMonth = $this->getFilteredResult($lastMonthQuery, $request, $columns);
+            $lastMonth = $this->getFilteredResult($lastMonthQuery,
+                $request,
+                $columns);
 
             $result = array_merge($result, $lastMonth);
 
@@ -336,20 +343,87 @@ class BreakdownController extends Controller {
             if ($lastSpend == 0) {
                 $diff = '0.00';
             } else {
-                $diff = number_format(($spend - $lastSpend) / $lastSpend, 2);
+                $diff = number_format((($spend - $lastSpend) / $lastSpend) * 100,
+                    2);
             }
 
-            foreach($result as &$datum) {
-                $datum['value'] = '$'.$datum['value'];
+            foreach ($result as &$datum) {
+                $datum['value'] = '$' . $datum['value'];
             }
 
             $result[] = array(
                 'value' => $diff . '%',
-                'label' => "MoM Change :"
+                'label' => "MoM Change"
             );
         }
 
         return $result;
+    }
+
+    public function monthToDate(Request $request) {
+
+        $type = $request->getParam('type');
+
+        $customerId = $this->getUser()->get('customer_id');
+
+        $query = Query::create(Query::SELECT)
+            ->column('format(ifnull(sum(cost), 0), 2) as value')
+            ->column('month(history_date) != month(now()) as month_index')
+            ->column('date_format(history_date, "%M") as label')
+            ->from('billing_history_v')
+            ->where('customer_id = ?', $customerId)
+            ->where('date_format(history_date, "%Y-%m") in (' .
+                'date_format(now(), "%Y-%m"),' .
+                'date_format(now() - interval 30 day, "%Y-%m"))')
+            ->groupBy('month(history_date)')
+            ->orderBy('history_date');
+
+        if ($type) {
+
+            $columns = BillingHistoryView::getColumns($type);
+
+            $result = $this->getFilteredResult($query, $request, $columns);
+        } else {
+
+            $result = $query->execute();
+        }
+
+        $data = array(
+            array(
+                'value' => 0
+            ),
+            array(
+                'value' => 0
+            )
+        );
+
+        foreach ($result as $month) {
+
+            $index = intval($month['month_index']);
+            $data[$index]['value'] = floatval($month['value']);
+            $data[$index]['label'] = $month['label'];
+        }
+
+        $thisMonth = $data[1]['value'];
+        $lastMonth = $data[0]['value'];
+
+        if ($lastMonth == 0) {
+            $diff = '0.00';
+        } else {
+            $diff = number_format((($thisMonth - $lastMonth) / $lastMonth) * 100,
+                2);
+        }
+
+        foreach ($data as &$datum) {
+            $datum['value'] = '$' . $datum['value'];
+        }
+
+        $data[] = array(
+            'value' => $diff . '%',
+            'label' => 'MoM Change'
+        );
+
+        return $data;
     }
 
     public function getLastMonthSpend(Request $request) {
@@ -389,23 +463,67 @@ class BreakdownController extends Controller {
         $customerId = $this->getUser()->get('customer_id');
 
         $query = Query::create(Query::SELECT)
-            ->column('ifnull(sum(cost), 0) as cost')
+            ->column('format(ifnull(sum(cost), 0), 2) as cost')
+            ->column('history_date > (curdate() - interval ? day) as month_index', $days)
             ->from('billing_history_v')
-            ->where('customer_id = ' . $customerId)
-            ->where('month(history_date) + 1 = month(now())')
+            ->where('customer_id = ?', $customerId)
+            ->where('history_date > curdate() - interval ? day', $days * 2)
             ->groupBy('history_date');
 
         $result = $this->getFilteredResult($query, $request, $columns);
 
-        $sum = 0;
+        $data = array(
+            array(
+                'value' => 0,
+                'sum'   => 0,
+                'count' => 0,
+                'label' => "Last $days days"
+            ),
+            array(
+                'value' => 0,
+                'sum'   => 0,
+                'count' => 0,
+                'label' => "Previous $days days"
+            )
+        );
 
-        foreach ($result as $row) {
-            $sum += $row['cost'];
+        foreach ($result as $day) {
+
+            $index = intval($day['month_index']);
+
+            $data[$index]['sum'] += floatval($day['cost']);
+            $data[$index]['count'] += 1;
         }
 
-        return array(
-            'kpi' => '$' . number_format($sum / (count($result) ? : 1), 2)
+        foreach($data as &$datum) {
+
+            if ($datum['count'] == 0) {
+                $avg = 0;
+            } else {
+                $avg = $datum['sum'] / $datum['count'];
+            }
+
+            $datum['value'] = $avg;
+        }
+
+        $first = $data[0]['value'];
+        $second = $data[1]['value'];
+
+        if ($second == 0) {
+            $diff = '0.00';
+        } else {
+            $diff = number_format((($second - $first) / $first) * 100, 2);
+        }
+
+        $data[0]['value'] = '$' . number_format($data[0]['value'], 2);
+        $data[1]['value'] = '$' . number_format($data[1]['value'], 2);
+
+        $data[] = array(
+            'value' => $diff . '%',
+            'label' => 'Rolling Change'
         );
+
+        return $data;
     }
 
 }
