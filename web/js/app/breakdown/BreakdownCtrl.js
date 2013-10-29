@@ -7,7 +7,6 @@
             $scope.dashboard = {
                 widgetRows : [
                     {
-                        height        : 110,
                         widgetColumns : [
                             {
                                 flex    : 1,
@@ -79,7 +78,6 @@
                         ]
                     },
                     {
-                        height : 800,
                         widgetColumns : [
                             {
                                 flex : 1,
