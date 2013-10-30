@@ -14,6 +14,7 @@
 }
 
 .st-widget-top-spend {
+    padding : 5px;
     table {
         color : @st-bg-text-strong;
         border-collapse: collapse;
@@ -24,9 +25,13 @@
         td, th {
             padding : 6px 24px;
             border : 1px solid @st-bg-light;
-            &:last-of-type {
-                width : 25%;
-            }
+        }
+        td+td,
+        th+th {
+            width: 25%;
+        }
+        th {
+            .gradient(@st-bg-main, @st-bg-dark);
         }
     }
 }

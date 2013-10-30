@@ -8,11 +8,53 @@ html {
 }
 
 body {
-    padding-top      : 50px;
     height           : 100%;
     background-color : @st-bg-main;
     overflow-x       : hidden;
     color            : @st-bg-text;
+}
+
+.site-wrapper {
+    min-height : 100%;
+    position   : relative;
+    padding-bottom: 100px;
+
+    .site-content {
+    }
+
+    footer {
+        position : absolute;
+        bottom   : 0px;
+        left     : 0px;
+        width    : 100%;
+        min-height: 20px;
+        line-height: 1.5;
+        .gradient(@st-bg-main, @st-bg-dark);
+        & > div {
+            padding    : 20px;
+            border-top : 1px solid @st-bg-light;
+            text-align: center;
+        }
+
+        .left, .right {
+
+        }
+        .left {
+            float : left;
+            display: block;
+        }
+
+        .right {
+            float : right;
+            display: block;
+        }
+    }
+}
+
+.st-wrapper {
+    height    : 100%;
+    max-width : @screen-lg;
+    margin    : 0 auto;
 }
 
 .main-text {
