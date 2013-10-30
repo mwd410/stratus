@@ -46,6 +46,9 @@ class BreakdownController extends Controller {
         $id = $request->getParam('id');
         $subId = $request->getParam('sub_id');
 
+        $customerId = $this->getUser()->get('customer_id');
+        $query->where('customer_id = ?', $customerId);
+
         if ($id != null) {
 
             $idColumn = $columns['id'];
@@ -254,13 +257,10 @@ class BreakdownController extends Controller {
 
         $type = $request->getParam('type');
 
-        $customerId = $this->getUser()->get('customer_id');
-
         $analysisQuery = Query::create(Query::SELECT)
             ->column('history_date')
             ->column('format(ifnull(sum(cost), 0), 2) as total')
             ->from('billing_history_v')
-            ->where('customer_id = ?', $customerId)
             ->where('history_date >= curdate() - interval 30 day')
             ->where('history_date < curdate()')
             ->groupBy('history_date')
@@ -275,7 +275,12 @@ class BreakdownController extends Controller {
                 $request,
                 $columns);
         } else {
-            $result = $analysisQuery->execute();
+
+            $customerId = $this->getUser()->get('customer_id');
+
+            $result = $analysisQuery
+                ->where('customer_id = ?', $customerId)
+                ->execute();
         }
 
         foreach ($result as &$row) {
@@ -293,8 +298,6 @@ class BreakdownController extends Controller {
             return false;
         }
 
-        $customerId = $this->getUser()->get('customer_id');
-
         $typeViews = array(
             'provider' => 'service_provider_projection_v',
             'type'     => 'service_type_projection_v'
@@ -308,8 +311,7 @@ class BreakdownController extends Controller {
             ->column('format(ifnull(sum(estimate), 0), 2) as value')
             ->column('concat("Last Updated", history_date) as tooltip')
             ->column('"Projection" as label')
-            ->from($typeViews[$type])
-            ->where('customer_id = ?', $customerId);
+            ->from($typeViews[$type]);
 
         $columns = array(
             'id'     => 'type_id',
@@ -328,7 +330,6 @@ class BreakdownController extends Controller {
                 ->column('format(ifnull(sum(cost), 0), 2) as value')
                 ->column('"Last Month" as label')
                 ->from('billing_history_v')
-                ->where('customer_id = ?', $customerId)
                 ->where('month(history_date) = month(now() - interval 30 day)')
                 ->where('year(history_date) = year(now() - interval 30 day)');
 
@@ -367,14 +368,11 @@ class BreakdownController extends Controller {
 
         $type = $request->getParam('type');
 
-        $customerId = $this->getUser()->get('customer_id');
-
         $query = Query::create(Query::SELECT)
             ->column('format(ifnull(sum(cost), 0), 2) as value')
             ->column('month(history_date) != month(now()) as month_index')
             ->column('date_format(history_date, "%M") as label')
             ->from('billing_history_v')
-            ->where('customer_id = ?', $customerId)
             ->where('date_format(history_date, "%Y-%m") in (' .
                 'date_format(now(), "%Y-%m"),' .
                 'date_format(now() - interval 30 day, "%Y-%m"))')
@@ -388,7 +386,11 @@ class BreakdownController extends Controller {
             $result = $this->getFilteredResult($query, $request, $columns);
         } else {
 
-            $result = $query->execute();
+            $customerId = $this->getUser()->get('customer_id');
+
+            $result = $query
+                ->where('customer_id = ?', $customerId)
+                ->execute();
         }
 
         $data = array(
@@ -438,12 +440,10 @@ class BreakdownController extends Controller {
         }
 
         $columns = BillingHistoryView::getColumns($type);
-        $customerId = $this->getUser()->get('customer_id');
 
         $query = Query::create(Query::SELECT)
             ->column('concat("$", format(ifnull(sum(cost), 0), 2)) as kpi')
             ->from('billing_history_v')
-            ->where('customer_id = ?', $customerId)
             ->where('month(history_date) + 1 = month(now())');
 
         $result = $this->getFilteredResult($query, $request, $columns);
@@ -463,14 +463,12 @@ class BreakdownController extends Controller {
         }
 
         $columns = BillingHistoryView::getColumns($type);
-        $customerId = $this->getUser()->get('customer_id');
 
         $query = Query::create(Query::SELECT)
             ->column('format(ifnull(sum(cost), 0), 2) as cost')
             ->column('history_date > (curdate() - interval ? day) as month_index',
                 $days)
             ->from('billing_history_v')
-            ->where('customer_id = ?', $customerId)
             ->where('history_date > curdate() - interval ? day', $days * 2)
             ->groupBy('history_date');
 
@@ -542,6 +540,7 @@ class BreakdownController extends Controller {
 
         $columns = BillingHistoryView::getColumns($type);
         $keyString = Config::from('config')->get('keystring');
+        $customerId = $this->getUser()->get('customer_id');
 
         $titles = array(
             'provider' => array(
@@ -592,6 +591,7 @@ class BreakdownController extends Controller {
                 ->from('billing_history_v bhv')
                 ->join('account a on a.id = bhv.account_id')
                 ->where('a.deleted = 0')
+                ->where('bhv.customer_id = ?', $customerId)
                 ->groupBy($groupColumn);
 
             if ($id != null) {
