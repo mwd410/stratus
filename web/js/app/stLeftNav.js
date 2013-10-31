@@ -35,6 +35,15 @@
                         scope.onItemClick({item : o.subItem});
                     };
                 }
+
+                ng.element(window.document).bind('scroll', function() {
+
+                    if (window.pageYOffset > el.prop('offsetTop') - 20) {
+                        el.css('position', 'fixed');
+                    } else {
+                        el.css('position', '');
+                    }
+                });
             }
         };
     });

@@ -41,7 +41,7 @@ class BreakdownController extends Controller {
         'type'     => 'Service Type'
     );
 
-    public function getFilteredResult(Query $query, Request $request, array $columns) {
+    public function getFilteredResult(Query $query, Request $request, array $columns, $type = PDO::FETCH_ASSOC) {
 
         $id = $request->getParam('id');
         $subId = $request->getParam('sub_id');
@@ -63,7 +63,7 @@ class BreakdownController extends Controller {
             }
         }
 
-        return $query->execute();
+        return $query->execute(array(), $type);
     }
 
     private function getMenu(Request $request) {
@@ -229,6 +229,9 @@ class BreakdownController extends Controller {
                 case 'dailyCost':
                     $widgetData = $this->getDailyCost($request, $widgetParams);
                     break;
+                case 'lineItems':
+                    $widgetData = $this->getLineItems($request);
+                    break;
                 case 'monthToDate':
                     $widgetData = $this->getMonthToDate($request);
                     break;
@@ -288,6 +291,48 @@ class BreakdownController extends Controller {
         }
 
         return $result;
+    }
+
+    private function getLineItems(Request $request) {
+
+        $type = $request->getParam('type');
+
+        if (!$type) {
+            return false;
+        }
+
+        $columns = BillingHistoryView::getColumns($type);
+
+        $query = Query::create(Query::SELECT)
+            ->column('description')
+            ->column($columns['sub_name'])
+            ->column('concat("$", format(cost, 2)) as cost')
+            ->from('billing_history_v')
+            //->where('history_date = curdate()')
+            ->orderBy('cost desc')
+            ->limit(10);
+
+        $data = $this->getFilteredResult($query, $request, $columns, PDO::FETCH_NUM);
+
+        $nameHeaders = array(
+            'provider' => 'Service Provider Product',
+            'type'     => 'Service Type Category'
+        );
+
+        if (!isset($nameHeaders[$type])) {
+            return false;
+        }
+
+        return array(
+            array(
+                'headers' => array(
+                    'Description',
+                    $nameHeaders[$type],
+                    'Spend'
+                ),
+                'data' => $data
+            )
+        );
     }
 
     public function getMonthlySpend(Request $request) {

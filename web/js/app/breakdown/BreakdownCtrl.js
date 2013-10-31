@@ -52,7 +52,7 @@
                                         miniTitle    : "Yesterday's Spend",
                                         type         : 'rollingAverage',
                                         params       : {
-                                            days : 1,
+                                            days   : 1,
                                             labels : [
                                                 'Yesterday',
                                                 '2 Days Ago',
@@ -85,13 +85,35 @@
                     {
                         widgetColumns : [
                             {
-                                flex : 1,
+                                flex    : 1,
                                 widgets : [
                                     {
-                                        flex : 1,
-                                        title : 'Top Spenders',
-                                        type : 'topSpend',
-                                        templateFile : 'topSpend.html'
+                                        flex         : 1,
+                                        title        : 'Top Spenders',
+                                        type         : 'topSpend',
+                                        templateFile : 'tables.html'
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        widgetColumns : [
+                            {
+                                flex    : 1,
+                                widgets : [
+                                    {
+                                        flex         : 1,
+                                        title        : "Today's Top Line Items",
+                                        type         : 'lineItems',
+                                        templateFile : 'tables.html',
+                                        columnStyles : [
+                                            null,
+                                            null,
+                                            {
+                                                width : '40px'
+                                            }
+                                        ]
                                     }
                                 ]
                             }

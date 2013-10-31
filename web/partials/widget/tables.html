@@ -1,0 +1,21 @@
+<div class="st-widget-top-spend">
+    <table data-ng-repeat="table in widget.data">
+        <thead>
+            <tr>
+                <th data-ng-repeat="header in table.headers"
+                    data-ng-style="widget.columnStyles[$index]">
+                    {{ header }}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-ng-if="table.data.length === 0">
+                <td colspan="{{ table.headers.length }}">No Data</td>
+            </tr>
+            <tr data-ng-repeat="row in table.data">
+                <td data-ng-repeat="column in row"
+                    data-ng-style="widget.columnStyles[$index]">{{ column }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
