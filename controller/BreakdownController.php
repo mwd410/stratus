@@ -308,7 +308,7 @@ class BreakdownController extends Controller {
             ->column($columns['sub_name'])
             ->column('concat("$", format(cost, 2)) as cost')
             ->from('billing_history_v')
-            //->where('history_date = curdate()')
+            ->where('history_date = curdate()')
             ->orderBy('cost desc')
             ->limit(10);
 
@@ -438,7 +438,6 @@ class BreakdownController extends Controller {
                 ->execute();
         }
 
-        $currentMonth = date('F');
         $data = array(
             array(
                 'value' => 0,
@@ -446,7 +445,7 @@ class BreakdownController extends Controller {
             ),
             array(
                 'value' => 0,
-                'label' => Date('F', strtotime("first day of last month"))
+                'label' => date('F', strtotime("first day of last month"))
             )
         );
 

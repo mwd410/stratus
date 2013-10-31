@@ -1,4 +1,4 @@
-(function(ng) {
+(function(ng, undefined) {
     'use strict';
 
     ng.module('app').directive('stLeftNav', function() {
@@ -36,9 +36,15 @@
                     };
                 }
 
+                var originalOffset;
+
                 ng.element(window.document).bind('scroll', function() {
 
-                    if (window.pageYOffset > el.prop('offsetTop') - 20) {
+                    if (originalOffset === undefined) {
+                        originalOffset = el.prop('offsetTop');
+                    }
+
+                    if (window.pageYOffset > originalOffset - 20) {
                         el.css('position', 'fixed');
                     } else {
                         el.css('position', '');
