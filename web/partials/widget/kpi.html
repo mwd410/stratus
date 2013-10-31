@@ -1,9 +1,13 @@
 <div class="st-widget-kpi">
     <header>{{widget.miniTitle}}</header>
 
-    <div data-ng-repeat="item in widget.data" title="{{item.tooltip}}">
-        <span class="the-label">{{ item.label }} :</span>
-        <span class="the-value">{{ item.value }}</span>
+    <div class="the-kpi">{{ widget.data[0].value }}</div>
+
+    <div class="the-tooltip">
+        <div data-ng-repeat="item in widget.data" title="{{item.tooltip}}">
+            <span class="the-label">{{ item.label }} :</span>
+            <span class="the-value">{{ item.value }}</span>
+        </div>
     </div>
 
 </div>

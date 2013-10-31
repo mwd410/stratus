@@ -1,10 +1,35 @@
 .st-widget-kpi {
+
+    position : relative;
+
     * {
         text-align : center;
     }
     header {
         font-size : 15px;
-        color     : @st-bg-text-strong;
+        color     : @st-bg-text;
+    }
+
+    .the-kpi {
+        font-size : 24px;
+        color : @st-bg-text-strong;
+    }
+
+    .the-tooltip {
+        position : absolute;
+        left : 50%;
+        white-space: nowrap;
+        background : @st-bg-dark;
+        border : 1px solid @st-brand-light;
+        .border-radius(3px);
+        z-index : 1000;
+        padding : 10px;
+    }
+
+    &:hover {
+        .the-tooltip {
+
+        }
     }
 
     .the-value {

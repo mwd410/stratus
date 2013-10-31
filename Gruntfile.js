@@ -37,7 +37,7 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-less');
-    grunt.loadNpmTasks('grung-ngmin');
+    grunt.loadNpmTasks('grunt-ngmin');
 
     grunt.registerTask('default', ['uglify', 'less']);
 
