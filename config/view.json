@@ -28,6 +28,7 @@
             "/js/app/stAutoSize.js",
             "/js/app/stLeftNav.js",
             "/js/app/Combo.js",
+            "/js/app/toggle.js",
             "/js/app/account/stAccount.js",
             "/js/app/account/AccountManagementController.js",
             "/js/app/account/AccountController.js",
@@ -41,6 +42,7 @@
             "/js/app/dashboard/stWidgetColumn.js",
             "/js/app/dashboard/stWidget.js",
             "/js/app/dashboard/widgets/dailyCost.js",
+            "/js/app/dashboard/widgets/KpiCtrl.js",
             "/js/app/nav/NavService.js",
             "/js/app/nav/NavController.js",
             "/js/app/utils/Utils.js"

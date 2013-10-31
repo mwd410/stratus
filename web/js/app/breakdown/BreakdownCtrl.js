@@ -35,7 +35,7 @@
                                 widgets : [
                                     {
                                         flex         : 1,
-                                        miniTitle    : '30 Day Rolling Average',
+                                        miniTitle    : '30 Day Rolling Avg.',
                                         type         : 'rollingAverage',
                                         params       : {
                                             days : 30
@@ -49,10 +49,15 @@
                                 widgets : [
                                     {
                                         flex         : 1,
-                                        miniTitle    : '7 Day Rolling Average',
+                                        miniTitle    : "Yesterday's Spend",
                                         type         : 'rollingAverage',
                                         params       : {
-                                            days : 7
+                                            days : 1,
+                                            labels : [
+                                                'Yesterday',
+                                                '2 Days Ago',
+                                                'Difference'
+                                            ]
                                         },
                                         templateFile : 'kpi.html'
                                     }

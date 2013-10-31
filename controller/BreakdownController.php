@@ -393,12 +393,15 @@ class BreakdownController extends Controller {
                 ->execute();
         }
 
+        $currentMonth = date('F');
         $data = array(
             array(
-                'value' => 0
+                'value' => 0,
+                'label' => date('F')
             ),
             array(
-                'value' => 0
+                'value' => 0,
+                'label' => Date('F', strtotime("first day of last month"))
             )
         );
 
@@ -406,7 +409,7 @@ class BreakdownController extends Controller {
 
             $index = intval($month['month_index']);
             $data[$index]['value'] = floatval($month['value']);
-            $data[$index]['label'] = $month['label'];
+            //$data[$index]['label'] = $month['label'];
         }
 
         $thisMonth = $data[1]['value'];
@@ -466,10 +469,10 @@ class BreakdownController extends Controller {
 
         $query = Query::create(Query::SELECT)
             ->column('format(ifnull(sum(cost), 0), 2) as cost')
-            ->column('history_date > (curdate() - interval ? day) as month_index',
-                $days)
+            ->column('history_date > (curdate() - interval ? day) as month_index', $days + 1)
             ->from('billing_history_v')
-            ->where('history_date > curdate() - interval ? day', $days * 2)
+            ->where('history_date > curdate() - interval ? day', $days * 2 + 1)
+            ->where('history_date < curdate()')
             ->groupBy('history_date');
 
         $result = $this->getFilteredResult($query, $request, $columns);
@@ -508,8 +511,8 @@ class BreakdownController extends Controller {
             $datum['value'] = $avg;
         }
 
-        $first = $data[0]['value'];
-        $second = $data[1]['value'];
+        $second = $data[0]['value'];
+        $first = $data[1]['value'];
 
         if ($second == 0) {
             $diff = '0.00';
@@ -524,6 +527,14 @@ class BreakdownController extends Controller {
             'value' => $diff . '%',
             'label' => 'Rolling Change'
         );
+
+        if (isset($params['labels'])) {
+            foreach($params['labels'] as $index => $label) {
+                if ($label !== null) {
+                    $data[$index]['label'] = $label;
+                }
+            }
+        }
 
         return $data;
     }

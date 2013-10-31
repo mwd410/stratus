@@ -40,8 +40,8 @@
                         <div></div>
                     </div>
 
-                    <div data-ng-repeat="widget in widgetColumn.widgets"
-                         data-st-widget="widget"
+                    <div data-st-widget="widget"
+                         data-ng-repeat="widget in widgetColumn.widgets"
                          data-widget-service="widgetService"
                          class="st-widget"
                          data-ng-style="{height : widget.height + '%'}">
@@ -53,7 +53,7 @@
 
                         <div class="st-widget-wrapper">
                             <header data-ng-if="widget.title">
-                                <h4>{{ [widgetService.lastTitle, widget.title].join(' - ') }}</h4>
+                                <h4>{{ title() }}</h4>
                             </header>
                             <div>
                                 <div data-ng-if="widget.tpl"

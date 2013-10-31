@@ -24,12 +24,18 @@
         .border-radius(3px);
         z-index : 1000;
         padding : 10px;
+        width       : 200px;
+        margin-left : -100px;
+        display : none;
+        .box-shadow(3px 3px 3px rgba(0, 0, 0, 0.3));
+
+        &.is-active {
+            display : block;
+        }
     }
 
-    &:hover {
-        .the-tooltip {
-
-        }
+    &:hover .the-tooltip {
+        display : block;
     }
 
     .the-value {
