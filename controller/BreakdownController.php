@@ -13,15 +13,22 @@ class BreakdownController extends Controller {
 
     public function updateAction(Request $request) {
 
+        $types = array(
+            'provider',
+            'type'
+        );
         $result = array();
 
-        $result['menu'] = $this->getMenu($request);
+        if (in_array($request->getParam('type'), $types)) {
 
-        $result['widgets'] = $this->getWidgets($request);
+            $result['menu'] = $this->getMenu($request);
 
-        $result['title'] = $this->getTitle();
+            $result['widgets'] = $this->getWidgets($request);
 
-        $result['lastTitle'] = end($this->titleParts);
+            $result['title'] = $this->getTitle();
+
+            $result['lastTitle'] = end($this->titleParts);
+        }
 
         $this->json($result);
     }

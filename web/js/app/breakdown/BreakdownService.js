@@ -1,11 +1,21 @@
 (function(ng, undefined) {
     'use strict';
 
-    ng.module('app.breakdown').service('breakdown', function($http, Utils, AccountService) {
+    ng.module('app.breakdown').service('breakdown', function($http, Utils, $rootScope) {
 
+        var lastItem = {};
         var service = {
                 menus          : [],
                 update         : function(item) {
+
+                    if (lastItem.type === item.type &&
+                        lastItem.id === item.id &&
+                        lastItem.sub_id === item.sub_id) {
+
+                        return;
+                    }
+
+                    lastItem = item;
 
                     var params = {};
 
@@ -56,7 +66,11 @@
             },
             widgets = {};
 
-        service.update();
+        var unregister = $rootScope.$watch(function() {
+            // Initialize breakdown with provider type.
+            service.update({type : 'provider'});
+            unregister();
+        });
 
         return service;
     });
