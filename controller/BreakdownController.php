@@ -623,7 +623,7 @@ class BreakdownController extends Controller {
             ),
             array(
                 'group'   => 'account_id',
-                'select'  => "aes_decrypt(a.name, '$keyString')",
+                'select'  => "concat(aes_decrypt(a.name, '$keyString'), ' - ', service_provider_name)",
                 'title'   => 'Account',
                 'include' => true
             )
