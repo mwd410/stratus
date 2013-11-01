@@ -89,7 +89,8 @@
                         backgroundColor : colors.bgMain,
                         style : {
                             color : '#fff'
-                        }
+                        },
+                        valueDecimals : 2
                     },
                     series  : [
                         {

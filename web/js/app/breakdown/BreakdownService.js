@@ -3,19 +3,14 @@
 
     ng.module('app.breakdown').service('breakdown', function($http, Utils, $rootScope, AccountService, $q) {
 
-        var lastItem = {};
         var service = {
                 menus          : [],
                 update         : function(item) {
 
-                    if (lastItem.type === item.type &&
-                        lastItem.id === item.id &&
-                        lastItem.sub_id === item.sub_id) {
+                    if (item.isActive) {
 
                         return;
                     }
-
-                    lastItem = item;
 
                     var params = {};
 

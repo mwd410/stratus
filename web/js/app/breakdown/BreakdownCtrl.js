@@ -91,7 +91,37 @@
                                         flex         : 1,
                                         title        : 'Top Spenders',
                                         type         : 'topSpend',
-                                        templateFile : 'tables.html'
+                                        templateFile : 'tables.html',
+                                        columnStyles : [
+                                            null,
+                                            {
+                                                width : '120px'
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        widgetColumns : [
+                            {
+                                flex    : 1,
+                                widgets : [
+                                    {
+                                        flex         : 1,
+                                        title        : 'Top Account Spenders',
+                                        type         : 'topSpend',
+                                        templateFile : 'tables.html',
+                                        params       : {
+
+                                        },
+                                        columnStyles : [
+                                            null,
+                                            {
+                                                width : '120px'
+                                            }
+                                        ]
                                     }
                                 ]
                             }
@@ -111,7 +141,7 @@
                                             null,
                                             null,
                                             {
-                                                width : '40px'
+                                                width : '120px'
                                             }
                                         ]
                                     }

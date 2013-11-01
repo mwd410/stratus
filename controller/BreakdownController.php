@@ -250,7 +250,7 @@ class BreakdownController extends Controller {
                         $widgetParams);
                     break;
                 case 'topSpend':
-                    $widgetData = $this->getTopSpend($request);
+                    $widgetData = $this->getTopSpend($request, $widgetParams);
                     break;
                 default:
                     $widgetData = null;
@@ -315,7 +315,7 @@ class BreakdownController extends Controller {
             ->column($columns['sub_name'])
             ->column('concat("$", format(cost, 2)) as cost')
             ->from('billing_history_v')
-            ->where('history_date = curdate()')
+            //->where('history_date = curdate()')
             ->orderBy('cost desc')
             ->limit(10);
 
@@ -469,12 +469,11 @@ class BreakdownController extends Controller {
         if ($lastMonth == 0) {
             $diff = '0.00';
         } else {
-            $diff = number_format((($thisMonth - $lastMonth) / $lastMonth) * 100,
-                2);
+            $diff = number_format((($thisMonth - $lastMonth) / $lastMonth) * 100, 2);
         }
 
         foreach ($data as &$datum) {
-            $datum['value'] = '$' . $datum['value'];
+            $datum['value'] = '$' . number_format($datum['value'], 2);
         }
 
         $data[] = array(
@@ -590,7 +589,8 @@ class BreakdownController extends Controller {
         return $data;
     }
 
-    private function getTopSpend(Request $request) {
+    //todo params.tables = ['type', 'sub_type', 'account']
+    private function getTopSpend(Request $request, $params) {
 
         $type = $request->getParam('type');
         $id = $request->getParam('id');
