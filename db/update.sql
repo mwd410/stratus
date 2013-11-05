@@ -68,6 +68,57 @@ CREATE TABLE IF NOT EXISTS alert (
     ENGINE =InnoDB
 ;
 
+ALTER TABLE billing_history
+ADD CONSTRAINT fk_billing_history_product_name
+FOREIGN KEY (product_name)
+REFERENCES service_product (name)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE;
+
+ALTER TABLE service_product
+CHANGE service_type_id service_type_id BIGINT(20) UNSIGNED,
+ADD CONSTRAINT fk_service_product_service_type1
+FOREIGN KEY (service_type_id)
+REFERENCES service_type (id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE;
+
+ALTER TABLE service_provider
+ADD COLUMN tag_name VARCHAR(40)
+AFTER name;
+
+ALTER TABLE service_product
+ADD COLUMN tag_name VARCHAR(40)
+AFTER name;
+
+ALTER TABLE service_type
+ADD COLUMN tag_name VARCHAR(40)
+AFTER name;
+
+ALTER TABLE service_type_category
+ADD COLUMN tag_name VARCHAR(40)
+AFTER name;
+
+UPDATE service_provider sp
+    JOIN tag_service_provider tsp
+        ON tsp.name = sp.name
+SET sp.tag_name = tsp.tag_name;
+
+UPDATE service_product sp
+    JOIN tag_service_provider_product tspp
+        ON tspp.name = sp.name
+SET sp.tag_name = tspp.tag_name;
+
+UPDATE service_type st
+    JOIN tag_service_type tst
+        ON tst.name = st.name
+SET st.tag_name = tst.tag_name;
+
+UPDATE service_type_category stc
+    JOIN tag_service_type_category tstc
+        ON tstc.name = stc.name
+SET stc.tag_name = tstc.tag_name;
+
 ################################################################################
 ############################ DATA INSERTS & CHANGES ############################
 ################################################################################
