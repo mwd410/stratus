@@ -40,7 +40,7 @@
                     </div>
 
                     <div class="external-id">
-                        {{ account.id || '&nbsp;' }}
+                        {{ account.external_id || '&nbsp;' }}
                     </div>
 
                     <div class="external-key">
@@ -73,7 +73,7 @@
                                    maxlength="50"
                                    type="text">
                         </div>
-
+<!--
                         <div>
                             <label for="provider{{$index}}">Provider</label>
 
@@ -81,8 +81,8 @@
                                     name="provider_id"
                                     class="form-control input-sm"
                                     required
-                                    data-ng-options="account.provider_id as provider.id for provider in Provider.all"></select>
-                        </div>
+                                    data-ng-options="account.service_provider_id as provider.id for provider in Provider.all"></select>
+                        </div>-->
 
                         <div>
                             <label for="id{{$index}}">External ID</label>

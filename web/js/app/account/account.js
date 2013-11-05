@@ -22,6 +22,15 @@
 
                         return response.data;
                     });
+            },
+            getAll : function() {
+
+                return $http.get('/getAccounts')
+                    .then(
+                    function(response) {
+
+                        return response.data;
+                    });
             }
         };
     });

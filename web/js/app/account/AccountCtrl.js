@@ -14,6 +14,7 @@
 
         function saveOriginal(account) {
             original = ng.copy(account);
+            $scope.account = account;
         }
 
         saveOriginal($scope.account);
@@ -33,7 +34,7 @@
 
             var states = Array.prototype.slice.call(arguments);
 
-            return -1 !== states.indexOf(state);
+            return -1 !== states.indexOf(currentState);
         };
 
         $scope.commit = function() {
@@ -46,7 +47,6 @@
                     function(data) {
 
                         saveOriginal(data.account);
-                        $scope.account = data.account;
                         $scope.saveMaster(data.master);
 
                         $scope.setState('CLEAN');
@@ -78,11 +78,17 @@
             }
         };
 
+        $scope.reset = function() {
+
+            ng.copy(original, $scope.account);
+            $scope.resetMaster();
+        };
+
         $scope.cancel = function() {
 
             if ($scope.is('EDIT', 'DELETE')) {
 
-                ng.copy(original, $scope.account);
+                $scope.reset();
                 $scope.setState('CLEAN');
             }
         };
