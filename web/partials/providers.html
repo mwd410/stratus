@@ -86,11 +86,11 @@
                         </div>-->
 
                         <div>
-                            <label for="id{{$index}}">External ID</label>
+                            <label for="external_id{{$index}}">External ID</label>
 
-                            <input id="id{{$index}}"
+                            <input id="external_id{{$index}}"
                                    name="id"
-                                   data-ng-model="account.id"
+                                   data-ng-model="account.external_id"
                                    type="text"
                                    required
                                    placeholder="External ID">
@@ -125,15 +125,15 @@
                         <div>
                             <input id=master{{$index}}
                                    name="is_master"
-                                   data-ng-model="isMaster"
-                                   data-ng-checked="master.account_id == account.id"
-                                   data-ng-click="setMaster(isMaster)"
+                                   data-ng-model="accountIsMaster"
+                                   data-ng-checked="isMaster(account)"
+                                   data-ng-click="setMaster(account, accountIsMaster)"
                                    type="checkbox">
 
                             <label for="master{{$index}}">Master Account</label>
                         </div>
 
-                        <div data-ng-show="master.account_id == account.id">
+                        <div data-ng-show="isMaster(account)">
                             <label for="billing_bucket{{$index}}">Billing Bucket</label>
 
                             <input id="billing_bucket{{$index}}"

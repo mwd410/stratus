@@ -5,16 +5,25 @@
 
         var master;
 
+        $scope.master = {
+            account_id : null
+        };
+
         $scope.saveMaster = function(masterAccount) {
 
             master = ng.copy(masterAccount);
-            $scope.masterAccount = masterAccount;
+            $scope.master = masterAccount;
+        };
+
+        $scope.setMaster = function(account, isMaster) {
+
+            $scope.master.account_id = isMaster ? account.id : null;
         };
 
         account.getAll().then(function(data) {
 
             $scope.accounts = data.accounts;
-            $scope.saveMaster(data.master);
+            $scope.saveMaster(data.masterAccount);
         });
 
         $scope.add = function() {
@@ -24,12 +33,12 @@
 
         $scope.resetMaster = function() {
 
-            ng.copy(master, $scope.masterAccount);
+            ng.copy(master, $scope.master);
         };
 
         $scope.isMaster = function(account) {
 
-            return master && master.account_id == account.id;
+            return $scope.master.account_id == account.id;
         };
     });
 
