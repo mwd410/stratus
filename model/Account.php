@@ -189,11 +189,11 @@ class Account {
         Query::create(Query::UPDATE)
             ->from('account')
             ->set('deleted = 1')
-            ->where(self::EXTERNAL_ID.' = ?', $id)
+            ->where('id = ?', $id)
             ->where('customer_id = ?', $customerId)
             ->execute();
 
-        $sql = 'delete from master_account where '.self::EXTERNAL_ID.' = ? and customer_id = ?';
+        $sql = 'delete from master_account where account_id = ? and customer_id = ?';
 
         $params = array($id, $customerId);
         Database::getInstance()->execute($sql, $params);

@@ -40,6 +40,12 @@
 
             return $scope.master.account_id == account.id;
         };
+
+        $scope.remove = function(account) {
+
+            var index = $scope.accounts.indexOf(account);
+            $scope.accounts.splice(index, 1);
+        };
     });
 
 })(window.angular);

@@ -34,7 +34,10 @@ class AccountController extends Controller {
 
         $result = array(
             'accounts' => $accounts,
-            'masterAccount' => empty($masterAccount) ? null : $masterAccount[0]
+            'masterAccount' => empty($masterAccount) ? array(
+                    'account_id' => null,
+                    'billing_bucket' => ''
+                ) : $masterAccount[0]
         );
         $this->json($result);
     }

@@ -64,6 +64,7 @@
                     // Success
                     function(data) {
 
+                        $scope.remove($scope.account);
                     },
                     //
                     function(data) {
