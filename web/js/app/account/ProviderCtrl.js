@@ -26,6 +26,11 @@
 
             ng.copy(master, $scope.masterAccount);
         };
+
+        $scope.isMaster = function(account) {
+
+            return master && master.account_id == account.id;
+        };
     });
 
 })(window.angular);

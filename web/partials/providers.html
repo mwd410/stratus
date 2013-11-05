@@ -27,7 +27,8 @@
             <li data-ng-repeat="account in accounts"
                 data-ng-controller="AccountCtrl"
                 class="st-account"
-                data-ng-class="{'is-expanded' : is('EDIT', 'DELETE'), 'is-master' : isMaster(account)}">
+                data-ng-class="{'is-expanded' : is('EDIT', 'DELETE'),
+                                'is-master'   : isMaster(account)}">
 
                 <div class="st-account-row">
 
