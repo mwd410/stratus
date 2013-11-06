@@ -34,7 +34,7 @@
             "/js/app/stFieldFocus.js",
             "/js/app/toggle.js",
             "/js/app/account/stAccount.js",
-            "/js/app/account/account.js",
+            "/js/app/account/accountApi.js",
             "/js/app/account/AccountCtrl.js",
             "/js/app/account/AccountService.js",
             "/js/app/alerts/alertApi.js",

@@ -1,7 +1,7 @@
 (function(ng, undefined) {
     'use strict';
 
-    ng.module('app.account').factory('account', function($http) {
+    ng.module('app.account').factory('accountApi', function($http, $q) {
 
         return {
             create : function() {
@@ -48,12 +48,16 @@
             },
             getAll : function() {
 
-                return $http.get('/getAccounts')
+                var deferred = $q.defer();
+
+                $http.get('/getAccounts')
                     .then(
                     function(response) {
 
-                        return response.data;
+                        deferred.resolve(response.data);
                     });
+
+                return deferred.promise;
             }
         };
     });

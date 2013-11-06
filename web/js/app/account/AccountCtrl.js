@@ -1,7 +1,7 @@
 (function(ng, undefined) {
     'use strict';
 
-    ng.module('app.account').controller('AccountCtrl', function($scope, account) {
+    ng.module('app.account').controller('AccountCtrl', function($scope, accountApi) {
 
         var original = ng.copy($scope.account),
             currentState,
@@ -45,7 +45,7 @@
             if ($scope.is('EDIT')) {
 
                 $scope.setState('SAVE');
-                account.save($scope.account, $scope.master).then(
+                accountApi.save($scope.account, $scope.master).then(
                     // Success
                     function(data) {
 
@@ -63,7 +63,7 @@
             } else if ($scope.is('DELETE')) {
 
                 $scope.setState('SAVE');
-                account.remove($scope.account).then(
+                accountApi.remove($scope.account).then(
                     // Success
                     function(data) {
 
@@ -78,7 +78,7 @@
             } else if ($scope.is('NEW')) {
 
                 $scope.setState('SAVE');
-                account.saveNew($scope.account, $scope.master).then(
+                accountApi.saveNew($scope.account, $scope.master).then(
                     function(data) {
 
 

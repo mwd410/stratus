@@ -91,6 +91,24 @@
 
                         lessCache[property] = values;
                         return values;
+                    },
+                    mapArray : function(array, prop1, p_) {
+
+                        var properties = Array.prototype.slice.call(arguments, 1),
+                            result = {};
+
+                        array.forEach(function(item) {
+
+                            var key = [];
+                            properties.forEach(function(prop) {
+
+                                key.push(item[prop]);
+                            });
+
+                            result[key.join('-')] = item;
+                        });
+
+                        return result;
                     }
                 },
                 lessCache = {};

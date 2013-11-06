@@ -1,7 +1,7 @@
 (function(ng, undefined) {
     'use strict';
 
-    ng.module('app.account').controller('ProviderCtrl', function($scope, account) {
+    ng.module('app.account').controller('ProviderCtrl', function($scope, accountApi) {
 
         var master;
 
@@ -20,7 +20,7 @@
             $scope.master.account_id = isMaster ? account.id : null;
         };
 
-        account.getAll().then(function(data) {
+        accountApi.getAll().then(function(data) {
 
             $scope.accounts = data.accounts;
             $scope.saveMaster(data.masterAccount);
@@ -28,7 +28,7 @@
 
         $scope.add = function() {
 
-            $scope.accounts.push(account.create());
+            $scope.accounts.push(accountApi.create());
         };
 
         $scope.resetMaster = function() {
