@@ -4,6 +4,16 @@
     ng.module('app.account').factory('account', function($http) {
 
         return {
+            create : function() {
+
+                return {
+                    id          : 0,
+                    external_id : '',
+                    name        : '',
+                    aws_key     : '',
+                    secret_key  : ''
+                };
+            },
             save   : function(account, master) {
 
                 return $http.post('/account/edit', {
@@ -11,6 +21,17 @@
                     master  : master
                 }).then(
                     //Success
+                    function(response) {
+
+                        return response.data;
+                    });
+            },
+            saveNew : function(account, master) {
+
+                return $http.post('/account/add', {
+                    account : account,
+                    master  : master
+                }).then(
                     function(response) {
 
                         return response.data;

@@ -1,23 +1,22 @@
-(function(ng) {
+(function(ng, undefined) {
     'use strict';
 
     ng.module('app.account').controller('AccountCtrl', function($scope, account) {
 
-        var original,
+        var original = ng.copy($scope.account),
             currentState,
             commitActions = {
                 CLEAN  : false,
                 EDIT   : 'save',
                 DELETE : 'remove',
-                SAVE   : false
+                SAVE   : false,
+                NEW    : false
             };
 
         function saveOriginal(account) {
             original = ng.copy(account);
             $scope.account = account;
         }
-
-        saveOriginal($scope.account);
 
         $scope.setState = function(state) {
 
@@ -28,7 +27,11 @@
             currentState = state;
         };
 
-        $scope.setState('CLEAN');
+        if ($scope.account.id === 0) {
+            $scope.setState('NEW');
+        } else {
+            $scope.setState('CLEAN');
+        }
 
         $scope.is = function(state, s_) {
 
@@ -72,6 +75,16 @@
                     }
                 );
 
+            } else if ($scope.is('NEW')) {
+
+                $scope.setState('SAVE');
+                account.saveNew($scope.account, $scope.master).then(
+                    function(data) {
+
+
+                    }
+                );
+
             } else {
 
                 $scope.setState('CLEAN');
@@ -87,7 +100,7 @@
 
         $scope.cancel = function() {
 
-            if ($scope.is('EDIT', 'DELETE')) {
+            if ($scope.is('EDIT', 'DELETE', 'NEW')) {
 
                 $scope.reset();
                 $scope.setState('CLEAN');

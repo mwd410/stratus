@@ -28,7 +28,7 @@
 
         $scope.add = function() {
 
-            $scope.accounts.unshift(account.new());
+            $scope.accounts.push(account.create());
         };
 
         $scope.resetMaster = function() {

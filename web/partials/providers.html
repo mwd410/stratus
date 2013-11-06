@@ -21,13 +21,19 @@
                 External Key
             </div>
 
+            <div class="buttons">
+                <button data-ng-click="add()">
+                    <i class="icon-plus icon-large"></i>
+                </button>
+            </div>
+
         </header>
 
         <ul>
-            <li data-ng-repeat="account in accounts"
-                data-ng-controller="AccountCtrl"
+            <li data-ng-controller="AccountCtrl"
+                data-ng-repeat="account in accounts"
                 class="st-account"
-                data-ng-class="{'is-expanded' : is('EDIT', 'DELETE'),
+                data-ng-class="{'is-expanded' : is('EDIT', 'DELETE', 'NEW'),
                                 'is-master'   : isMaster(account)}">
 
                 <div class="st-account-row">
@@ -92,8 +98,7 @@
                                    name="id"
                                    data-ng-model="account.external_id"
                                    type="text"
-                                   required
-                                   placeholder="External ID">
+                                   required>
                         </div>
 
                         <div>
