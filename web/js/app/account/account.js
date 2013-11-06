@@ -4,10 +4,12 @@
     ng.module('app.account').factory('account', function($http) {
 
         return {
-            save : function(account) {
+            save   : function(account, master) {
 
-                return $http.post('/account/save', account)
-                    .then(
+                return $http.post('/account/edit', {
+                    account : account,
+                    master  : master
+                }).then(
                     //Success
                     function(response) {
 

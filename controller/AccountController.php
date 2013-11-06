@@ -33,9 +33,9 @@ class AccountController extends Controller {
             ->execute();
 
         $result = array(
-            'accounts' => $accounts,
+            'accounts'      => $accounts,
             'masterAccount' => empty($masterAccount) ? array(
-                    'account_id' => null,
+                    'account_id'     => null,
                     'billing_bucket' => ''
                 ) : $masterAccount[0]
         );
@@ -83,14 +83,14 @@ class AccountController extends Controller {
     public function editAction(Request $request) {
 
         $account = $request->getParam('account');
-        $master  = $request->getParam('master');
+        $master = $request->getParam('master');
 
         $id = $account['id'];
         $db = Database::getInstance();
         $customerId = $this->getUser()->get('customer_id');
 
         $existing = Account::find($id)
-                    ->execute();
+            ->execute();
         $success = false; // false unless everything works out.
         $errors = array();
 
@@ -137,10 +137,27 @@ class AccountController extends Controller {
                 }
             }
         }
+
+        $accountReturn = Account::getBasicSelect()
+            ->where('id = ?', $id)
+            ->where('customer_id = ?', $customerId)
+            ->execute();
+
+        $masterReturn = Query::create(Query::SELECT)
+            ->column('account_id')
+            ->column('billing_bucket')
+            ->from('master_account')
+            ->where('customer_id = ?', $customerId)
+            ->execute();
+
         $result = array(
             'success' => $success,
             'message' => $message,
-            'errors'  => $errors
+            'errors'  => $errors,
+            'account' => isset($accountReturn[0]) ? $accountReturn[0] : null,
+            'master'  => isset($masterReturn[0]) ? $masterReturn[0] : array(
+                    'account_id' => null
+                )
         );
         $this->json($result);
     }

@@ -12,7 +12,7 @@ class Account {
     public static $allColumns = array(
         'account_id',
         'customer_id',
-        'account_name',
+        'name',
         'aws_key',
         'secret_key',
         'deleted'
@@ -63,7 +63,7 @@ class Account {
     public static function find($id) {
 
         return self::getSelectAll()
-               ->where(self::EXTERNAL_ID . ' = ?', $id);
+               ->where('id = ?', $id);
     }
 
     /**
@@ -80,14 +80,11 @@ class Account {
         foreach ($data as $key => $value) {
 
             $name = $key;
-            if ($name == 'name') {
-                $name = 'account_name';
-            }
 
             switch ($name) {
                 case 'aws_key':
                 case 'secret_key':
-                case 'account_name':
+                case 'name':
                     $q->set("$name = AES_ENCRYPT(?, '$keyString')", $value);
                     break;
                 case 'customer_id':
@@ -164,18 +161,17 @@ class Account {
 
         $db = Database::getInstance();
 
-        if ($master[self::EXTERNAL_ID] == '0') {
-            $sql = "
-                        delete from master_account
-                        where customer_id = ?";
+        if ($master['account_id'] == '0' || $master['account_id'] == null) {
+            $sql = "delete from master_account
+                    where customer_id = ?";
             $params = array($customerId);
         } else {
             $sql = "
             replace into master_account
-            (".self::EXTERNAL_ID.", customer_id, billing_bucket)
+            (account_id, customer_id, billing_bucket)
             values (?, ?, ?)";
             $params = array(
-                $master[self::EXTERNAL_ID],
+                $master['account_id'],
                 $customerId,
                 $master['billing_bucket']
             );

@@ -42,7 +42,7 @@
             if ($scope.is('EDIT')) {
 
                 $scope.setState('SAVE');
-                account.save($scope.account).then(
+                account.save($scope.account, $scope.master).then(
                     // Success
                     function(data) {
 
