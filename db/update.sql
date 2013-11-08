@@ -36,8 +36,7 @@ CREATE TABLE IF NOT EXISTS alert_calculation_type (
 
 CREATE TABLE IF NOT EXISTS alert_time_frame (
     id BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    alert_calculation_type_id BIGINT(20) UNSIGNED NOT NULL
+    name VARCHAR(255) NOT NULL
 )
     ENGINE =InnoDB
 ;
@@ -72,47 +71,39 @@ CREATE TABLE IF NOT EXISTS alert (
 ############################ DATA INSERTS & CHANGES ############################
 ################################################################################
 
-INSERT INTO alert_classification_type VALUES
+REPLACE INTO alert_classification_type VALUES
 (1, 'Service Provider'),
 (2, 'Service Type'),
 (3, 'Account')
-ON DUPLICATE KEY UPDATE id=id
 ;
 
-INSERT INTO alert_object_type VALUES
+REPLACE INTO alert_object_type VALUES
 (1, 'instances'),
 (2, 'buckets'),
 (3, 'volumes'),
 (4, 'accounts')
-ON DUPLICATE KEY UPDATE id=id
 ;
 
-INSERT INTO alert_comparison_type VALUES
+REPLACE INTO alert_comparison_type VALUES
 (1, 'exceeded'),
 (2, 'dropped below'),
 (3, 'at')
-ON DUPLICATE KEY UPDATE id=id
 ;
 
-INSERT INTO alert_calculation_type VALUES
-(1, 'an average'),
-(2, 'a total')
-ON DUPLICATE KEY UPDATE id=id
+REPLACE INTO alert_calculation_type VALUES
+(1, 'average'),
+(2, 'total')
 ;
 
-INSERT INTO alert_time_frame VALUES
-(1, 'daily', 2),
-(2, 'weekly', 2),
-(3, 'monthly', 2),
-(4, '7 day rolling', 1),
-(5, '30 day rolling', 1)
-ON DUPLICATE KEY UPDATE id=id
+REPLACE INTO alert_time_frame VALUES
+(1, 'daily'),
+(2, '7 day'),
+(3, '30 day')
 ;
 
-INSERT INTO alert_value_type VALUES
+REPLACE INTO alert_value_type VALUES
 (1, 'cost'),
 (2, 'running hours')
-ON DUPLICATE KEY UPDATE id=id
 ;
 
 ################################################################################
@@ -122,11 +113,12 @@ ON DUPLICATE KEY UPDATE id=id
 SOURCE db / views.sql
 ;
 
-
 CREATE OR REPLACE VIEW alert_view AS
     SELECT
         a.id,
-        a.user_id AS user_id,
+        a.user_id,
+        a.threshold,
+        sum(bhv.cost) / count(distinct bhv.history_date) as average,
         concat(
             'Your ',
             (CASE a.alert_classification_type_id
@@ -151,19 +143,26 @@ CREATE OR REPLACE VIEW alert_view AS
                   'are ',
                   'have ')),
             #alert_comparision_type
-            compt.name, ' ',
-            #alert calculation type
-            calct.name, ' ',
+            compt.name, ' a ',
             #alert time frame
             atf.name, ' ',
+            #alert calculation type
+            calct.name, ' ',
             #alert value type
             avt.name, ' of ',
             if(a.alert_value_type_id = 1,
                concat('$', convert(format(a.threshold, 2) USING utf8)),
                a.threshold),
-            '.'
-        )         AS description
+            '. (actual: ',
+            '$',
+            format(sum(bhv.cost), 2),
+            ')'
+        ) AS description
     FROM alert a
+        JOIN user u
+            ON u.id = a.user_id
+        JOIN billing_history_v bhv
+            ON bhv.customer_id = u.customer_id
         JOIN alert_classification_type act
             ON act.id = a.alert_classification_type_id
         JOIN alert_comparison_type compt
@@ -186,12 +185,52 @@ CREATE OR REPLACE VIEW alert_view AS
             ON stcv.id = a.service_type_category_id
         LEFT JOIN alert_object_type aot
             ON aot.id = a.alert_object_type_id
+    WHERE bhv.history_date < curdate()
+          AND bhv.history_date >=
+              date_sub(
+                  curdate(), INTERVAL
+                  (CASE a.alert_time_frame_id
+                   WHEN 1 THEN 1
+                   WHEN 2 THEN 7
+                   WHEN 3 THEN 30
+                   END) DAY)
+    GROUP BY a.id
+    HAVING sum(bhv.cost) > threshold
     ORDER BY a.id
 ;
 
+select
+    sum(cost) / count(distinct history_date) as average,
+    history_date
+    from billing_history_v
+    group by customer_id;
+
 REPLACE INTO alert VALUES
-(1, 1, 1, null, 1, 2, null, null, 4, 1, 2, 1, 1, 1000),
-(2, 1, 2, null, null, null, 1, 1, 2, 2, 1, 4, 2, 1000),
-(3, 1, 1, null, 1, 1, null, null, 3, 3, 2, 2, 1, 1000),
-(4, 1, 3, 72, null, null, null, null, null, 3, 2, 2, 1, 1000)
+# + id
+# |  + user_id
+# |  |  + alert_classification_id
+# |  |  |     + account_id
+# |  |  |     |     + service_provider_id
+# |  |  |     |     |     + service_provider_product_id
+# |  |  |     |     |     |     + service_type_id
+# |  |  |     |     |     |     |     + service_type_category_id
+# |  |  |     |     |     |     |     |     + alert_object_type_id
+# |  |  |     |     |     |     |     |     |  + alert_comparison_type_id
+# |  |  |     |     |     |     |     |     |  |  + alert_calculation_type_id
+# |  |  |     |     |     |     |     |     |  |  |  + alert_time_frame_id
+# |  |  |     |     |     |     |     |     |  |  |  |  + alert_value_type_id
+# |  |  |     |     |     |     |     |     |  |  |  |  |     + threshold
+( 1, 1, 1, null,    1, null, null, null,    4, 1, 2, 3, 1,  120),
+( 2, 1, 2, null, null, null,    1,    1,    2, 2, 1, 4, 2, 1000),
+( 3, 1, 1, null,    1,    1, null, null,    3, 3, 2, 2, 1, 1000),
+( 4, 1, 3,   72, null, null, null, null, null, 3, 2, 2, 1, 1000)
+;
+
+#DAILY:
+SELECT
+    sum(bhv.cost)
+FROM billing_history_v bhv
+WHERE u.customer_id
+bhv.history_date < curdate()
+AND bhv.history_date > now() - INTERVAL 1 DAY
 ;
