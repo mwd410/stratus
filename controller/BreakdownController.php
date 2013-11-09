@@ -565,7 +565,7 @@ class BreakdownController extends Controller {
         $second = $data[0]['value'];
         $first = $data[1]['value'];
 
-        if ($second == 0) {
+        if ($first == 0) {
             $diff = '0.00';
         } else {
             $diff = number_format((($second - $first) / $first) * 100, 2);
