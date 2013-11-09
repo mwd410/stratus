@@ -37,7 +37,7 @@
                 }
 
                 var originalOffset;
-
+/*
                 ng.element(window.document).bind('scroll', function() {
 
                     if (originalOffset === undefined) {
@@ -49,7 +49,7 @@
                     } else {
                         el.css('position', '');
                     }
-                });
+                });*/
             }
         };
     });
