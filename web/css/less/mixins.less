@@ -123,6 +123,11 @@
     background       : -o-linear-gradient(top, @startColor, @endColor);
 }
 
+.radial-gradient(@gradient) {
+    background : -webkit-radial-gradient(@arguments);
+    background: -gradient(@arguments);
+}
+
 .st-header-gradient {
     .gradient(#fff, #ddd);
 }
