@@ -14,10 +14,14 @@ body {
     color            : @st-bg-text;
 }
 
+.st-app-wrapper {
+    position: relative;
+}
+
 .site-wrapper {
     min-height : 100%;
     position   : relative;
-    padding-bottom: 100px;
+    padding-bottom: 50px;
 
     .site-content {
     }
@@ -29,10 +33,12 @@ body {
         width    : 100%;
         height : 50px;
         line-height: 1.5;
-        .gradient(@st-bg-main, @st-bg-dark);
+        background: @st-bg-dark;
+        border-top: 1px solid @st-bg-very-dark;
+        .box-shadow(3px -3px 3px rgba(0, 0, 0, 0.3));
+        //.gradient(@st-bg-dark, @st-bg-main);
         & > div {
             padding    : 14px;
-            border-top : 1px solid @st-bg-light;
             text-align: center;
         }
 
