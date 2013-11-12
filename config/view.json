@@ -27,6 +27,7 @@
             "/js/app/RegisterController.js",
             "/js/app/stAutoSize.js",
             "/js/app/stLeftNav.js",
+            "/js/app/stSwitch.js",
             "/js/app/Combo.js",
             "/js/app/toggle.js",
             "/js/app/account/stAccount.js",
