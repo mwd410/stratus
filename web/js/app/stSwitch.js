@@ -15,8 +15,11 @@
                 
                 el.on('click', function() {
 
-                    toggler.toggle();
-                    el.toggleClass('is-on');
+                    scope.$apply(function() {
+
+                        toggler.toggle();
+                        el.toggleClass('is-on');
+                    });
                 });
             }
         };

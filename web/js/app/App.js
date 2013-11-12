@@ -4,6 +4,7 @@
     ng.module('app', [
             'ui.router',
             'app.account',
+            'app.alerts',
             'app.breakdown',
             'app.dashboard',
             'app.nav',
@@ -32,7 +33,8 @@
                 })
                 .state('app.alerts', {
                     url         : '/alerts',
-                    templateUrl : 'partials/alerts.html'
+                    templateUrl : 'partials/alerts.html',
+                    controller  : 'AlertCtrl'
                 })
                 .state('app.reports', {
                     url         : '/reports',
@@ -64,6 +66,8 @@
     ng.module('app.nav', []);
 
     ng.module('app.utils', []);
+
+    ng.module('app.alerts', []);
 
 })(window.angular);
 

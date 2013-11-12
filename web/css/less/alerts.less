@@ -1,0 +1,90 @@
+.st-alert-table {
+    .st-wrapper;
+
+    margin-top : 20px;
+
+    th, td {
+        border  : 1px solid @st-bg-very-dark;
+        padding : 5px;
+    }
+}
+
+.st-alert-list {
+    .st-wrapper;
+
+    margin-top : 20px;
+
+    height     : 300px;
+    border     : 1px solid @st-bg-very-dark;
+    @headerHeight : 31px;
+    @boxPadding : 10px;
+
+    .box {
+        height : 100%;
+        float : left;
+        + .box {
+            border-left : 1px solid @st-bg-very-dark;
+        }
+        & > header {
+            float : left;
+            width : 100%;
+            padding : (@boxPadding / 2);
+            border-bottom: 1px solid @st-bg-very-dark;
+            .gradient(@st-bg-main, @st-bg-dark);
+        }
+        & > div {
+            height : 100%;
+            width : 100%;
+            padding : (@headerHeight + @boxPadding) @boxPadding @boxPadding @boxPadding;
+        }
+
+        &.outer-box {
+            & > div {
+                padding : (@headerHeight) 0 0 0;
+            }
+        }
+    }
+
+    .box .main-header {
+        background : @st-brand-main;
+        color      : @st-brand-text-strong;
+        i {
+            color   : @st-brand-text;
+            padding : 5px;
+            cursor  : pointer;
+            .transition(0.1s linear opacity);
+            .opacity(0);
+            &:hover {
+                color : @st-brand-text-strong;
+            }
+        }
+        &:hover i {
+            .opacity(100);
+        }
+    }
+
+    .left-side {
+        width : 66%;
+        .what, .when {
+            width : 50%;
+        }
+    }
+    .right-side {
+        width : 34%;
+        background: @st-bg-dark;
+
+        .notification-option {
+
+            +.notification-option {
+                margin-top : 5px;
+            }
+
+            span {
+                vertical-align: top;
+            }
+            &.is-active {
+                color : @st-bg-text-strong;
+            }
+        }
+    }
+}

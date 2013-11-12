@@ -34,6 +34,7 @@
             "/js/app/account/AccountManagementController.js",
             "/js/app/account/AccountController.js",
             "/js/app/account/AccountService.js",
+            "/js/app/alerts/AlertCtrl.js",
             "/js/app/breakdown/BreakdownCtrl.js",
             "/js/app/breakdown/BreakdownMenuService.js",
             "/js/app/breakdown/BreakdownService.js",

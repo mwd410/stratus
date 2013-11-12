@@ -1,0 +1,40 @@
+<div class="st-alert-list">
+    <div class="left-side box outer-box">
+
+        <header class="main-header">
+            <i class="icon-edit"></i>
+            <span>Alert 1</span>
+        </header>
+
+        <div>
+
+            <div class="box what">
+                <header>What</header>
+                <div>
+
+                </div>
+            </div>
+
+            <div class="box when">
+                <header>When</header>
+                <div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box right-side">
+        <header>Notify me by</header>
+        <div class="body">
+
+            <div class="notification-option" data-ng-class="{'is-active' : emailMe.isActive}">
+                <div st-switch="emailMe"></div>
+                <span>Emailing me</span>
+            </div>
+            <div class="notification-option" data-ng-class="{'is-active' : textMe.isActive}">
+                <div st-switch="textMe"></div>
+                <span>Texting me</span>
+            </div>
+        </div>
+    </div>
+</div>
