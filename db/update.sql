@@ -81,43 +81,114 @@ ADD CONSTRAINT fk_service_product_service_type1
 FOREIGN KEY (service_type_id)
 REFERENCES service_type (id)
     ON UPDATE CASCADE
-    ON DELETE CASCADE;
+    ON DELETE CASCADE
+;
+
+alter table billing_history
+    add column service_provider_id bigint (20) unsigned,
+    add column service_type_id bigint (20) unsigned;
+
+update billing_history bh
+    join service_product spp
+        on spp.id = bh.product_id
+    join service_type_category stc
+        on stc.id = bh.service_type_category_id
+set bh.service_provider_id = spp.service_provider_id,
+    bh.service_type_id = stc.service_type_id;
+
+ALTER TABLE billing_history
+ADD CONSTRAINT fk_billing_history_service_provider1
+FOREIGN KEY (service_provider_id)
+REFERENCES service_provider (id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+ADD CONSTRAINT fk_billing_history_service_type1
+FOREIGN KEY (service_type_id)
+REFERENCES service_type (id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+;
+
+alter table billing_history
+    add key billing_history_date1 (history_date);
+
+alter table billing_history
+    drop key fk_billing_history_account1,
+    add key billing_history_account_cost1 (account_id, cost),
+    add key billing_history_date_cost (history_date, cost),
+    add key billing_history_account_date_cost (account_id, cost, history_date);
+
+alter table billing_history
+    add key billing_history_all (account_id, product_id, service_type_category_id, cost, history_date);
+
+ALTER TABLE billing_history
+CHANGE product_id product_id BIGINT(20) UNSIGNED NOT NULL
+;
+
+alter table billing_history
+    add key cost (cost);
+
+ALTER TABLE service_product
+DROP KEY name,
+ADD UNIQUE KEY (service_provider_id, name)
+;
+
+ALTER TABLE service_product
+ADD KEY (id, service_provider_id, name)
+;
+
+ALTER TABLE service_provider
+ADD UNIQUE KEY (name)
+;
+
+ALTER TABLE service_type_category
+DROP KEY name,
+ADD UNIQUE KEY (service_type_id, name)
+;
 
 ALTER TABLE service_provider
 ADD COLUMN tag_name VARCHAR(40)
-AFTER name;
+AFTER name
+;
 
 ALTER TABLE service_product
 ADD COLUMN tag_name VARCHAR(40)
-AFTER name;
+AFTER name
+;
 
 ALTER TABLE service_type
 ADD COLUMN tag_name VARCHAR(40)
-AFTER name;
+AFTER name
+;
 
 ALTER TABLE service_type_category
 ADD COLUMN tag_name VARCHAR(40)
-AFTER name;
+AFTER name
+;
 
 UPDATE service_provider sp
     JOIN tag_service_provider tsp
         ON tsp.name = sp.name
-SET sp.tag_name = tsp.tag_name;
+SET sp.tag_name = tsp.tag_name
+;
 
 UPDATE service_product sp
     JOIN tag_service_provider_product tspp
         ON tspp.name = sp.name
-SET sp.tag_name = tspp.tag_name;
+SET sp.tag_name = tspp.tag_name
+;
 
 UPDATE service_type st
     JOIN tag_service_type tst
         ON tst.name = st.name
-SET st.tag_name = tst.tag_name;
+SET st.tag_name = tst.tag_name
+;
 
 UPDATE service_type_category stc
     JOIN tag_service_type_category tstc
         ON tstc.name = stc.name
-SET stc.tag_name = tstc.tag_name;
+SET stc.tag_name = tstc.tag_name
+;
 
 ################################################################################
 ############################ DATA INSERTS & CHANGES ############################
