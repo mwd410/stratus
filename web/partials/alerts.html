@@ -28,13 +28,24 @@
         <div class="body">
 
             <div class="notification-option" data-ng-class="{'is-active' : emailMe.isActive}">
-                <div st-switch="emailMe"></div>
-                <span>Emailing me</span>
+                <div st-switch="emailMe" data-ng-click="checkModel = true"></div>
+                <span>Email</span><br>
+                <st-checkbox ng-init="checkModel = true"
+                             ng-model="checkModel"
+                             data-is-disabled="!emailMe.isActive"
+                             data-on-check="emailAddress = ''"
+                             data-uncheck-on-disable="off">Default Email</st-checkbox>
+                <input type="text"
+                       data-ng-model="emailAddress"
+                       data-ng-disabled="checkModel"
+                       data-ng-required="!emailMe.isActive"
+                       placeholder="{{checkModel ? 'm.deady410@gmail.com' : ''}}">
             </div>
             <div class="notification-option" data-ng-class="{'is-active' : textMe.isActive}">
                 <div st-switch="textMe"></div>
-                <span>Texting me</span>
+                <span>Text</span>
             </div>
+
         </div>
     </div>
 </div>

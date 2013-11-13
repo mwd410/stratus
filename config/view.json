@@ -29,6 +29,7 @@
             "/js/app/stLeftNav.js",
             "/js/app/stSwitch.js",
             "/js/app/Combo.js",
+            "/js/app/stCheckbox.js",
             "/js/app/toggle.js",
             "/js/app/account/stAccount.js",
             "/js/app/account/AccountManagementController.js",
