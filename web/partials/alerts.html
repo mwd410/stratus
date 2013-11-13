@@ -1,4 +1,4 @@
-<div class="st-alert-list">
+<div class="st-alert-list" data-ng-controller="AlertCtrl">
     <div class="left-side box outer-box">
 
         <header class="main-header">
@@ -11,6 +11,24 @@
             <div class="box what">
                 <header>What</header>
                 <div>
+
+                    <st-checkbox ng-model="useProviderOrType"
+                                 data-on-uncheck="alert.alert_classification_type_id = null"
+                                 data-ng-class="{'is-active' : useProviderOrType}">
+                        Filter By
+                    </st-checkbox>
+                    <div class="filter-wrapper" data-ng-class="{'is-active' : useProviderOrType}">
+                        <div data-ng-repeat="classificationType in classificationTypes"
+                             class="category-type">
+                            <!-- TODO: refactor radio into nice-looking directive -->
+                            <input type="radio"
+                                   id="category{{ $index }}"
+                                   data-ng-model="alert.alert_classification_type_id"
+                                   value="{{ classificationType.value }}"
+                                   data-ng-disabled="!useProviderOrType">
+                            <label for="category{{ $index }}">{{ classificationType.label }}</label>
+                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -27,21 +45,25 @@
         <header>Notify me by</header>
         <div class="body">
 
-            <div class="notification-option" data-ng-class="{'is-active' : emailMe.isActive}">
-                <div st-switch="emailMe" data-ng-click="checkModel = true"></div>
+            <div class="notification-option"
+                 data-ng-class="{'is-active' : emailMe.isActive}">
+                <div st-switch="emailMe"
+                     data-ng-click="checkModel = true"></div>
                 <span>Email</span><br>
                 <st-checkbox ng-init="checkModel = true"
                              ng-model="checkModel"
                              data-is-disabled="!emailMe.isActive"
                              data-on-check="emailAddress = ''"
-                             data-uncheck-on-disable="off">Default Email</st-checkbox>
+                             data-uncheck-on-disable="off">Default Email
+                </st-checkbox>
                 <input type="text"
                        data-ng-model="emailAddress"
                        data-ng-disabled="checkModel"
                        data-ng-required="!emailMe.isActive"
                        placeholder="{{checkModel ? 'm.deady410@gmail.com' : ''}}">
             </div>
-            <div class="notification-option" data-ng-class="{'is-active' : textMe.isActive}">
+            <div class="notification-option"
+                 data-ng-class="{'is-active' : textMe.isActive}">
                 <div st-switch="textMe"></div>
                 <span>Text</span>
             </div>

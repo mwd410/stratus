@@ -34,7 +34,7 @@
                 .state('app.alerts', {
                     url         : '/alerts',
                     templateUrl : 'partials/alerts.html',
-                    controller  : 'AlertCtrl'
+                    controller  : 'AlertManagementCtrl'
                 })
                 .state('app.reports', {
                     url         : '/reports',
