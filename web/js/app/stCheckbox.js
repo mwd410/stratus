@@ -24,10 +24,7 @@
                     if (isDisabled) {
                         return;
                     }
-                    scope.$apply(function(scope) {
-
-                        scope[attrs.ngModel] = !scope[attrs.ngModel];
-                    });
+                    scope.$apply(attrs.ngModel + ' = !' + attrs.ngModel);
                 });
 
                 if (attrs.isDisabled) {
@@ -36,7 +33,7 @@
 
                         isDisabled = !!disabled;
                         if (attrs.uncheckOnDisable !== 'off') {
-                            scope[attrs.ngModel] = false;
+                            scope.$evalAsync(attrs.ngModel + ' = false');
                         }
                     });
                 }

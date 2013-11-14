@@ -14,6 +14,7 @@
 
                     <st-checkbox ng-model="useProviderOrType"
                                  data-on-uncheck="alert.alert_classification_type_id = null"
+                                 data-on-check="alert.alert_classification_type_id = classificationTypes[0].value"
                                  data-ng-class="{'is-active' : useProviderOrType}">
                         Filter By
                     </st-checkbox>
@@ -25,10 +26,49 @@
                                    id="category{{ $index }}"
                                    data-ng-model="alert.alert_classification_type_id"
                                    value="{{ classificationType.value }}"
-                                   data-ng-disabled="!useProviderOrType">
+                                   data-ng-disabled="!useProviderOrType"
+                                   data-ng-change="alert.service_provider_id = null; alert.service_provider_product_id = null;">
                             <label for="category{{ $index }}">{{ classificationType.label }}</label>
                         </div>
                     </div>
+
+                    <div class="provider-options field"
+                         data-ng-class="{'is-active' : alert.alert_classification_type_id == classificationTypes[0].value}"
+                         data-ng-show="alert.alert_classification_type_id == classificationTypes[0].value">
+
+                        <label for="providerSelect{{ $index }}">
+                            Service Provider
+                        </label>
+
+                        <select id="providerSelect{{ $index }}"
+                                data-ng-model="alert.service_provider_id"
+                                data-ng-change="alert.service_provider_product_id = null"
+                                data-ng-options="serviceProvider.id as serviceProvider.name for serviceProvider in serviceProviders"></select>
+
+                        <div class="field"
+                             data-ng-show="alert.service_provider_id != null">
+
+                            <label for="productSelect{{ $index }}">
+                                Service Product
+                            </label>
+
+                            <select id="productSelect{{ $index }}"
+                                    data-ng-model="alert.service_provider_product_id"
+                                    data-ng-options="product.id as product.name for product in serviceProviderProducts[alert.service_provider_id]"></select>
+                        </div>
+                    </div>
+
+                    <st-checkbox ng-model="filterBy.account"
+                                 data-ng-class="{'is-active' : filterBy.account}"
+                                 data-on-uncheck="alert.account_id = null">
+                        Filter By Account
+                    </st-checkbox>
+
+                    <select class="account-select"
+                            data-ng-model="alert.account_id"
+                            data-ng-options="account.id as account.name for account in accounts"
+                            data-ng-disabled="!filterBy.account"
+                            data-ng-required="filterBy.account"></select>
 
                 </div>
             </div>

@@ -21,20 +21,20 @@
 
     .box {
         height : 100%;
-        float : left;
+        float  : left;
         + .box {
             border-left : 1px solid @st-bg-very-dark;
         }
         & > header {
-            float : left;
-            width : 100%;
-            padding : (@boxPadding / 2);
-            border-bottom: 1px solid @st-bg-very-dark;
+            float         : left;
+            width         : 100%;
+            padding       : (@boxPadding / 2);
+            border-bottom : 1px solid @st-bg-very-dark;
             .gradient(@st-bg-main, @st-bg-dark);
         }
         & > div {
-            height : 100%;
-            width : 100%;
+            height  : 100%;
+            width   : 100%;
             padding : (@headerHeight + @boxPadding) @boxPadding @boxPadding @boxPadding;
         }
 
@@ -63,6 +63,10 @@
         }
     }
 
+    .field {
+        margin-top : 10px;
+    }
+
     .left-side {
         width : 66%;
         .what, .when {
@@ -71,14 +75,18 @@
 
         .st-checkbox {
             float : left;
+            clear : left;
             &.is-active {
                 color : @st-bg-text-strong;
+            }
+            label {
+                width : auto;
             }
         }
 
         .filter-wrapper {
-            float : left;
-            margin-left: 5px;
+            float       : left;
+            margin-left : 5px;
 
             &.is-active {
                 color : @st-bg-text-strong;
@@ -86,21 +94,43 @@
         }
 
         .category-type {
-            float : left;
-            clear : both;
-            display: inline-block;
+            float   : left;
+            clear   : both;
+            display : inline-block;
+        }
+
+        .provider-options {
+            float  : left;
+            clear  : left;
+            margin : 0 5px 0 23px;
+
+            &.is-active {
+                color : @st-bg-text-strong;
+            }
+        }
+
+        .account-select {
+            float      : left;
+            width      : 100%;
+            margin-top : 3px;
+        }
+
+        label {
+            font-weight : 100;
+            width       : 130px;
         }
     }
+
     .right-side {
-        width : 34%;
-        background: @st-bg-dark;
+        width      : 34%;
+        background : @st-bg-dark;
 
         .notification-option {
 
-            font-weight: normal !important;
-            font-size: 14px;
+            font-weight : normal !important;
+            font-size   : 14px;
 
-            +.notification-option {
+            + .notification-option {
                 margin-top : 5px;
             }
             span {
