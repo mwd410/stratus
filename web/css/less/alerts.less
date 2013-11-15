@@ -14,7 +14,6 @@
 
     margin-top : 20px;
 
-    height     : 300px;
     border     : 1px solid @st-bg-very-dark;
     @headerHeight : 31px;
     @boxPadding : 10px;
@@ -22,9 +21,9 @@
     .box {
         height : 100%;
         float  : left;
-        + .box {
-            border-left : 1px solid @st-bg-very-dark;
-        }
+        clear : both;
+        border-top : 1px solid @st-bg-very-dark;
+        margin-top: @boxPadding;
         & > header {
             float         : left;
             width         : 100%;
@@ -68,9 +67,9 @@
     }
 
     .left-side {
-        width : 66%;
+        width : 100%;
         .what, .when {
-            width : 50%;
+            width : 100%;
         }
 
         .st-checkbox {
@@ -122,7 +121,7 @@
     }
 
     .right-side {
-        width      : 34%;
+        width      : 100%;
         background : @st-bg-dark;
 
         .notification-option {
@@ -138,6 +137,28 @@
             &.is-active {
                 color : @st-bg-text-strong;
             }
+        }
+    }
+
+    @media (min-width : @screen-md) {
+        height     : 300px;
+        .box {
+            clear : none;
+            margin-top: 0;
+            border-top: none;
+            + .box {
+                border-top  : none;
+                border-left : 1px solid @st-bg-very-dark;
+            }
+        }
+        .left-side {
+            width : 66%;
+            .what, .when {
+                width : 50%;
+            }
+        }
+        .right-side {
+            width : 34%;
         }
     }
 }

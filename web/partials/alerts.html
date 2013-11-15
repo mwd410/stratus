@@ -1,4 +1,6 @@
-<div class="st-alert-list" data-ng-controller="AlertCtrl">
+<div class="st-alert-list"
+     data-ng-repeat="alert in alerts"
+     data-ng-controller="AlertCtrl">
     <div class="left-side box outer-box">
 
         <header class="main-header">
@@ -89,7 +91,7 @@
                  data-ng-class="{'is-active' : emailMe.isActive}">
                 <div st-switch="emailMe"
                      data-ng-click="checkModel = true"></div>
-                <span>Email</span><br>
+                <span>Email</span>
                 <st-checkbox ng-init="checkModel = true"
                              ng-model="checkModel"
                              data-is-disabled="!emailMe.isActive"

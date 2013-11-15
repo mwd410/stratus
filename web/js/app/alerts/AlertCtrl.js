@@ -14,8 +14,6 @@
             }
         ];
 
-        $scope.alert = {};
-
         $scope.accounts = [
             {
                 id : '1',
