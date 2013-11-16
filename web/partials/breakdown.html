@@ -19,7 +19,15 @@
                 <div>
                     <select data-ng-model="widgetService.selectedAccount"
                             data-ng-options="item.name for item in accounts"></select>
-                    {{ getTitle() }}
+                    <span>{{ getTitle() }}</span>
+                    <button class="st-button brand" data-ng-click="menu.toggle()">
+                        <i class="icon-reorder"></i>
+                    </button>
+                    <div class="menu-options"
+                         data-ng-class="{'is-expanded' : menu.isActive}">
+
+                        blah
+                    </div>
                 </div>
             </div>
 

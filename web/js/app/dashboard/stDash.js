@@ -10,13 +10,29 @@
                     dash : '=stDash',
                     widgetService : '='
                 },
-                controller  : function($scope, NavService, AccountService) {
+                controller  : function($scope, NavService, AccountService, toggle) {
 
                     $scope.isLeftExpanded = function() {
 
                         return NavService.isExpanded('left');
                     };
 
+                    $scope.accounts = AccountService.all.then(
+                        function(accounts) {
+                            console.log(arguments);
+
+                            if (accounts.length > 1) {
+                                return [
+                                    {
+                                        name : 'All'
+                                    }
+                                ].concat(accounts);
+                            } else {
+                                return accounts;
+                            }
+                        }
+                    );
+                    /*
                     $scope.accountService = AccountService;
 
                     $scope.$watch('accountService.all', function(accounts) {
@@ -32,13 +48,16 @@
                         }
 
                         $scope.widgetService.selectedAccount = $scope.accounts[0];
-                    });
+                    });*/
+
+                    $scope.getTitle = function() {
+                        return $scope.widgetService.title;
+                    };
+
+                    $scope.menu = toggle();
                 },
                 link        : function(scope, el, attrs, ctrl) {
 
-                    scope.getTitle = function() {
-                        return scope.widgetService.title;
-                    };
                 }
             };
         });

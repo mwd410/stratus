@@ -10,21 +10,21 @@
 }
 
 .st-dash {
-    margin   : 0px;
-    padding  : 0;
+    margin  : 0px;
+    padding : 0;
     & > div {
-        height           : 100%;
-        padding          : 10px;
+        height      : 100%;
+        padding     : 10px;
         border-left : 1px solid @st-bg-very-dark;
         .st-deboss;
-        background: @st-bg-dark;
+        background  : @st-bg-dark;
     }
 }
 
 .st-dash-title {
     padding : 6px;
     & > div {
-        position: relative;
+        position         : relative;
         //.st-emboss;
         padding          : 10px;
         text-align       : center;
@@ -33,14 +33,28 @@
         background-color : @st-brand-main;
         color            : @st-brand-text-strong;
         .individual-box;
-        border : 1px solid @st-bg-very-dark;
+        border           : 1px solid @st-bg-very-dark;
         //.border-radius(3px);
 
         select {
             font-size : 14px;
-            position: absolute;
-            left : 8px;
-            top : 8px;
+            position  : absolute;
+            left      : 8px;
+            top       : 8px;
+        }
+
+        .st-button {
+            position : absolute;
+            right    : 5px;
+            top      : 5px;
+        }
+        .menu-options {
+            max-height : 0;
+            overflow   : hidden;
+            &.is-expanded {
+                padding-top : 10px;
+                max-height  : 100px;
+            }
         }
     }
 }
@@ -53,7 +67,7 @@
     padding  : 0;
     height   : 100%;
     position : relative;
-    float : left;
+    float    : left;
     & > .st-widget-column-dragger {
         position : absolute;
         height   : 100%;
@@ -86,8 +100,8 @@
         background-color : @bg;
         width            : 100%;
         height           : 100%;
-       // border           : none;
-        border : 1px solid @st-bg-very-dark;
+        // border           : none;
+        border           : 1px solid @st-bg-very-dark;
         .individual-box;
         //.st-emboss;
         //.border-radius(3px);
@@ -97,14 +111,14 @@
                 padding   : 0;
                 margin    : 0;
             }
-            padding      : 7px;
+            padding       : 7px;
             .unselectable;
-            color        : @st-bg-text-strong;
-            background: @st-bg-dark;
-            border-bottom: 1px solid @st-bg-very-dark;
+            color         : @st-bg-text-strong;
+            background    : @st-bg-dark;
+            border-bottom : 1px solid @st-bg-very-dark;
             //.gradient(@bg, @st-bg-dark);
             //border-color : #000;
-           // border-top   : 1px solid rgba(255, 255, 255, 0.3);
+            // border-top   : 1px solid rgba(255, 255, 255, 0.3);
             //.box-shadow(0 1px 0 rgba(255, 255, 255, 0.3));
         }
         & > div {
@@ -187,29 +201,70 @@
  */
 .st-left-nav {
     display     : block;
-    width       : 240px;
-    float : left;
+    @leftNavWidth : 240px;
+    width       : @leftNavWidth;
+    float       : left;
     margin-left : -100%;
-    height : 100%;
-    //top         : 20px; // used for position : fixed, which is added when scrolling.
+    height      : 100%;
     &.is-expanded {
-        position : absolute;
-        z-index: 1000;
-        margin-left: 0px;
+        position     : absolute;
+        z-index      : 1000;
+        margin-left  : 0px;
         background   : @st-bg-main;
         border-right : 1px solid @st-bg-very-dark;
+    }
+    .quick-search {
+        @quickSearchHeight : 30px;
+        height     : @quickSearchHeight;
+        background : @st-bg-dark;
+        @padding : 4px;
+        padding    : @padding;
+        position   : relative;
+        button:hover i {
+            color : @st-bg-text-strong;
+        }
+        i {
+            color : @st-bg-text;
+        }
+        .search-icon {
+            position : absolute;
+            z-index  : 100;
+            top  : @padding;
+            left : @padding;
+            width  : 19px;
+            height : 19px;
+        }
+        .clear-search {
+            width  : 19px;
+            height : 19px;
+            float  : right;
+        }
+
+        input[type="text"] {
+            padding-left : 20px;
+            width        : 30px;
+            position     : absolute;
+            top          : @padding;
+            left         : @padding;
+            z-index: 0;
+            &:focus {
+                width        : (@leftNavWidth - @padding - @quickSearchHeight);
+                margin-right : (2 * @padding);
+            }
+            .box-shadow(2px 2px 2px rgba(0, 0, 0, 0.3) inset);
+        }
+
+        .paging {
+            padding : 0 40px;
+        }
     }
     & > ul {
         list-style : none;
         padding    : 0;
         margin     : 0;
-        & + ul {
-            //margin-top : 20px;
-        }
-        //.border-radius(3px);
         & > li {
             overflow : hidden;
-            &+li {
+            & + li {
                 border-top : 1px solid @st-bg-very-dark;
             }
             &:last-of-type {
@@ -272,15 +327,12 @@
 }
 
 .st-nav-title {
-    //background-color : @st-brand-main;
-    color            : @st-bg-text-strong;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
-   // .border-top-radius(3px);
-    padding          : 10px;
+    color       : @st-bg-text-strong;
+    text-shadow : 1px 1px 1px rgba(0, 0, 0, 0.3);
+    padding     : 10px;
     .gradient(@st-bg-main, @st-bg-dark);
-    //.radial-gradient(50% 100%, ellipse farthest-side, @st-brand-light 0%, @st-bg-main 100%;);
-    text-align       : center;
-    font-size        : 15px;
+    text-align  : center;
+    font-size   : 15px;
 }
 
 .st-left-toggle {
@@ -294,7 +346,7 @@
         //left     : 0;
         float    : left;
         position : static;
-        margin : 0;
+        margin   : 0;
         &.is-expanded {
             background   : none;
             border-right : none;
@@ -302,7 +354,7 @@
     }
 
     .st-dash {
-        margin-left: 240px;
+        margin-left : 240px;
     }
 }
 

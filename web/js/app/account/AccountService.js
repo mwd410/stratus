@@ -1,24 +1,17 @@
 (function(ng) {
     'use strict';
 
-    ng.module('app.account').service('AccountService', function($http) {
+    ng.module('app.account').service('AccountService', function($http, $q) {
 
-        var serverData,
-            master,
-            allAccounts = [];
+        var masterDeferred = $q.defer(),
+            service = {
+                master : masterDeferred.promise,
+                all : $http.get('/getAccounts').then(function(response) {
 
-        $http.get('/getAccounts').success(function(response) {
-
-            serverData = response;
-
-            var copy = ng.copy(serverData);
-            master = copy.masterAccount;
-            service.all = copy.accounts;
-        });
-
-        var service = {
-            all : allAccounts
-        };
+                    masterDeferred.resolve(response.data.masterAccount);
+                    return response.data.accounts;
+                })
+            };
 
         return service;
     });

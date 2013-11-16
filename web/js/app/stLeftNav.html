@@ -7,6 +7,29 @@
         <li class="st-nav-title"
             data-ng-if="menu.name">{{menu.name}}</li>
 
+        <li ng-if="menu.pageSize" class="quick-search">
+            <form name="quickSearch">
+                <button class="search-icon st-button">
+                    <i class="icon-search"
+                       data-ng-class="{'bg-text-strong' : searchInFocus}"></i>
+                </button>
+                <input data-ng-mouseover="searchInFocus = true"
+                       data-ng-mouseleave="searchInFocus = false"
+                       name="search"
+                       data-ng-model="search"
+                       type="text"
+                       class="st-searchbox">
+                <button class="clear-search st-button">
+                    <i class="icon-remove"></i>
+                </button>
+                <div class="paging">
+                    <button class="prev-page st-button">
+                        <i class="icon-caret-left"></i>
+                    </button>
+                </div>
+            </form>
+        </li>
+
         <li data-ng-repeat="item in menu.items"
             data-ng-class="{'is-active' : isItemActive({item : item})}">
 
