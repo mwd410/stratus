@@ -18,21 +18,6 @@
             }
         ];
 
-        $scope.accounts = [
-            {
-                id : null,
-                name : 'All'
-            },
-            {
-                id : '1',
-                name : 'Account 1'
-            },
-            {
-                id : '72',
-                name : 'Account 2'
-            }
-        ];
-
         $scope.serviceProviders = [
             {
                 id : '1',

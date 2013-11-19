@@ -1,7 +1,7 @@
 (function(ng, undefined) {
     'use strict';
 
-    ng.module('app.alerts').controller('AlertManagementCtrl', function($scope, alertApi) {
+    ng.module('app.alerts').controller('AlertManagementCtrl', function($scope, alertApi, AccountService) {
 
         // Any assigning of alertApi data to $scope should be done here.
         function updateData(dataPromise) {
@@ -19,6 +19,23 @@
             updateData(dataPromise);
         });
 
+        function updateAccounts(accountPromise) {
+
+            $scope.accounts = accountPromise.then(function(data) {
+
+                return [
+                    {
+                        id : null,
+                        name : 'All Accounts'
+                    }
+                ].concat(data.accounts);
+            });
+        }
+
+        $scope.$watch(function(){return AccountService.data;}, function(accountPromise) {
+
+            updateAccounts(accountPromise);
+        });
     });
 
 })(window.angular);
