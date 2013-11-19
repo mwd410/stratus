@@ -3,24 +3,32 @@
 
     ng.module('app.alerts').controller('AlertCtrl', function($scope) {
 
-        $scope.classificationTypes = [
+        $scope.classifications = [
             {
-                label : 'Service Provider',
-                value : '1'
+                id : null,
+                name : 'All'
             },
             {
-                label : 'Service Type',
-                value : '2'
+                name : 'Service Provider',
+                id : '1'
+            },
+            {
+                name : 'Service Type',
+                id : '2'
             }
         ];
 
         $scope.accounts = [
             {
+                id : null,
+                name : 'All'
+            },
+            {
                 id : '1',
                 name : 'Account 1'
             },
             {
-                id : '2',
+                id : '72',
                 name : 'Account 2'
             }
         ];
@@ -69,6 +77,32 @@
                     name : 'Google Product 2'
                 }
             ]
+        };
+
+        $scope.serviceLabel = function() {
+
+            if ($scope.alert.alert_classification_type_id == 1) {
+                return 'Service Provider';
+            } else if ($scope.alert.alert_classification_type_id == 2) {
+                return 'Service Type';
+            } else {
+                return '';
+            }
+        };
+
+        $scope.serviceOptions = function() {
+
+            var classification = $scope.alert.alert_classification_type_id;
+
+            if (classification == 1) {
+                return $scope.serviceProviders;
+            }
+            return [];
+        };
+
+        $scope.products = function() {
+
+            return $scope.serviceProviderProducts[$scope.alert.service_provider_id];
         };
     });
 

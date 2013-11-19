@@ -28,7 +28,8 @@
             "/analysis/overview" : "Analysis.overview",
             "/dashboard"         : "Dashboard.index",
             "/providers"         : "Provider.index",
-            "/breakdown/update"  : "Breakdown.update"
+            "/breakdown/update"  : "Breakdown.update",
+            "/alerts"            : "Alert.index"
         }
     }
 }

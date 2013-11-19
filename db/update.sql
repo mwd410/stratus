@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS alert_value_type (
 CREATE TABLE IF NOT EXISTS alert (
     id BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY,
     user_id BIGINT(20) UNSIGNED NOT NULL,
+    name VARCHAR(255) NOT NULL,
     alert_classification_type_id BIGINT(20) UNSIGNED NOT NULL,
     account_id BIGINT(20) UNSIGNED,
     service_provider_id BIGINT(20) UNSIGNED,

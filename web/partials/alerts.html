@@ -1,115 +1,78 @@
-<div class="st-alert-list"
-     data-ng-repeat="alert in alerts"
-     data-ng-controller="AlertCtrl">
-    <div class="left-side box outer-box">
+<div class="st-alert-wrapper">
 
-        <header class="main-header">
-            <i class="icon-edit"></i>
-            <span>Alert 1</span>
+    <div class="st-alert"
+         data-ng-repeat="alert in alerts"
+         data-ng-controller="AlertCtrl">
+
+        <header>
+            {{ name + '&nbsp;' }}adsf
         </header>
 
-        <div>
+        <section>
+            <div class="box filter">
 
-            <div class="box what">
-                <header>What</header>
-                <div>
+                <header>Filter</header>
 
-                    <st-checkbox ng-model="useProviderOrType"
-                                 data-on-uncheck="alert.alert_classification_type_id = null"
-                                 data-on-check="alert.alert_classification_type_id = classificationTypes[0].value"
-                                 data-ng-class="{'is-active' : useProviderOrType}">
-                        Filter By
-                    </st-checkbox>
-                    <div class="filter-wrapper" data-ng-class="{'is-active' : useProviderOrType}">
-                        <div data-ng-repeat="classificationType in classificationTypes"
-                             class="category-type">
-                            <!-- TODO: refactor radio into nice-looking directive -->
-                            <input type="radio"
-                                   id="category{{ $index }}"
-                                   data-ng-model="alert.alert_classification_type_id"
-                                   value="{{ classificationType.value }}"
-                                   data-ng-disabled="!useProviderOrType"
-                                   data-ng-change="alert.service_provider_id = null; alert.service_provider_product_id = null;">
-                            <label for="category{{ $index }}">{{ classificationType.label }}</label>
-                        </div>
-                    </div>
-
-                    <div class="provider-options field"
-                         data-ng-class="{'is-active' : alert.alert_classification_type_id == classificationTypes[0].value}"
-                         data-ng-show="alert.alert_classification_type_id == classificationTypes[0].value">
-
-                        <label for="providerSelect{{ $index }}">
-                            Service Provider
-                        </label>
-
-                        <select id="providerSelect{{ $index }}"
-                                data-ng-model="alert.service_provider_id"
-                                data-ng-change="alert.service_provider_product_id = null"
-                                data-ng-options="serviceProvider.id as serviceProvider.name for serviceProvider in serviceProviders"></select>
-
-                        <div class="field"
-                             data-ng-show="alert.service_provider_id != null">
-
-                            <label for="productSelect{{ $index }}">
-                                Service Product
-                            </label>
-
-                            <select id="productSelect{{ $index }}"
-                                    data-ng-model="alert.service_provider_product_id"
-                                    data-ng-options="product.id as product.name for product in serviceProviderProducts[alert.service_provider_id]"></select>
-                        </div>
-                    </div>
-
-                    <st-checkbox ng-model="filterBy.account"
-                                 data-ng-class="{'is-active' : filterBy.account}"
-                                 data-on-uncheck="alert.account_id = null">
-                        Filter By Account
-                    </st-checkbox>
-
-                    <select class="account-select"
-                            data-ng-model="alert.account_id"
+                <div class="field">
+                    <label for="accountCombo{{ $index }}">Account</label>
+                    <select id="accountCombo{{ $index }}"
                             data-ng-options="account.id as account.name for account in accounts"
-                            data-ng-disabled="!filterBy.account"
-                            data-ng-required="filterBy.account"></select>
-
+                            data-ng-model="alert.account_id"></select>
                 </div>
-            </div>
 
-            <div class="box when">
-                <header>When</header>
-                <div>
+                <div class="field">
 
+                    <label>Provider / Type</label>
+                    <select id="classificationCombo{{ $index }}"
+                            data-ng-options="cls.id as cls.name for cls in classifications"
+                            data-ng-model="alert.alert_classification_type_id"></select>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="box right-side">
-        <header>Notify me by</header>
-        <div class="body">
 
-            <div class="notification-option"
-                 data-ng-class="{'is-active' : emailMe.isActive}">
-                <div st-switch="emailMe"
-                     data-ng-click="checkModel = true"></div>
-                <span>Email</span>
-                <st-checkbox ng-init="checkModel = true"
-                             ng-model="checkModel"
-                             data-is-disabled="!emailMe.isActive"
-                             data-on-check="emailAddress = ''"
-                             data-uncheck-on-disable="off">Default Email
-                </st-checkbox>
-                <input type="text"
-                       data-ng-model="emailAddress"
-                       data-ng-disabled="checkModel"
-                       data-ng-required="!emailMe.isActive"
-                       placeholder="{{checkModel ? 'm.deady410@gmail.com' : ''}}">
-            </div>
-            <div class="notification-option"
-                 data-ng-class="{'is-active' : textMe.isActive}">
-                <div st-switch="textMe"></div>
-                <span>Text</span>
-            </div>
+                <div class="field"
+                     data-ng-show="alert.alert_classification_type_id == 1">
 
-        </div>
+                    <label for="providerCombo{{ $index }}">Service Provider</label>
+                    <select id="providerCombo{{ $index }}"
+                            data-ng-model="alert.service_provider_id"
+                            data-ng-options="provider.id as provider.name for provider in serviceProviders"></select>
+                </div>
+
+                <div class="field"
+                     data-ng-show="alert.alert_classification_type_id == 1">
+
+                    <label for="productCombo{{ $index }}">Service Product</label>
+                    <select id="productCombo{{ $index }}"
+                            data-ng-model="alert.service_provider_product_id"
+                            data-ng-options="product.id as product.name for product in products()"></select>
+                </div>
+
+                <div class="field"
+                     data-ng-show="alert.alert_classification_type_id == 2">
+
+                    <label for="typeCombo{{ $index }}">Service Type</label>
+                    <select id="typeCombo{{ $index }}"
+                            data-ng-model="alert.service_provider_id"
+                            data-ng-options="provider.id as provider.name for provider in serviceProviders"></select>
+                </div>
+
+                <div class="field"
+                     data-ng-show="alert.alert_classification_type_id == 2">
+
+                    <label for="categoryCombo{{ $index }}">Service Category</label>
+                    <select id="categoryCombo{{ $index }}"
+                            data-ng-model="alert.service_provider_product_id"
+                            data-ng-options="product.id as product.name for product in products()"></select>
+                </div>
+
+            </div>
+            <div class="box condition">
+
+            </div>
+            <div class="box notification">
+
+            </div>
+            <div class="st-clear-both"></div>
+        </section>
+
     </div>
 </div>
