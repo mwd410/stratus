@@ -170,13 +170,13 @@
 .st-alert {
 
     border : 1px solid @st-bg-very-dark;
+    width: 100%;
     & + .st-alert {
         margin-top: 20px;
     }
 
-    .box,
     & > header {
-        padding : 10px;
+        padding : 5px;
     }
 
     & > header {
@@ -186,14 +186,15 @@
 
     & > section {
         border-top: 1px solid @st-bg-very-dark;
+        display: table;
+        width: 100%;
     }
 
     .box {
-        display: inline-block;
-        width : 33.33%;
-        float : left;
+        padding : 40px 10px 10px 10px;
+        display: table-cell;
+        width : 33%;
         position: relative;
-        padding-top : 40px;
         +.box {
             border-left: 1px solid @st-bg-very-dark;
         }
