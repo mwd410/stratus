@@ -8,7 +8,8 @@
             'app.breakdown',
             'app.dashboard',
             'app.nav',
-            'app.utils'
+            'app.utils',
+            'app.service'
         ])
         .config(function($stateProvider, $urlRouterProvider) {
 
@@ -68,6 +69,8 @@
     ng.module('app.utils', []);
 
     ng.module('app.alerts', []);
+
+    ng.module('app.service', []);
 
 })(window.angular);
 

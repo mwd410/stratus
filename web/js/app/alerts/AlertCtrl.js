@@ -3,67 +3,6 @@
 
     ng.module('app.alerts').controller('AlertCtrl', function($scope) {
 
-        $scope.classifications = [
-            {
-                id : null,
-                name : 'All'
-            },
-            {
-                name : 'Service Provider',
-                id : '1'
-            },
-            {
-                name : 'Service Type',
-                id : '2'
-            }
-        ];
-
-        $scope.serviceProviders = [
-            {
-                id : '1',
-                name : 'Amazon'
-            },
-            {
-                id : '2',
-                name : 'Google'
-            }
-        ];
-
-        $scope.serviceProviderProducts = {
-            '1' : [
-                {
-                    id : null,
-                    name : 'All'
-                },
-                {
-                    id : '1',
-                    name : 'EC2'
-                },
-                {
-                    id : '2',
-                    name : 'S3'
-                },
-                {
-                    id : '3',
-                    name : 'VPC'
-                }
-            ],
-            '2' : [
-                {
-                    id   : null,
-                    name : 'All'
-                },
-                {
-                    id : '1',
-                    name : 'Google Product 1'
-                },
-                {
-                    id : '2',
-                    name : 'Google Product 2'
-                }
-            ]
-        };
-
         $scope.serviceLabel = function() {
 
             if ($scope.alert.alert_classification_type_id == 1) {
@@ -75,19 +14,93 @@
             }
         };
 
-        $scope.serviceOptions = function() {
+        $scope.getClassificationId = function() {
 
-            var classification = $scope.alert.alert_classification_type_id;
-
-            if (classification == 1) {
-                return $scope.serviceProviders;
-            }
-            return [];
+            return $scope.alert.alert_classification_type_id;
         };
 
-        $scope.products = function() {
+        $scope.getClassification = function() {
 
-            return $scope.serviceProviderProducts[$scope.alert.service_provider_id];
+            var classId = $scope.getClassificationId(),
+                classification;
+
+            if (!$scope.classifications) {
+                return null;
+            }
+
+            for (var i = 0; i < $scope.classifications.length; ++i) {
+                classification = $scope.classifications[i];
+
+                if (classification.id == classId) {
+                    return classification;
+                }
+            }
+
+            return null;
+        };
+
+        $scope.getTypes = function() {
+
+            var classification = $scope.getClassification();
+
+            return classification && classification.types || null;
+        };
+
+        $scope.getTypeId = function() {
+
+            var classId = $scope.getClassificationId();
+
+            return classId == 1 && $scope.alert.service_provider_id
+                || classId == 2 && $scope.alert.service_product_id
+                || null;
+        };
+
+        $scope.getType = function() {
+
+            var types = $scope.getTypes(),
+                typeId = $scope.getTypeId();
+
+            if (types && typeId) {
+                for (var i = 0; i < types.length; ++i) {
+                    if (types[i].id == typeId) {
+                        return types[i];
+                    }
+                }
+            }
+
+            return null;
+        };
+
+        $scope.getSubTypes = function() {
+
+            var type = $scope.getType();
+
+            return type && type.sub_types || null;
+        };
+
+        $scope.getSubTypeId = function() {
+
+            var classId = $csope.getClassificationId();
+
+            return classId == 1 && $scope.alert.service_provider_product_id
+                || classId == 2 && $scope.alert.service_type_category_id
+                || null;
+        };
+
+        $scope.getSubType = function() {
+
+            var subTypes = $scope.getSubTypes(),
+                subTypeId = $scope.getSubTypeId();
+
+            if (subTypes && subTypeId) {
+                for (var i = 0; i < subTypes.length; ++i) {
+                    if (subTypes[i].id == subTypeId) {
+                        return subTypes[i];
+                    }
+                }
+            }
+
+            return null;
         };
     });
 

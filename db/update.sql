@@ -74,8 +74,7 @@ CREATE TABLE IF NOT EXISTS alert (
 
 REPLACE INTO alert_classification_type VALUES
 (1, 'Service Provider'),
-(2, 'Service Type'),
-(3, 'Account')
+(2, 'Service Type')
 ;
 
 REPLACE INTO alert_object_type VALUES

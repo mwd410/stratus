@@ -1,41 +1,62 @@
 (function(ng, undefined) {
     'use strict';
 
-    ng.module('app.alerts').controller('AlertManagementCtrl', function($scope, alertApi, AccountService) {
+    ng.module('app.alerts').controller('AlertManagementCtrl', [
+        '$scope', 'alertApi', 'AccountService', 'serviceApi',
+        function($scope, alertApi, accountApi, serviceApi) {
 
-        // Any assigning of alertApi data to $scope should be done here.
-        function updateData(dataPromise) {
+            // Any assigning of alertApi data to $scope should be done here.
+            function updateData(dataPromise) {
 
-            $scope.alerts = dataPromise.then(function(data) {
+                $scope.alerts = dataPromise.then(function(data) {
 
-                return data.alerts;
+                    return data.alerts;
+                });
+            }
+
+            // Can't $watch(alertApi.data), because that won't catch if
+            // alertApi re-assigns alertApi.data to a different promise.
+            $scope.$watch(function() {return alertApi.data;}, function(dataPromise) {
+
+                updateData(dataPromise);
             });
-        }
 
-        // Can't $watch(alertApi.data), because that won't catch if
-        // alertApi re-assigns alertApi.data to a different promise.
-        $scope.$watch(function() {return alertApi.data;}, function(dataPromise) {
+            function updateAccounts(accountPromise) {
 
-            updateData(dataPromise);
-        });
+                $scope.accounts = accountPromise.then(function(data) {
 
-        function updateAccounts(accountPromise) {
+                    return [
+                        {
+                            id   : null,
+                            name : 'All Accounts'
+                        }
+                    ].concat(data.accounts);
+                });
+            }
 
-            $scope.accounts = accountPromise.then(function(data) {
+            $scope.$watch(function() {return accountApi.data;}, function(accountPromise) {
 
-                return [
-                    {
-                        id : null,
-                        name : 'All Accounts'
-                    }
-                ].concat(data.accounts);
+                updateAccounts(accountPromise);
             });
-        }
 
-        $scope.$watch(function(){return AccountService.data;}, function(accountPromise) {
+            function updateServiceClassifications(data) {
 
-            updateAccounts(accountPromise);
-        });
-    });
+                data.then(function(data) {
+
+                    $scope.classifications = [
+                        {
+                            id : null,
+                            name : 'Any'
+                        }
+                    ].concat(data);
+                });
+            }
+
+            $scope.$watch(function() {return serviceApi.data;}, function(data) {
+
+                updateServiceClassifications(data);
+            });
+
+        }]);
 
 })(window.angular);

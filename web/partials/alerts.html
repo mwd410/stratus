@@ -28,40 +28,20 @@
                             data-ng-model="alert.alert_classification_type_id"></select>
                 </div>
 
-                <div class="field"
-                     data-ng-show="alert.alert_classification_type_id == 1">
+                <div class="field">
 
-                    <label for="providerCombo{{ $index }}">Service Provider</label>
-                    <select id="providerCombo{{ $index }}"
-                            data-ng-model="alert.service_provider_id"
-                            data-ng-options="provider.id as provider.name for provider in serviceProviders"></select>
-                </div>
-
-                <div class="field"
-                     data-ng-show="alert.alert_classification_type_id == 1">
-
-                    <label for="productCombo{{ $index }}">Service Product</label>
-                    <select id="productCombo{{ $index }}"
-                            data-ng-model="alert.service_provider_product_id"
-                            data-ng-options="product.id as product.name for product in products()"></select>
-                </div>
-
-                <div class="field"
-                     data-ng-show="alert.alert_classification_type_id == 2">
-
-                    <label for="typeCombo{{ $index }}">Service Type</label>
+                    <label for="typeCombo{{ $index }}">Service Provider</label>
                     <select id="typeCombo{{ $index }}"
                             data-ng-model="alert.service_provider_id"
-                            data-ng-options="provider.id as provider.name for provider in serviceProviders"></select>
+                            data-ng-options="type.id as type.name for type in getTypes()"></select>
                 </div>
 
-                <div class="field"
-                     data-ng-show="alert.alert_classification_type_id == 2">
+                <div class="field">
 
-                    <label for="categoryCombo{{ $index }}">Service Category</label>
-                    <select id="categoryCombo{{ $index }}"
+                    <label for="subTypeCombo{{ $index }}">Service Product</label>
+                    <select id="subTypeCombo{{ $index }}"
                             data-ng-model="alert.service_provider_product_id"
-                            data-ng-options="product.id as product.name for product in products()"></select>
+                            data-ng-options="subType.id as subType.name for subType in getSubTypes()"></select>
                 </div>
 
             </div>
