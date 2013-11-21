@@ -47,6 +47,46 @@
             </div>
             <div class="box condition">
                 <header>Condition</header>
+
+                <div class="field">
+
+                    <label for="timeFrame{{ $index }}">Time Frame</label>
+                    <select id="timeFrame{{ $index }}"
+                            data-ng-model="alert.alert_time_frame_id"
+                            data-ng-options="timeFrame.id as timeFrame.name for timeFrame in timeFrames"></select>
+                </div>
+
+                <div class="field">
+
+                    <label for="calculation{{ $index }}">Calculation</label>
+                    <select id="calculation{{ $index }}"
+                            data-ng-model="alert.alert_calculation_type_id"
+                            data-ng-options="calcType.id as calcType.name for calcType in calculationTypes"></select>
+                </div>
+
+                <div class="field">
+
+                    <label for="valueType{{ $index }}">Value</label>
+                    <select id="valueType{{ $index }}"
+                            data-ng-model="alert.alert_value_type_id"
+                            data-ng-options="valueType.id as valueType.name for valueType in valueTypes"></select>
+                </div>
+
+                <div class="field">
+
+                    <label for="comparison{{ $index }}">Is</label>
+                    <select id="comparison{{ $index }}"
+                            data-ng-model="alert.alert_comparison_type_id"
+                            data-ng-options="compType.id as compType.name for compType in comparisonTypes"></select>
+                </div>
+
+                <div class="field">
+                    <label for="threshold{{ $index }}">Threshold</label>
+                    <input id="threshold{{ $index }}"
+                           data-ng-model="alert.threshold"
+                           required
+                           type="text">
+                </div>
             </div>
             <div class="box notification">
                 <header>Notification</header>

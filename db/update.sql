@@ -85,9 +85,8 @@ REPLACE INTO alert_object_type VALUES
 ;
 
 REPLACE INTO alert_comparison_type VALUES
-(1, 'exceeded'),
-(2, 'dropped below'),
-(3, 'at')
+(1, 'greater than'),
+(2, 'less than')
 ;
 
 REPLACE INTO alert_calculation_type VALUES

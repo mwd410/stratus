@@ -6,7 +6,7 @@
         var service = {
             data : $http.get('/service').then(function(response) {
 
-                return response.data.data;
+                return response.data;
             })
         };
 

@@ -221,16 +221,34 @@
             left : 0;
             top : 0;
         }
-        select {
+        select,
+        input {
             width : 100%;
         }
         .classification-radio {
             display: inline-block;
             width : 33%;
         }
+
+        &.dual,
+        &.tripple {
+            div {
+                float : left;
+                +div {
+                    padding-left: 10px;
+                }
+            }
+        }
+
+        &.dual div {
+            width : 50%;
+        }
+
+        &.tripple div {
+            width : 33.33%;
+        }
     }
 
-    .filter {
-
+    .condition .field {
     }
 }

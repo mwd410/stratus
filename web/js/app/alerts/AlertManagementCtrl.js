@@ -48,13 +48,48 @@
                             id : null,
                             name : 'Any'
                         }
-                    ].concat(data);
+                    ].concat(data.pivots);
+                });
+            }
+
+            function updateComparisonTypes(data) {
+
+                $scope.comparisonTypes = data.then(function(data) {
+
+                    return data.comparisonTypes;
+                });
+            }
+
+            function updateCalculationTypes(data) {
+
+                $scope.calculationTypes = data.then(function(data) {
+                    return data.calculationTypes;
+                });
+            }
+
+            function updatetimeFrames(data) {
+
+                $scope.timeFrames = data.then(function(data) {
+
+                    return data.timeFrames;
+                });
+            }
+
+            function updateValueTypes(data) {
+
+                $scope.valueTypes = data.then(function(data) {
+
+                    return data.valueTypes;
                 });
             }
 
             $scope.$watch(function() {return serviceApi.data;}, function(data) {
 
                 updateServiceClassifications(data);
+                updateComparisonTypes(data);
+                updateCalculationTypes(data);
+                updatetimeFrames(data);
+                updateValueTypes(data);
             });
 
         }]);

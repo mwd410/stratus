@@ -25,7 +25,7 @@ class ServiceController extends Controller {
             ->execute();
 
         $result = array(
-            'data' => array(
+            'pivots' => array(
                 array(
                     'id'    => '1',
                     'name'  => 'Service Provider',
@@ -36,7 +36,23 @@ class ServiceController extends Controller {
                     'name' => 'Service Type',
                     'types' => $this->map($products)
                 )
-            )
+            ),
+            'comparisonTypes' => Query::create(Query::SELECT)
+                    ->column('*')
+                    ->from('alert_comparison_type')
+                    ->execute(),
+            'calculationTypes' => Query::create(Query::SELECT)
+                    ->column('*')
+                    ->from('alert_calculation_type')
+                    ->execute(),
+            'timeFrames' => Query::create(Query::SELECT)
+                    ->column('*')
+                    ->from('alert_time_frame')
+                    ->execute(),
+            'valueTypes' => Query::create(Query::SELECT)
+                    ->column('*')
+                    ->from('alert_value_type')
+                    ->execute()
         );
 
         $this->json($result);
