@@ -220,8 +220,11 @@
             left : 0;
             top : 0;
         }
+        input[type="checkbox"] + label {
+            position : static;
+        }
         select,
-        input {
+        input:not([type="checkbox"]) {
             width : 100%;
         }
         .classification-radio {

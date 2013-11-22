@@ -91,6 +91,36 @@
             </div>
             <div class="box notification">
                 <header>Notification</header>
+
+                <div class="field"
+                     data-ng-repeat="displayInType in displayInTypes">
+
+                    <label data-ng-if="$first">Display in my</label>
+                    <input type="checkbox"
+                           id="displayIn{{ $index }}"
+                           data-ng-model="alert.displayIn[displayInType.name]">
+                    <label for="displayIn{{ $index }}">{{ displayInType.name }}</label>
+                </div>
+
+                <div class="field">
+
+                    <label>Also, please</label>
+                    <input type="checkbox"
+                           id="emailMe{{ $index }}"
+                           data-ng-model="alert.send_email">
+                    <label for="emailMe{{ $index }}">email me</label>
+                </div>
+
+                <div class="field"
+                     data-ng-if="alert.send_email">
+
+                    <label for="email{{ $index }}">at this email:</label>
+                    <input id="email{{ $index }}"
+                           type="text"
+                           data-ng-model="alert.email"
+                           placeholder="m.deady410@comcast.net">
+
+                </div>
             </div>
         </section>
 

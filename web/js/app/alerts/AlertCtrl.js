@@ -31,6 +31,11 @@
             $scope.alert.service_type_category_id = null;
         };
 
+        $scope.standardEmailChecked = function() {
+
+            var on = $scope.standardEmail;
+        };
+
         $scope.getClassificationId = function() {
 
             return $scope.alert.alert_classification_type_id;
@@ -97,7 +102,7 @@
 
         $scope.getSubTypeId = function() {
 
-            var classId = $csope.getClassificationId();
+            var classId = $scope.getClassificationId();
 
             return classId == 1 && $scope.alert.service_provider_product_id
                 || classId == 2 && $scope.alert.service_type_category_id
@@ -119,6 +124,19 @@
 
             return null;
         };
+
+        $scope.displayInTypes = [
+            {
+                value : 'overview',
+                name : 'overview'
+            },
+            {
+                value : 'breakdown',
+                name : 'breakdown'
+            }
+        ];
+
+        $scope.alert.displayIn = {};
     });
 
 })(window.angular);
