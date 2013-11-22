@@ -37,7 +37,7 @@
 
                         service.menus = response.data.menu.concat({
                             name : 'Accounts',
-                            items : AccountService.all,
+                            items : AccountService.data,
                             pageSize : 5
                         });
 

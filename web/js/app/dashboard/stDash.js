@@ -17,7 +17,7 @@
                         return NavService.isExpanded('left');
                     };
 
-                    $scope.accounts = AccountService.all.then(
+                    $scope.accounts = AccountService.data.then(
                         function(accounts) {
                             console.log(arguments);
 
