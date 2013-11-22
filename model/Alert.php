@@ -15,7 +15,15 @@ class Alert extends Record {
             '_record' => array(
                 'id'            => 'field:int:id',
                 'name'          => 'field:string:name',
-                'pivotType'     => 'field:int:alert_classification_type_id',
+                'pivotTypeId'   => 'field:int:alert_classification_type_id',
+                'pivotType'     => array(
+                    '_type'     => 'relation:one:alert_classification_type',
+                    '_local'    => 'field:int:alert_classification_type_id',
+                    '_record'   => array(
+                        'id'    => 'field:int:id',
+                        'name'  => 'field:string:name'
+                    )
+                ),
                 'accountId'     => 'field:int:account_id',
                 'providerId'    => 'field:int:service_provider_id',
                 'productId'     => 'field:int:service_provider_product_id',
@@ -34,9 +42,7 @@ class Alert extends Record {
         );
     }
 
-    public function __construct($record) {
+    public function getLabel() {
 
-        $this->setup();
-        $this->hydrate($record);
     }
 } 

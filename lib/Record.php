@@ -12,6 +12,12 @@ abstract class Record {
     private $table;
     public $data;
 
+    public function __construct($record) {
+
+        $this->setup();
+        $this->data = $this->hydrate($record);
+    }
+
     public abstract function getSchema();
 
     public function setup() {
@@ -27,9 +33,12 @@ abstract class Record {
         $this->recordSchema = $schema;
     }
 
-    public function hydrate($record) {
+    public function hydrate($record, $schema = null) {
 
-        $this->data = $this->hydrateColumns($record, $this->recordSchema);
+        if ($schema === null) {
+            $schema = $this->recordSchema;
+        }
+        return $this->hydrateColumns($record, $schema);
     }
 
     private function hydrateColumns($record, $sourceInfo) {
@@ -43,7 +52,7 @@ abstract class Record {
                 $this->hydrateFromString($result, $name, $record, $source);
             } else if (is_array($source)) {
 
-                $this->hydrateFromArray($parent, $name, $record, $source);
+                $this->hydrateFromArray($result, $name, $record, $source);
             }
         }
 
@@ -56,7 +65,10 @@ abstract class Record {
 
         $type = $sourceInfo[0];
 
-        if ($type === 'field') {
+        if (count($sourceInfo) === 1) {
+
+            return $source;
+        } else if ($type === 'field') {
 
             $dataType = $sourceInfo[1];
             $column = $sourceInfo[2];
@@ -66,7 +78,7 @@ abstract class Record {
             }
             $raw = $record[$column];
 
-            switch($dataType) {
+            switch ($dataType) {
                 case 'int':
                     $val = intval($raw);
                     break;
@@ -74,8 +86,10 @@ abstract class Record {
                     $val = $raw;
                     break;
                 case 'bool':
-                    $val =  $raw === '1';
+                    $val = $raw === '1';
                     break;
+                default:
+                    throw new Exception('Invalid data type ' . $dataType);
             }
 
             $parent[$name] = $val;
@@ -84,11 +98,53 @@ abstract class Record {
 
     private function hydrateFromArray(&$parent, $name, $record, $sourceInfo) {
 
-        if (!isset($record['_type'])) {
+        if (!isset($sourceInfo['_type'])) {
 
-            return $this->hydrateColumns($record, $sourceInfo);
+            $this->hydrateColumns($record, $sourceInfo);
         } else {
-            return null;
+            $typeInfo = explode(':', $sourceInfo['_type']);
+            $type = $typeInfo[0];
+
+            if ($type === 'relation') {
+
+                $relationType = $typeInfo[1];
+                if ($relationType === 'one') {
+                    $this->hydrateOne($parent, $name, $record, $sourceInfo);
+                }
+            }
+        }
+    }
+
+    private function hydrateOne(&$parent, $name, $record, $sourceInfo) {
+
+        $typeInfo = explode(':', $sourceInfo['_type']);
+        $table = $typeInfo[2];
+
+        // column on local table
+        $local = isset($sourceInfo['_local'])
+            ? $sourceInfo['_local']
+            : 'id';
+
+        //column on foreign table
+        $foreign = isset($sourceInfo['_foreign'])
+            ? $sourceInfo['_foreign']
+            : 'id';
+
+        $this->hydrateFromString($localKey, $name, $record, $local);
+        $localKey = $localKey[$name];
+
+        $relationSchema = $sourceInfo['_record'];
+
+        $related = Query::select()
+            ->column('*')
+            ->from($table)
+            ->where("$foreign = ?", $localKey)
+            ->fetchOne();
+
+        if ($related === null) {
+            $parent[$name] = null;
+        } else {
+            $parent[$name] = $this->hydrate($related, $relationSchema);
         }
     }
 } 
