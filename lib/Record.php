@@ -29,13 +29,7 @@ abstract class Record {
 
     public function hydrate($record) {
 
-        foreach($this->recordSchema as $name => $source) {
-
-            if (is_string($source)) {
-
-                $this->data[$name] = $this->hydrateFromString($record, $source);
-            }
-        }
+        $this->data = $this->hydrateColumns($record, $this->recordSchema);
     }
 
     private function hydrateFromString($record, $source) {
@@ -58,6 +52,34 @@ abstract class Record {
                 case 'bool':
                     return $raw === '1';
             }
+        }
+    }
+
+    private function hydrateColumns($record, $sourceInfo) {
+
+        $result = array();
+
+        foreach ($sourceInfo as $name => $source) {
+
+            if (is_string($source)) {
+
+                $result[$name] = $this->hydrateFromString($record, $source);
+            } else if (is_array($source)) {
+
+                $result[$name] = $this->hydrateFromArray($record, $source);
+            }
+        }
+
+        return $result;
+    }
+
+    private function hydrateFromArray($record, $sourceInfo) {
+
+        if (!isset($record['_type'])) {
+
+            return $this->hydrateColumns($record, $sourceInfo);
+        } else {
+            return null;
         }
     }
 } 
