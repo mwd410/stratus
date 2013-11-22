@@ -1,7 +1,7 @@
 (function(ng, undefined) {
     'use strict';
 
-    ng.module('app.breakdown').service('breakdown', function($http, Utils, $rootScope, AccountService) {
+    ng.module('app.breakdown').service('breakdown', function($http, Utils, $rootScope, AccountService, $q) {
 
         var lastItem = {};
         var service = {
@@ -37,7 +37,7 @@
 
                         service.menus = response.data.menu.concat({
                             name : 'Accounts',
-                            items : AccountService.data,
+                            items : AccountService.accounts,
                             pageSize : 5
                         });
 

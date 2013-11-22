@@ -10,6 +10,15 @@
                 })
             };
 
+        service.accounts = service.data.then(function(data) {
+
+            return data.accounts;
+        });
+
+        service.master = service.data.then(function(data) {
+            return data.masterAccount;
+        });
+
         return service;
     });
 
