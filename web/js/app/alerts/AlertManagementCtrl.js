@@ -46,7 +46,7 @@
                     $scope.classifications = [
                         {
                             id : null,
-                            name : 'Any'
+                            name : 'None'
                         }
                     ].concat(data.pivots);
                 });

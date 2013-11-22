@@ -5,7 +5,7 @@
          data-ng-controller="AlertCtrl">
 
         <header>
-            {{ name + '&nbsp;' }}adsf
+            adsf{{ name + '&nbsp;' }}
         </header>
 
         <section>
@@ -22,10 +22,11 @@
 
                 <div class="field">
 
-                    <label>Provider / Type</label>
+                    <label>Pivot By</label>
                     <select id="classificationCombo{{ $index }}"
                             data-ng-options="cls.id as cls.name for cls in classifications"
-                            data-ng-model="alert.alert_classification_type_id"></select>
+                            data-ng-model="alert.alert_classification_type_id"
+                            data-ng-change="pivotChanged()"></select>
                 </div>
 
                 <div class="field">
@@ -33,7 +34,7 @@
                     <label for="typeCombo{{ $index }}">Service Provider</label>
                     <select id="typeCombo{{ $index }}"
                             data-ng-model="alert.service_provider_id"
-                            data-ng-options="type.id as type.name for type in getTypes()"></select>
+                            data-ng-options="type.id as type.name for type in getPivots()"></select>
                 </div>
 
                 <div class="field">
@@ -41,7 +42,7 @@
                     <label for="subTypeCombo{{ $index }}">Service Product</label>
                     <select id="subTypeCombo{{ $index }}"
                             data-ng-model="alert.service_provider_product_id"
-                            data-ng-options="subType.id as subType.name for subType in getSubTypes()"></select>
+                            data-ng-options="subType.id as subType.name for subType in getSubPivots()"></select>
                 </div>
 
             </div>

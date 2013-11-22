@@ -3,15 +3,32 @@
 
     ng.module('app.alerts').controller('AlertCtrl', function($scope) {
 
-        $scope.serviceLabel = function() {
+        $scope.pivotChanged = function() {
 
-            if ($scope.alert.alert_classification_type_id == 1) {
-                return 'Service Provider';
-            } else if ($scope.alert.alert_classification_type_id == 2) {
-                return 'Service Type';
+            var pivotId = $scope.getClassificationId();
+
+            if (pivotId === null) {
+                $scope.alert.service_provider_id = null;
+                $scope.alert.service_type_id = null;
+
+                $scope.serviceProviderChanged();
+                $scope.serviceTypeChanged();
+            } else if (pivotId == 1) {
+
+                $scope.alert.service_type_id = null;
+                $scope.serviceTypeChanged();
             } else {
-                return '';
+                $scope.alert.service_provider_id = null;
+                $scope.serviceProviderChanged();
             }
+        };
+
+        $scope.serviceProviderChanged = function() {
+            $scope.alert.service_provider_product_id = null;
+        };
+
+        $scope.serviceTypeChanged = function() {
+            $scope.alert.service_type_category_id = null;
         };
 
         $scope.getClassificationId = function() {
