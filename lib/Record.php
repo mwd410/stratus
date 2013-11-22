@@ -32,29 +32,6 @@ abstract class Record {
         $this->data = $this->hydrateColumns($record, $this->recordSchema);
     }
 
-    private function hydrateFromString($record, $source) {
-
-        $sourceInfo = explode(':', $source);
-
-        $type = $sourceInfo[0];
-        $dataType = $sourceInfo[1];
-        $column = $sourceInfo[2];
-
-        if ($type === 'field') {
-
-            $raw = $record[$column];
-
-            switch($dataType) {
-                case 'int':
-                    return intval($raw);
-                case 'string':
-                    return $raw;
-                case 'bool':
-                    return $raw === '1';
-            }
-        }
-    }
-
     private function hydrateColumns($record, $sourceInfo) {
 
         $result = array();
@@ -63,17 +40,49 @@ abstract class Record {
 
             if (is_string($source)) {
 
-                $result[$name] = $this->hydrateFromString($record, $source);
+                $this->hydrateFromString($result, $name, $record, $source);
             } else if (is_array($source)) {
 
-                $result[$name] = $this->hydrateFromArray($record, $source);
+                $this->hydrateFromArray($parent, $name, $record, $source);
             }
         }
 
         return $result;
     }
 
-    private function hydrateFromArray($record, $sourceInfo) {
+    private function hydrateFromString(&$parent, $name, $record, $source) {
+
+        $sourceInfo = explode(':', $source);
+
+        $type = $sourceInfo[0];
+
+        if ($type === 'field') {
+
+            $dataType = $sourceInfo[1];
+            $column = $sourceInfo[2];
+
+            if (!array_key_exists($column, $record)) {
+                return;
+            }
+            $raw = $record[$column];
+
+            switch($dataType) {
+                case 'int':
+                    $val = intval($raw);
+                    break;
+                case 'string':
+                    $val = $raw;
+                    break;
+                case 'bool':
+                    $val =  $raw === '1';
+                    break;
+            }
+
+            $parent[$name] = $val;
+        }
+    }
+
+    private function hydrateFromArray(&$parent, $name, $record, $sourceInfo) {
 
         if (!isset($record['_type'])) {
 
