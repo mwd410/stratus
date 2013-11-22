@@ -5,30 +5,24 @@
 
         var master;
 
-        $scope.master = {
-            account_id : null
-        };
-
-        $scope.saveMaster = function(masterAccount) {
-
-            master = ng.copy(masterAccount);
-            $scope.master = masterAccount;
-        };
-
         $scope.setMaster = function(account, isMaster) {
 
             $scope.master.account_id = isMaster ? account.id : null;
         };
 
+        $scope.accounts = accountApi.all;
+/*
         accountApi.getAll().then(function(data) {
 
             $scope.accounts = data.accounts;
             $scope.saveMaster(data.masterAccount);
         });
+*/
 
+        $scope.master = accountApi.master;
         $scope.add = function() {
 
-            $scope.accounts.push(accountApi.create());
+            accountApi.add();
         };
 
         $scope.resetMaster = function() {

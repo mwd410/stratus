@@ -1,65 +1,88 @@
 (function(ng, undefined) {
     'use strict';
 
-    ng.module('app.account').factory('accountApi', function($http, $q) {
+    ng.module('app.account').factory('accountApi', function($http, $q, Utils, account) {
 
-        return {
-            create : function() {
+        function create(data) {
 
-                return {
-                    id          : 0,
-                    external_id : '',
-                    name        : '',
-                    aws_key     : '',
-                    secret_key  : ''
-                };
-            },
-            save   : function(account, master) {
+            return account(data);
+        }
 
-                return $http.post('/account/edit', {
-                    account : account,
-                    master  : master
-                }).then(
-                    //Success
-                    function(response) {
+        function load(data) {
 
-                        return response.data;
+            return create(data).commit();
+        }
+
+        var factory = {
+                add       : function() {
+
+                    factory.all.then(function(accounts) {
+
+                        accounts.unshift(create({}));
                     });
-            },
-            saveNew : function(account, master) {
+                },
+                save      : function(account, master) {
 
-                return $http.post('/account/add', {
-                    account : account,
-                    master  : master
-                }).then(
-                    function(response) {
+                    return $http.post('/account/edit', {
+                        account : account,
+                        master  : master
+                    }).then(
+                        //Success
+                        function(response) {
 
-                        return response.data;
+                            return response.data;
+                        });
+                },
+                saveNew   : function(account, master) {
+
+                    return $http.post('/account/add', {
+                        account : account,
+                        master  : master
+                    }).then(
+                        function(response) {
+
+                            return response.data;
+                        });
+                },
+                remove    : function(account) {
+
+                    return $http.post('account/delete', account)
+                        .then(
+                        function(response) {
+
+                            return response.data;
+                        });
+                },
+                removeNew : function(account) {
+
+                    factory.all.then(function(accounts) {
+
+                        accounts.splice(accounts.indexOf(account), 1);
                     });
+                }
             },
-            remove : function(account) {
+            accountMap;
 
-                return $http.post('account/delete', account)
-                    .then(
-                    function(response) {
+        var accountsDefer = $q.defer(),
+            masterDefer = $q.defer();
 
-                        return response.data;
-                    });
-            },
-            getAll : function() {
+        $http.get('/getAccounts')
+            .then(
+            function(response) {
 
-                var deferred = $q.defer();
+                var accounts = response.data.accounts.map(load);
 
-                $http.get('/getAccounts')
-                    .then(
-                    function(response) {
+                accountMap = Utils.mapObjects(accounts, 'id');
 
-                        deferred.resolve(response.data);
-                    });
+                accountsDefer.resolve(accounts);
 
-                return deferred.promise;
-            }
-        };
+                masterDefer.resolve(response.master);
+            });
+
+        factory.all = accountsDefer.promise;
+        factory.master = masterDefer.promise;
+
+        return factory;
     });
 
 })(window.angular);

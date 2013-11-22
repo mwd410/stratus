@@ -52,13 +52,17 @@
                         });
                         return plucked;
                     },
-                    guid        : function() {
+                    guid        : function(object) {
 
                         //found at http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
-                        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                        var guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
                             var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
                             return v.toString(16);
                         });
+
+                        object && (object.guid = guid);
+
+                        return guid;
                     },
                     getLessVars : function(property) {
 
@@ -92,7 +96,7 @@
                         lessCache[property] = values;
                         return values;
                     },
-                    mapArray : function(array, prop1, p_) {
+                    mapArrays : function(array, prop1, p_) {
 
                         var properties = Array.prototype.slice.call(arguments, 1),
                             result = {};
@@ -105,10 +109,30 @@
                                 key.push(item[prop]);
                             });
 
-                            result[key.join('-')] = item;
+                            if (!result[key.join('-')]) {
+                                result[key.join('-')] = [];
+                            }
+
+                            result[key.join('-')].push(item);
                         });
 
                         return result;
+                    },
+                    mapObjects : function(array, prop1, p_) {
+
+                        var props = Array.prototype.slice.call(arguments, 1),
+                            result = {};
+
+                        array.forEach(function(item) {
+
+                            var key = [];
+                            props.forEach(function(prop) {
+
+                                key.push(item[prop]);
+                            });
+
+                            result[key.join('-')] = item;
+                        });
                     }
                 },
                 lessCache = {};
