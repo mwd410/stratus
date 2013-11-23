@@ -111,7 +111,6 @@ REPLACE INTO alert_value_type VALUES
 
 SOURCE db/views.sql;
 
-/*
 
 select
     sum(cost) / count(distinct history_date) as average,
@@ -134,11 +133,13 @@ REPLACE INTO alert VALUES
 # |  |  |     |     |     |     |     |     |  |  |  + alert_time_frame_id
 # |  |  |     |     |     |     |     |     |  |  |  |  + alert_value_type_id
 # |  |  |     |     |     |     |     |     |  |  |  |  |     + threshold
-( 1, 1, 1, null,    1, null, null, null,    4, 1, 2, 3, 1,  120),
-( 2, 1, 2, null, null, null,    1,    1,    2, 2, 1, 4, 2, 1000),
-( 3, 1, 1, null,    1,    1, null, null,    3, 3, 2, 2, 1, 1000),
-( 4, 1, 3,   72, null, null, null, null, null, 3, 2, 2, 1, 1000)
+( 1, 1, 'my alert 1', 1, null,    1, null, null, null,    4, 1, 2, 3, 1,  120),
+( 2, 1, 'my alert 2', 2, null, null, null,    1,    1,    2, 2, 1, 4, 2, 1000),
+( 3, 1, 'my alert 3', 1, null,    1,    1, null, null,    3, 3, 2, 2, 1, 1000),
+( 4, 1, 'my alert 4', 3,   72, null, null, null, null, null, 3, 2, 2, 1, 1000)
 ;
+
+/*
 
 #DAILY:
 SELECT
