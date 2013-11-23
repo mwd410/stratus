@@ -6,13 +6,13 @@
 
             $scope.breakdown = breakdown;
 
-            var last = null;
-
             $scope.onMenuItemClick = function(item) {
 
-                last = item;
+                if (!item.type) {
 
-                breakdown.update(item);
+                } else {
+                    breakdown.update(item);
+                }
             };
 
             $scope.isItemActive = function(item) {

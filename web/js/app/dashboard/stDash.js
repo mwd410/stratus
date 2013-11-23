@@ -18,19 +18,19 @@
                         return NavService.isExpanded('left');
                     };
 
-                    $scope.accounts = AccountService.accounts.then(
+                    AccountService.accounts.then(
                         function(accounts) {
-                            console.log(arguments);
 
                             if (accounts.length > 1) {
-                                return [
+                                accounts =  [
                                     {
                                         name : 'All'
                                     }
                                 ].concat(accounts);
-                            } else {
-                                return accounts;
                             }
+
+                            $scope.accounts = accounts;
+                            $scope.widgetService.selectedAccount = accounts[0];
                         }
                     );
 
