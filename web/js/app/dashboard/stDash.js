@@ -2,7 +2,7 @@
     'use strict';
 
     ng.module('app.dashboard')
-        .directive('stDash', function() {
+        .directive('stDash', function(_) {
 
             return {
                 require : 'stDash',
@@ -10,6 +10,7 @@
                     dash : '=stDash',
                     widgetService : '='
                 },
+                templateUrl : '/partials/stDash.html',
                 controller  : function($scope, NavService, AccountService, toggle) {
 
                     $scope.isLeftExpanded = function() {
@@ -32,29 +33,24 @@
                             }
                         }
                     );
-                    /*
-                    $scope.accountService = AccountService;
-
-                    $scope.$watch('accountService.all', function(accounts) {
-
-                        if (accounts.length <= 1) {
-                            $scope.accounts = accounts;
-                        } else {
-                            $scope.accounts = [
-                                {
-                                    name : 'All'
-                                }
-                            ].concat(accounts);
-                        }
-
-                        $scope.widgetService.selectedAccount = $scope.accounts[0];
-                    });*/
 
                     $scope.getTitle = function() {
                         return $scope.widgetService.title;
                     };
 
                     $scope.menu = toggle();
+
+                    this.register = function(widget) {
+                        $scope.widgetService.registerWidget(widget);
+
+                        var lastRow = _.last($scope.dash.widgetRows),
+                            lastColumn = _.last(lastRow.widgetColumns),
+                            lastWidget = _.last(lastColumn.widgets);
+
+                        if (lastWidget === widget) {
+                            $scope.widgetService.init();
+                        }
+                    };
                 },
                 link        : function(scope, el, attrs, ctrl) {
 

@@ -123,6 +123,8 @@
             };
 
             $scope.breakdown = breakdown;
+
+            breakdown.clean();
         });
 
 })(window.angular);

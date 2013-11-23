@@ -3,7 +3,6 @@
 
     ng.module('app.breakdown').service('breakdown', function($http, Utils, $rootScope, AccountService, $q) {
 
-        var lastItem = {};
         var service = {
                 menus          : [],
                 update         : function(item) {
@@ -47,6 +46,13 @@
                 widgetData     : {},
                 registerWidget : function(widget) {
 
+                    // TODO
+                    // make this work by having widgets
+                    // come from a (this?) service rather than the controller.
+                    /*if (widget.guid) {
+                        return;
+                    }*/
+
                     var guid;
                     //Just in case there's happens to be the same guid produced twice.
                     while (widgets[guid = Utils.guid()]) {
@@ -66,15 +72,20 @@
                 getData        : function(widget) {
 
                     return service.widgetData[widget.guid];
+                },
+                // TODO
+                // once registerWidget is fixed, remove this.
+                clean : function() {
+                    lastItem = {};
+                    widgets = {};
+                },
+                init : function() {
+                    // Initialize breakdown with provider type.
+                    service.update({type : 'provider'});
                 }
             },
+            lastItem,
             widgets = {};
-
-        var unregister = $rootScope.$watch(function() {
-            // Initialize breakdown with provider type.
-            service.update({type : 'provider'});
-            unregister();
-        });
 
         return service;
     });

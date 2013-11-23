@@ -6,7 +6,8 @@
             "/bower_components/angular/angular.min.js",
             "/bower_components/angular-animate/angular-animate.min.js",
             "/bower_components/angular-ui-router/release/angular-ui-router.min.js",
-            "/js/highcharts.js"
+            "/js/highcharts.js",
+            "/bower_components/lodash/dist/lodash.min.js"
         ],
         "css" : [
             "/bower_components/bootstrap/dist/css/bootstrap.min.css",
@@ -52,7 +53,8 @@
             "/js/app/service/serviceApi.js",
             "/js/app/nav/NavService.js",
             "/js/app/nav/NavController.js",
-            "/js/app/utils/Utils.js"
+            "/js/app/utils/Utils.js",
+            "/js/app/utils/lodash.js"
         ],
         "css" : [
             {"rel"  : "stylesheet/less", "href" : "/css/less/app.less"}

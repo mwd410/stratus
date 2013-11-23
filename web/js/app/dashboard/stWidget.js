@@ -39,8 +39,11 @@
                 },
                 link       : function(scope, el, attrs, controllers) {
 
-                    var ctrl = controllers[0];
-                    scope.widgetService.registerWidget(scope.widget);
+                    var ctrl = controllers[0],
+                        stDash = controllers[1];
+
+                    stDash.register(scope.widget);
+                    //scope.widgetService.registerWidget(scope.widget);
 
                     scope.$watch('widgetService.getData(widget)', function(data) {
                         if (data) {
