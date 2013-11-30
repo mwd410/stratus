@@ -30,6 +30,7 @@
             "/providers"         : "Provider.index",
             "/breakdown/update"  : "Breakdown.update",
             "/alerts"            : "Alert.index",
+            "/alerts/delete"     : "Alert.delete",
             "/service"           : "Service.index"
         }
     }

@@ -182,12 +182,29 @@
     & > header {
         background: @st-brand-main;
         color : @st-brand-text-strong;
+
+        .icons {
+            float : right;
+            button {
+                color : @st-brand-text;
+                &:hover {
+                    color : @st-brand-text-strong;
+                }
+            }
+        }
     }
 
     & > section {
-        border-top: 1px solid @st-bg-very-dark;
-        display: table;
         width: 100%;
+        max-height: 0;
+        display: block;
+        overflow: hidden;
+
+        &.is-expanded {
+            border-top: 1px solid @st-bg-very-dark;
+            display: table;
+            max-height: 300px;
+        }
     }
 
     .box {

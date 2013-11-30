@@ -2,17 +2,12 @@
     'use strict';
 
     ng.module('app.alerts').controller('AlertManagementCtrl', [
-        '$scope', 'alertApi', 'AccountService', 'serviceApi',
-        function($scope, alertApi, accountApi, serviceApi) {
+        '$scope', 'alertApi', 'AccountService', 'serviceApi', '_',
+        function($scope, alertApi, accountApi, serviceApi, _) {
 
-            // Can't $watch(alertApi.data), because that won't catch if
-            // alertApi re-assigns alertApi.data to a different promise.
-            $scope.$watch(function() {return alertApi.data;}, function(dataPromise) {
+            alertApi.data.then(function(data) {
 
-                dataPromise.then(function(data) {
-
-                    $scope.alerts = data.alerts;
-                });
+                $scope.alerts = data.alerts;
             });
 
             accountApi.data.then(function(data) {
@@ -39,6 +34,13 @@
                 $scope.valueTypes = data.valueTypes;
             });
 
+            $scope.remove = function(alert) {
+
+                alertApi.remove(alert).then(function(success) {
+
+                    $scope.alerts = _.without($scope.alerts, alert);
+                });
+            };
         }]);
 
 })(window.angular);

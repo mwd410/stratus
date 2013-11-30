@@ -6,9 +6,32 @@
 
         <header>
             adsf{{ name + '&nbsp;' }}
+            <div class="icons">
+                <span data-ng-show="!confirmDelete">
+                    <button class="st-button"
+                            data-ng-click="isExpanded = !isExpanded">
+                        <i class="icon-pencil icon-large"></i>
+                    </button>
+                    <button class="st-button"
+                            data-ng-click="confirmDelete = !confirmDelete">
+                        <i class="icon-trash icon-large"></i>
+                    </button>
+                </span>
+                <span data-ng-show="confirmDelete">
+                    Are you sure you want to delete this alert?
+                    <button class="st-button"
+                            data-ng-click="remove(alert)">
+                        <i class="icon-ok icon-large"></i>
+                    </button>
+                    <button class="st-button"
+                            data-ng-click="confirmDelete = !confirmDelete">
+                        <i class="icon-remove icon-large"></i>
+                    </button>
+                </span>
+            </div>
         </header>
 
-        <section>
+        <section data-ng-class="{'is-expanded' : isExpanded}">
             <div class="box filter">
 
                 <header>Filter</header>

@@ -1,7 +1,7 @@
 (function(ng, undefined) {
     'use strict';
 
-    ng.module('app.alerts').controller('AlertCtrl', function($scope) {
+    ng.module('app.alerts').controller('AlertCtrl', function($scope, alertApi) {
 
         $scope.pivotChanged = function() {
 
