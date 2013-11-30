@@ -6,7 +6,7 @@
 ######################## SCHEMA CHANGES & DATA MIGRATION #######################
 ################################################################################
 
-CREATE TABLE IF NOT EXISTS alert_classification_type (
+CREATE TABLE IF NOT EXISTS pivot_type (
     id BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY,
     name VARCHAR(255) NOT NULL
 )
@@ -48,11 +48,12 @@ CREATE TABLE IF NOT EXISTS alert_value_type (
     ENGINE =InnoDB
 ;
 
+drop table if exists alert;
 CREATE TABLE IF NOT EXISTS alert (
     id BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY,
     user_id BIGINT(20) UNSIGNED NOT NULL,
     name VARCHAR(255) NOT NULL,
-    alert_classification_type_id BIGINT(20) UNSIGNED NOT NULL,
+    pivot_type_id BIGINT(20) UNSIGNED NOT NULL,
     account_id BIGINT(20) UNSIGNED,
     service_provider_id BIGINT(20) UNSIGNED,
     service_provider_product_id BIGINT(20) UNSIGNED,
@@ -72,7 +73,7 @@ CREATE TABLE IF NOT EXISTS alert (
 ############################ DATA INSERTS & CHANGES ############################
 ################################################################################
 
-REPLACE INTO alert_classification_type VALUES
+REPLACE INTO pivot_type VALUES
 (1, 'Service Provider'),
 (2, 'Service Type')
 ;
@@ -121,18 +122,18 @@ select
 REPLACE INTO alert VALUES
 # + id
 # |  + user_id
-# |  |  + alert_classification_id
-# |  |  |     + account_id
-# |  |  |     |     + service_provider_id
-# |  |  |     |     |     + service_provider_product_id
-# |  |  |     |     |     |     + service_type_id
-# |  |  |     |     |     |     |     + service_type_category_id
-# |  |  |     |     |     |     |     |     + alert_object_type_id
-# |  |  |     |     |     |     |     |     |  + alert_comparison_type_id
-# |  |  |     |     |     |     |     |     |  |  + alert_calculation_type_id
-# |  |  |     |     |     |     |     |     |  |  |  + alert_time_frame_id
-# |  |  |     |     |     |     |     |     |  |  |  |  + alert_value_type_id
-# |  |  |     |     |     |     |     |     |  |  |  |  |     + threshold
+# |  |  + pivot_type_id
+# |  |  |             + account_id
+# |  |  |             |     + service_provider_id
+# |  |  |             |     |     + service_provider_product_id
+# |  |  |             |     |     |     + service_type_id
+# |  |  |             |     |     |     |     + service_type_category_id
+# |  |  |             |     |     |     |     |     + alert_object_type_id
+# |  |  |             |     |     |     |     |     |  + alert_comparison_type_id
+# |  |  |             |     |     |     |     |     |  |  + alert_calculation_type_id
+# |  |  |             |     |     |     |     |     |  |  |  + alert_time_frame_id
+# |  |  |             |     |     |     |     |     |  |  |  |  + alert_value_type_id
+# |  |  |             |     |     |     |     |     |  |  |  |  |     + threshold
 ( 1, 1, 'my alert 1', 1, null,    1, null, null, null,    4, 1, 2, 3, 1,  120),
 ( 2, 1, 'my alert 2', 2, null, null, null,    1,    1,    2, 2, 1, 4, 2, 1000),
 ( 3, 1, 'my alert 3', 1, null,    1,    1, null, null,    3, 3, 2, 2, 1, 1000),

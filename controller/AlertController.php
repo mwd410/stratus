@@ -10,12 +10,12 @@ class AlertController extends Controller {
 
     public function indexAction(Request $request) {
 
-        $customerId =$this->getUser()->get('customer_id');
+        $customerId =$this->getUser()->get('id');
 
         $alerts = Query::create(Query::SELECT)
             ->column('*')
-            ->from('alert_v')
-            ->where('customer_id = '.$customerId)
+            ->from('alert')
+            ->where('user_id = '.$customerId)
             ->execute();
 
         $this->json(array(

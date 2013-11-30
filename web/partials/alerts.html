@@ -23,9 +23,9 @@
                 <div class="field">
 
                     <label>Pivot By</label>
-                    <select id="classificationCombo{{ $index }}"
-                            data-ng-options="cls.id as cls.name for cls in classifications"
-                            data-ng-model="alert.alert_classification_type_id"
+                    <select id="pivotCombo{{ $index }}"
+                            data-ng-options="pivot.id as pivot.name for pivot in pivotTypes"
+                            data-ng-model="alert.pivot_type_id"
                             data-ng-change="pivotChanged()"></select>
                 </div>
 

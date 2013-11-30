@@ -27,7 +27,7 @@
 
             serviceApi.data.then(function(data) {
 
-                $scope.classifications = [
+                $scope.pivotTypes = [
                     {
                         id   : null,
                         name : 'None'
