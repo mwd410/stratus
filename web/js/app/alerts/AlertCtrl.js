@@ -3,12 +3,48 @@
 
     ng.module('app.alerts').controller('AlertCtrl', function($scope, alertApi) {
 
-        $scope.cancel = function() {
+        $scope.isExpanded = function() {
+
+            return $scope.isEditing();
+        };
+
+        //-----------------------------//
+        // Editing Functions
+
+        $scope.edit = function() {
+
+            $scope.editing = true;
+        };
+
+        $scope.cancelEdit = function() {
 
             var original = alertApi.getOriginal($scope.alert);
 
             ng.copy(original, $scope.alert);
-            $scope.isEditing = false;
+            $scope.editing = false;
+        };
+
+        $scope.isEditing = function() {
+
+            return $scope.editing === true;
+        };
+
+        //-----------------------------//
+        // Deleting Functions
+
+        $scope.askToDelete = function() {
+
+            $scope.confirmDelete = true;
+        };
+
+        $scope.cancelDelete = function() {
+
+            $scope.confirmDelete = false;
+        };
+
+        $scope.isDeleting = function() {
+
+            return $scope.confirmDelete === true;
         };
 
         $scope.pivotChanged = function() {
