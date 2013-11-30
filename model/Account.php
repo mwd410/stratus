@@ -40,7 +40,7 @@ class Account {
         return Query::create(Query::SELECT)
                ->column('id')
                ->column(self::EXTERNAL_ID)
-               ->column("AES_DECRYPT(".self::NAME.",'$keyString') as name")
+               ->column(self::NAME." as name")
                ->column("AES_DECRYPT(aws_key,'$keyString') as aws_key")
                ->column("AES_DECRYPT(secret_key,'$keyString') as secret_key")
                ->from('account');
@@ -77,20 +77,15 @@ class Account {
         $q = Query::create(Query::UPDATE)
              ->from('account');
 
-        foreach ($data as $key => $value) {
-
-            $name = $key;
-            if ($name == 'name') {
-                $name = 'account_name';
-            }
+        foreach ($data as $name => $value) {
 
             switch ($name) {
                 case 'aws_key':
                 case 'secret_key':
-                case 'account_name':
                     $q->set("$name = AES_ENCRYPT(?, '$keyString')", $value);
                     break;
                 case 'customer_id':
+                case self::NAME:
                 case self::EXTERNAL_ID:
                     $q->where("$name = ?", $value);
                     break;
@@ -123,10 +118,10 @@ class Account {
             switch ($name) {
                 case 'aws_key':
                 case 'secret_key':
-                case self::NAME:
                     $values[] = "AES_ENCRYPT(?, '$keyString')";
                     break;
                 case 'customer_id':
+                case self::NAME:
                 case self::EXTERNAL_ID:
                 case 'deleted':
                     $values[] = '?';
