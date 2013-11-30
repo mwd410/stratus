@@ -3,6 +3,14 @@
 
     ng.module('app.alerts').controller('AlertCtrl', function($scope, alertApi) {
 
+        $scope.cancel = function() {
+
+            var original = alertApi.getOriginal($scope.alert);
+
+            ng.copy(original, $scope.alert);
+            $scope.isEditing = false;
+        };
+
         $scope.pivotChanged = function() {
 
             var pivotId = $scope.getClassificationId();

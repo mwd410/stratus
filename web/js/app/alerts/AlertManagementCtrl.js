@@ -7,7 +7,7 @@
 
             alertApi.data.then(function(data) {
 
-                $scope.alerts = data.alerts;
+                $scope.alerts = ng.copy(data.alerts);
             });
 
             accountApi.data.then(function(data) {

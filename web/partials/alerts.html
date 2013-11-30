@@ -7,9 +7,9 @@
         <header>
             adsf{{ name + '&nbsp;' }}
             <div class="icons">
-                <span data-ng-show="!confirmDelete">
+                <span data-ng-show="!confirmDelete && !isEditing">
                     <button class="st-button"
-                            data-ng-click="isExpanded = !isExpanded">
+                            data-ng-click="isEditing = !isEditing">
                         <i class="icon-pencil icon-large"></i>
                     </button>
                     <button class="st-button"
@@ -28,10 +28,20 @@
                         <i class="icon-remove icon-large"></i>
                     </button>
                 </span>
+                <span data-ng-show="isEditing">
+                    <button class="st-button"
+                            data-ng-click="submit()">
+                        <i class="icon-ok icon-large"></i>
+                    </button>
+                    <button class="st-button"
+                            data-ng-click="cancel()">
+                        <i class="icon-remove icon-large"></i>
+                    </button>
+                </span>
             </div>
         </header>
 
-        <section data-ng-class="{'is-expanded' : isExpanded}">
+        <section data-ng-class="{'is-expanded' : isEditing}">
             <div class="box filter">
 
                 <header>Filter</header>

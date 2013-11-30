@@ -3,9 +3,10 @@
 
     ng.module('app.alerts').factory('alertApi', function($http, _) {
 
-        var api = {
+        var original, api = {
             data   : $http.get('/alerts').then(function(response) {
 
+                original = ng.copy(response.data);
                 return response.data;
             }),
             remove : function(alert) {
@@ -27,6 +28,12 @@
                     }
 
                     return success;
+                });
+            },
+            getOriginal : function(alert) {
+
+                return _.find(original.alerts, {
+                    id : alert.id
                 });
             }
         };
