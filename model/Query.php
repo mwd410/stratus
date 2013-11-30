@@ -19,6 +19,17 @@ abstract class Query {
     private $stmt;
     protected $isDistinct;
 
+    public static function delete($from = null) {
+
+        $query = new Delete();
+
+        if ($from !== null) {
+            $query->from($from);
+        }
+
+        return $query;
+    }
+
     /**
      * @param $type
      *
