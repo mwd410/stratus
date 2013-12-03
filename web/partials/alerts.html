@@ -143,14 +143,14 @@
             <div class="box notification">
                 <header>Notification</header>
 
-                <div class="field"
-                     data-ng-repeat="displayInType in displayInTypes">
+                <div class="field">
 
-                    <label data-ng-if="$first">Display in my</label>
-                    <input type="checkbox"
-                           id="displayIn{{ $index }}"
-                           data-ng-model="alert.displayIn[displayInType.name]">
-                    <label for="displayIn{{ $index }}">{{ displayInType.name }}</label>
+                    <label>Display in my</label>
+                    <input id="breakdown{{ $index }}"
+                           data-ng-init="alert.in_breakdown = alert.in_breakdown == 1"
+                           data-ng-model="alert.in_breakdown"
+                           type="checkbox">
+                    <label for="breakdown{{ $index }}">Breakdown</label>
                 </div>
 
                 <div class="field">
@@ -158,12 +158,13 @@
                     <label>Also, please</label>
                     <input type="checkbox"
                            id="emailMe{{ $index }}"
-                           data-ng-model="alert.send_email">
+                           data-ng-init="alert.in_email = alert.in_email == 1"
+                           data-ng-model="alert.in_email">
                     <label for="emailMe{{ $index }}">email me</label>
                 </div>
 
                 <div class="field"
-                     data-ng-if="alert.send_email">
+                     data-ng-if="alert.in_email">
 
                     <label for="email{{ $index }}">at this email:</label>
                     <input id="email{{ $index }}"

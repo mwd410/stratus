@@ -57,7 +57,10 @@ CREATE TABLE IF NOT EXISTS alert (
     calculation_type_id BIGINT(20) UNSIGNED NOT NULL,
     time_frame_id BIGINT(20) UNSIGNED NOT NULL,
     value_type_id BIGINT(20) UNSIGNED NOT NULL,
-    threshold FLOAT UNSIGNED NOT NULL
+    threshold FLOAT UNSIGNED NOT NULL,
+    in_email TINYINT(1) UNSIGNED NOT NULL DEFAULT 1,
+    in_breakdown TINYINT(1) UNSIGNED NOT NULL DEFAULT 1,
+    email VARCHAR(60) NOT NULL
 )
     ENGINE =InnoDB
 ;
@@ -105,7 +108,22 @@ select
     from billing_history_v
     group by customer_id;
 
-REPLACE INTO alert VALUES
+REPLACE INTO alert (
+    id,
+    user_id,
+    name,
+    pivot_type_id,
+    account_id,
+    service_provider_id,
+    service_provider_product_id,
+    service_type_id,
+    service_type_category_id,
+    comparison_type_id,
+    calculation_type_id,
+    time_frame_id,
+    value_type_id,
+    threshold
+) VALUES
 # + id
 # |  + user_id
 # |  |                + pivot_type_id

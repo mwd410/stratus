@@ -52,19 +52,6 @@
             return $scope.confirmDelete === true;
         };
 
-        $scope.displayInTypes = [
-            {
-                value : 'overview',
-                name  : 'overview'
-            },
-            {
-                value : 'breakdown',
-                name  : 'breakdown'
-            }
-        ];
-
-        $scope.alert.displayIn = {};
-
         $scope.pivotChanged = function() {
 
             $scope.alert.service_provider_id = null;
