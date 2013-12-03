@@ -33,6 +33,7 @@
             "/js/app/stCheckbox.js",
             "/js/app/stFieldFocus.js",
             "/js/app/toggle.js",
+            "/js/app/userApi.js",
             "/js/app/account/stAccount.js",
             "/js/app/account/AccountManagementController.js",
             "/js/app/account/AccountController.js",

@@ -2,8 +2,8 @@
     'use strict';
 
     ng.module('app.alerts').controller('AlertManagementCtrl', [
-        '$scope', 'alertApi', 'AccountService', 'pivotApi', '_',
-        function($scope, alertApi, accountApi, pivotApi, _) {
+        '$scope', 'alertApi', 'AccountService', 'pivotApi', '_', 'user',
+        function($scope, alertApi, accountApi, pivotApi, _, user) {
 
             alertApi.data.then(function(data) {
 
@@ -45,6 +45,11 @@
                     $scope.alerts = _.without($scope.alerts, alert);
                 });
             };
+
+            $scope.$watch(function() {return user.data && user.data.email;}, function(email) {
+
+                $scope.userEmail = email;
+            });
         }]);
 
 })(window.angular);

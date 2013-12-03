@@ -29,11 +29,12 @@
             "/dashboard"         : "Dashboard.index",
             "/providers"         : "Provider.index",
             "/breakdown/update"  : "Breakdown.update",
-            "/alerts"            : "Alert.index",
+            "/alert/index"       : "Alert.index",
             "/alert/info"        : "Alert.info",
-            "/alerts/delete"     : "Alert.delete",
-            "/alerts/update"     : "alert/update",
-            "/pivot"             : "Pivot.index"
+            "/alert/delete"      : "Alert.delete",
+            "/alert/update"      : "Alert.update",
+            "/pivot"             : "Pivot.index",
+            "/user/info"         : "User.info"
         }
     }
 }
