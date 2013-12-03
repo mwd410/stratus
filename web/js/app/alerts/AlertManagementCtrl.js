@@ -2,8 +2,8 @@
     'use strict';
 
     ng.module('app.alerts').controller('AlertManagementCtrl', [
-        '$scope', 'alertApi', 'AccountService', 'serviceApi', '_',
-        function($scope, alertApi, accountApi, serviceApi, _) {
+        '$scope', 'alertApi', 'AccountService', 'pivotApi', '_',
+        function($scope, alertApi, accountApi, pivotApi, _) {
 
             alertApi.data.then(function(data) {
 
@@ -20,14 +20,18 @@
                 ].concat(data.accounts);
             });
 
-            serviceApi.data.then(function(data) {
+            pivotApi.promise.then(function(data) {
 
                 $scope.pivotTypes = [
                     {
                         id   : null,
                         name : 'None'
                     }
-                ].concat(data.pivots);
+                ].concat(data.pivotTypes);
+            });
+
+            alertApi.info.then(function(data) {
+
                 $scope.comparisonTypes = data.comparisonTypes;
                 $scope.calculationTypes = data.calculationTypes;
                 $scope.timeFrames = data.timeFrames;

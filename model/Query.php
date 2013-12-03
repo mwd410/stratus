@@ -37,6 +37,14 @@ abstract class Query {
 
         return self::create(self::SELECT);
     }
+
+    public static function selectAllFrom($from) {
+
+        return self::select()
+            ->column('*')
+            ->from($from)
+            ->execute();
+    }
     /**
      * @param $type
      *
@@ -161,6 +169,20 @@ abstract class Query {
 
         $this->addPart('column', $column);
         $this->addParams('column', array_slice(func_get_args(), 1));
+
+        return $this;
+    }
+
+    /**
+     * @param $columns
+     *
+     * @return $this
+     */
+    public function columns(array $columns) {
+
+        foreach($columns as $alias => $column) {
+            $this->column($column . ' as ' . $alias);
+        }
 
         return $this;
     }

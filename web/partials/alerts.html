@@ -64,20 +64,36 @@
                             data-ng-change="pivotChanged()"></select>
                 </div>
 
-                <div class="field">
+                <div class="field" data-ng-show="alert.pivot_type_id == 1">
 
-                    <label for="typeCombo{{ $index }}">Service Provider</label>
-                    <select id="typeCombo{{ $index }}"
+                    <label for="provider{{ $index }}">Service Provider</label>
+                    <select id="provider{{ $index }}"
                             data-ng-model="alert.service_provider_id"
-                            data-ng-options="type.id as type.name for type in getPivots()"></select>
+                            data-ng-options="provider.id as provider.name for provider in getProviders()"></select>
                 </div>
 
-                <div class="field">
+                <div class="field" data-ng-show="alert.pivot_type_id == 1">
 
-                    <label for="subTypeCombo{{ $index }}">Service Product</label>
-                    <select id="subTypeCombo{{ $index }}"
+                    <label for="product{{ $index }}">Service Product</label>
+                    <select id="product{{ $index }}"
                             data-ng-model="alert.service_provider_product_id"
-                            data-ng-options="subType.id as subType.name for subType in getSubPivots()"></select>
+                            data-ng-options="product.subId as product.subName for product in getProducts()"></select>
+                </div>
+
+                <div class="field" data-ng-show="alert.pivot_type_id == 2">
+
+                    <label for="serviceType{{ $index }}">Service Type</label>
+                    <select id="serviceType{{ $index }}"
+                            data-ng-model="alert.service_type_id"
+                            data-ng-options="type.id as type.name for type in getServiceTypes()"></select>
+                </div>
+
+                <div class="field" data-ng-show="alert.pivot_type_id == 2">
+
+                    <label for="serviceTypeCategory{{ $index }}">Service Category</label>
+                    <select id="serviceTypeCategory{{ $index }}"
+                            data-ng-model="alert.service_type_category_id"
+                            data-ng-options="cat.subId as cat.subName for cat in getServiceCategories()"></select>
                 </div>
 
             </div>
@@ -89,7 +105,7 @@
                     <label for="timeFrame{{ $index }}">Time Frame</label>
                     <select id="timeFrame{{ $index }}"
                             data-ng-model="alert.alert_time_frame_id"
-                            data-ng-options="timeFrame.id as timeFrame.name for timeFrame in timeFrames"></select>
+                            data-ng-options="id as name for (id, name) in timeFrames"></select>
                 </div>
 
                 <div class="field">
@@ -97,7 +113,7 @@
                     <label for="calculation{{ $index }}">Calculation</label>
                     <select id="calculation{{ $index }}"
                             data-ng-model="alert.alert_calculation_type_id"
-                            data-ng-options="calcType.id as calcType.name for calcType in calculationTypes"></select>
+                            data-ng-options="id as name for (id, name) in calculationTypes"></select>
                 </div>
 
                 <div class="field">
@@ -105,7 +121,7 @@
                     <label for="valueType{{ $index }}">Value</label>
                     <select id="valueType{{ $index }}"
                             data-ng-model="alert.alert_value_type_id"
-                            data-ng-options="valueType.id as valueType.name for valueType in valueTypes"></select>
+                            data-ng-options="id as name for (id, name) in valueTypes"></select>
                 </div>
 
                 <div class="field">
@@ -113,7 +129,7 @@
                     <label for="comparison{{ $index }}">Is</label>
                     <select id="comparison{{ $index }}"
                             data-ng-model="alert.alert_comparison_type_id"
-                            data-ng-options="compType.id as compType.name for compType in comparisonTypes"></select>
+                            data-ng-options="id as name for (id, name) in comparisonTypes"></select>
                 </div>
 
                 <div class="field">

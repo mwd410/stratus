@@ -9,6 +9,14 @@
 
 abstract class Utils {
 
+    public static function mapValues($array, $key = 'id', $value = 'name') {
+
+        return array_reduce($array, function($result, $item) use ($key, $value) {
+            $result[$item[$key]] = $item[$value];
+            return $result;
+        }, array());
+    }
+
     public static function apply(&$array, $values) {
 
         foreach ($values as $key => $value) {

@@ -15,9 +15,10 @@ class ResponseBuilder {
 
     public function __construct() {
 
+        $this->success = true;
+        $this->data = null;
         $this->errors = new stdClass();
         $this->warnings = new stdClass();
-        $this->data = null;
     }
 
     public function addError($key, $error) {
@@ -40,8 +41,9 @@ class ResponseBuilder {
 
     public function getResponse() {
 
+        $tmpErrors = (array)$this->errors;
         return array(
-            'success'  => empty($this->errors) ? $this->success : false,
+            'success'  => empty($tmpErrors) ? $this->success : false,
             'data'     => $this->data,
             'errors'   => $this->errors,
             'warnings' => $this->warnings

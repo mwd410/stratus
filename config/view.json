@@ -50,7 +50,7 @@
             "/js/app/dashboard/stWidget.js",
             "/js/app/dashboard/widgets/dailyCost.js",
             "/js/app/dashboard/widgets/KpiCtrl.js",
-            "/js/app/service/serviceApi.js",
+            "/js/app/service/pivotApi.js",
             "/js/app/nav/NavService.js",
             "/js/app/nav/NavController.js",
             "/js/app/utils/Utils.js",

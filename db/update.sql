@@ -8,40 +8,34 @@
 
 CREATE TABLE IF NOT EXISTS pivot_type (
     id BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    name VARCHAR(255) NOT NULL,
+    api_name varchar(255)
 )
     ENGINE =InnoDB
 ;
 
-CREATE TABLE IF NOT EXISTS alert_object_type (
+CREATE TABLE IF NOT EXISTS comparison_type (
     id BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY,
     name VARCHAR(255) NOT NULL
 )
     ENGINE =InnoDB
 ;
 
-CREATE TABLE IF NOT EXISTS alert_comparison_type (
+CREATE TABLE IF NOT EXISTS calculation_type (
     id BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY,
     name VARCHAR(255) NOT NULL
 )
     ENGINE =InnoDB
 ;
 
-CREATE TABLE IF NOT EXISTS alert_calculation_type (
+CREATE TABLE IF NOT EXISTS time_frame (
     id BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY,
     name VARCHAR(255) NOT NULL
 )
     ENGINE =InnoDB
 ;
 
-CREATE TABLE IF NOT EXISTS alert_time_frame (
-    id BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
-)
-    ENGINE =InnoDB
-;
-
-CREATE TABLE IF NOT EXISTS alert_value_type (
+CREATE TABLE IF NOT EXISTS value_type (
     id BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY,
     name VARCHAR(255) NOT NULL
 )
@@ -59,11 +53,10 @@ CREATE TABLE IF NOT EXISTS alert (
     service_provider_product_id BIGINT(20) UNSIGNED,
     service_type_id BIGINT(20) UNSIGNED,
     service_type_category_id BIGINT(20) UNSIGNED,
-    alert_object_type_id BIGINT(20) UNSIGNED,
-    alert_comparison_type_id BIGINT(20) UNSIGNED NOT NULL,
-    alert_calculation_type_id BIGINT(20) UNSIGNED NOT NULL,
-    alert_time_frame_id BIGINT(20) UNSIGNED NOT NULL,
-    alert_value_type_id BIGINT(20) UNSIGNED NOT NULL,
+    comparison_type_id BIGINT(20) UNSIGNED NOT NULL,
+    calculation_type_id BIGINT(20) UNSIGNED NOT NULL,
+    time_frame_id BIGINT(20) UNSIGNED NOT NULL,
+    value_type_id BIGINT(20) UNSIGNED NOT NULL,
     threshold FLOAT UNSIGNED NOT NULL
 )
     ENGINE =InnoDB
@@ -74,34 +67,27 @@ CREATE TABLE IF NOT EXISTS alert (
 ################################################################################
 
 REPLACE INTO pivot_type VALUES
-(1, 'Service Provider'),
-(2, 'Service Type')
+(1, 'Service Provider', 'provider'),
+(2, 'Service Type', 'type')
 ;
 
-REPLACE INTO alert_object_type VALUES
-(1, 'instances'),
-(2, 'buckets'),
-(3, 'volumes'),
-(4, 'accounts')
-;
-
-REPLACE INTO alert_comparison_type VALUES
+REPLACE INTO comparison_type VALUES
 (1, 'greater than'),
 (2, 'less than')
 ;
 
-REPLACE INTO alert_calculation_type VALUES
+REPLACE INTO calculation_type VALUES
 (1, 'average'),
 (2, 'total')
 ;
 
-REPLACE INTO alert_time_frame VALUES
+REPLACE INTO time_frame VALUES
 (1, 'daily'),
 (2, '7 day'),
 (3, '30 day')
 ;
 
-REPLACE INTO alert_value_type VALUES
+REPLACE INTO value_type VALUES
 (1, 'cost'),
 (2, 'running hours')
 ;
@@ -122,22 +108,21 @@ select
 REPLACE INTO alert VALUES
 # + id
 # |  + user_id
-# |  |  + pivot_type_id
-# |  |  |             + account_id
-# |  |  |             |     + service_provider_id
-# |  |  |             |     |     + service_provider_product_id
-# |  |  |             |     |     |     + service_type_id
-# |  |  |             |     |     |     |     + service_type_category_id
-# |  |  |             |     |     |     |     |     + alert_object_type_id
-# |  |  |             |     |     |     |     |     |  + alert_comparison_type_id
-# |  |  |             |     |     |     |     |     |  |  + alert_calculation_type_id
-# |  |  |             |     |     |     |     |     |  |  |  + alert_time_frame_id
-# |  |  |             |     |     |     |     |     |  |  |  |  + alert_value_type_id
-# |  |  |             |     |     |     |     |     |  |  |  |  |     + threshold
-( 1, 1, 'my alert 1', 1, null,    1, null, null, null,    4, 1, 2, 3, 1,  120),
-( 2, 1, 'my alert 2', 2, null, null, null,    1,    1,    2, 2, 1, 4, 2, 1000),
-( 3, 1, 'my alert 3', 1, null,    1,    1, null, null,    3, 3, 2, 2, 1, 1000),
-( 4, 1, 'my alert 4', 3,   72, null, null, null, null, null, 3, 2, 2, 1, 1000)
+# |  |                + pivot_type_id
+# |  |                |     + account_id
+# |  |                |     |     + service_provider_id
+# |  |                |     |     |     + service_provider_product_id
+# |  |                |     |     |     |     + service_type_id
+# |  |                |     |     |     |     |     + service_type_category_id
+# |  |                |     |     |     |     |     |  + comparison_type_id
+# |  |                |     |     |     |     |     |  |  + calculation_type_id
+# |  |                |     |     |     |     |     |  |  |  + time_frame_id
+# |  |                |     |     |     |     |     |  |  |  |  + value_type_id
+# |  |                |     |     |     |     |     |  |  |  |  |     + threshold
+( 1, 1, 'my alert 1', 1, null,    1, null, null, null, 1, 2, 3, 1,  120),
+( 2, 1, 'my alert 2', 2, null, null, null,    1,    1, 2, 1, 4, 2, 1000),
+( 3, 1, 'my alert 3', 1, null,    1,    1, null, null, 3, 2, 2, 1, 1000),
+( 4, 1, 'my alert 4', 3,   72, null, null, null, null, 3, 2, 2, 1, 1000)
 ;
 
 /*

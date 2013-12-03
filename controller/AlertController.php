@@ -8,14 +8,29 @@
 
 class AlertController extends Controller {
 
+    public function infoAction(Request $request) {
+
+        $builder = new ResponseBuilder();
+        $data = array(
+            'comparisonTypes'  => Utils::mapValues(Query::selectAllFrom('comparison_type')),
+            'calculationTypes' => Utils::mapValues(Query::selectAllFrom('calculation_type')),
+            'timeFrames'       => Utils::mapValues(Query::selectAllFrom('time_frame')),
+            'valueTypes'       => Utils::mapValues(Query::selectAllFrom('value_type'))
+        );
+
+        $builder->setData($data);
+
+        $this->json($builder->getResponse());
+    }
+
     public function indexAction(Request $request) {
 
-        $userId =$this->getUser()->get('id');
+        $userId = $this->getUser()->get('id');
 
         $alerts = Query::create(Query::SELECT)
             ->column('*')
             ->from('alert')
-            ->where('user_id = '.$userId)
+            ->where('user_id = ' . $userId)
             ->execute();
 
         $this->json(array(
@@ -39,6 +54,7 @@ class AlertController extends Controller {
                 'success' => false,
                 'message' => 'Alert not found.'
             ));
+
             return;
         }
 
@@ -49,6 +65,7 @@ class AlertController extends Controller {
                 'success' => false,
                 'message' => 'You do not have permission to delete this alert.'
             ));
+
             return;
         }
 
@@ -60,4 +77,4 @@ class AlertController extends Controller {
             'success' => $success
         ));
     }
-} 
+}

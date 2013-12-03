@@ -30,8 +30,10 @@
             "/providers"         : "Provider.index",
             "/breakdown/update"  : "Breakdown.update",
             "/alerts"            : "Alert.index",
+            "/alert/info"        : "Alert.info",
             "/alerts/delete"     : "Alert.delete",
-            "/service"           : "Service.index"
+            "/alerts/update"     : "alert/update",
+            "/pivot"             : "Pivot.index"
         }
     }
 }
