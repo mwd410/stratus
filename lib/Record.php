@@ -9,13 +9,24 @@
 abstract class Record {
 
     private $recordSchema;
+    private $relationSchemas;
     private $table;
-    public $data;
+    private $data;
+    public $rawData;
 
-    public function __construct($record) {
+    public function __construct($record = null) {
 
         $this->setup();
-        $this->data = $this->hydrate($record);
+
+        if ($record !== null) {
+
+            $this->data = $this->hydrate($record);
+        }
+    }
+
+    public function getData() {
+
+        return $this->data;
     }
 
     public abstract function getSchema();
@@ -24,8 +35,21 @@ abstract class Record {
 
         $schema = $this->getSchema();
 
-        $table = $schema['_table'];
+        $this->table = $schema['_table'];
         $this->setRecordSchema($schema['_record']);
+
+        $this->identifyRelations();
+    }
+
+    private function identifyRelations() {
+
+        foreach ($this->recordSchema as $key => $config) {
+
+            if ($this->isRelation($config)) {
+
+                $this->relationSchemas[$key] = $config;
+            }
+        }
     }
 
     private function setRecordSchema($schema) {
@@ -38,6 +62,7 @@ abstract class Record {
         if ($schema === null) {
             $schema = $this->recordSchema;
         }
+
         return $this->hydrateColumns($record, $schema);
     }
 
@@ -80,19 +105,40 @@ abstract class Record {
 
             switch ($dataType) {
                 case 'int':
-                    $val = intval($raw);
+                    $val = $raw === null ? $raw : intval($raw);
+                    break;
+                case 'float':
+                    $val = $raw === null ? $raw : floatval($raw);
+                    break;
+                case 'double':
+                    $val = $raw === null ? $raw : doubleval($raw);
                     break;
                 case 'string':
+                    //This will take care of null values too, so no need to check
                     $val = $raw;
                     break;
                 case 'bool':
-                    $val = $raw === '1';
+                    $val = $raw == '1';
                     break;
                 default:
                     throw new Exception('Invalid data type ' . $dataType);
             }
 
             $parent[$name] = $val;
+        }
+    }
+
+    public function isRelation($config) {
+
+        if (!is_array($config)
+            || !isset($config['_type'])
+        ) {
+
+            return false;
+        } else {
+            $typeInfo = explode(':', $config['_type']);
+
+            return $typeInfo[0] === 'relation';
         }
     }
 

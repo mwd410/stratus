@@ -27,14 +27,16 @@ class AlertController extends Controller {
 
         $userId = $this->getUser()->get('id');
 
-        $alerts = Query::create(Query::SELECT)
+        $data = Query::create(Query::SELECT)
             ->column('*')
             ->from('alert')
             ->where('user_id = ' . $userId)
             ->execute();
 
+        $alerts = new Collection('Alert', $data);
+
         $this->json(array(
-            'alerts' => $alerts
+            'alerts' => $alerts->toArray()
         ));
     }
 

@@ -52,7 +52,7 @@
                     <label for="accountCombo{{ $index }}">Account</label>
                     <select id="accountCombo{{ $index }}"
                             data-ng-options="account.id as account.name for account in accounts"
-                            data-ng-model="alert.account_id"></select>
+                            data-ng-model="alert.accountId"></select>
                 </div>
 
                 <div class="field">
@@ -60,39 +60,39 @@
                     <label>Pivot By</label>
                     <select id="pivotCombo{{ $index }}"
                             data-ng-options="pivot.id as pivot.name for pivot in pivotTypes"
-                            data-ng-model="alert.pivot_type_id"
+                            data-ng-model="alert.pivotTypeId"
                             data-ng-change="pivotChanged()"></select>
                 </div>
 
-                <div class="field" data-ng-show="alert.pivot_type_id == 1">
+                <div class="field" data-ng-show="alert.pivotTypeId == 1">
 
                     <label for="provider{{ $index }}">Service Provider</label>
                     <select id="provider{{ $index }}"
-                            data-ng-model="alert.service_provider_id"
+                            data-ng-model="alert.providerId"
                             data-ng-options="provider.id as provider.name for provider in getProviders()"></select>
                 </div>
 
-                <div class="field" data-ng-show="alert.pivot_type_id == 1">
+                <div class="field" data-ng-show="alert.pivotTypeId == 1">
 
                     <label for="product{{ $index }}">Service Product</label>
                     <select id="product{{ $index }}"
-                            data-ng-model="alert.service_provider_product_id"
+                            data-ng-model="alert.productId"
                             data-ng-options="product.subId as product.subName for product in getProducts()"></select>
                 </div>
 
-                <div class="field" data-ng-show="alert.pivot_type_id == 2">
+                <div class="field" data-ng-show="alert.pivotTypeId == 2">
 
                     <label for="serviceType{{ $index }}">Service Type</label>
                     <select id="serviceType{{ $index }}"
-                            data-ng-model="alert.service_type_id"
+                            data-ng-model="alert.serviceTypeId"
                             data-ng-options="type.id as type.name for type in getServiceTypes()"></select>
                 </div>
 
-                <div class="field" data-ng-show="alert.pivot_type_id == 2">
+                <div class="field" data-ng-show="alert.pivotTypeId == 2">
 
                     <label for="serviceTypeCategory{{ $index }}">Service Category</label>
                     <select id="serviceTypeCategory{{ $index }}"
-                            data-ng-model="alert.service_type_category_id"
+                            data-ng-model="alert.categoryId"
                             data-ng-options="cat.subId as cat.subName for cat in getServiceCategories()"></select>
                 </div>
 
@@ -104,7 +104,7 @@
 
                     <label for="timeFrame{{ $index }}">Time Frame</label>
                     <select id="timeFrame{{ $index }}"
-                            data-ng-model="alert.alert_time_frame_id"
+                            data-ng-model="alert.timeFrameId"
                             data-ng-options="id as name for (id, name) in timeFrames"></select>
                 </div>
 
@@ -112,7 +112,7 @@
 
                     <label for="calculation{{ $index }}">Calculation</label>
                     <select id="calculation{{ $index }}"
-                            data-ng-model="alert.alert_calculation_type_id"
+                            data-ng-model="alert.calculationTypeId"
                             data-ng-options="id as name for (id, name) in calculationTypes"></select>
                 </div>
 
@@ -120,7 +120,7 @@
 
                     <label for="valueType{{ $index }}">Value</label>
                     <select id="valueType{{ $index }}"
-                            data-ng-model="alert.alert_value_type_id"
+                            data-ng-model="alert.valueTypeId"
                             data-ng-options="id as name for (id, name) in valueTypes"></select>
                 </div>
 
@@ -128,7 +128,7 @@
 
                     <label for="comparison{{ $index }}">Is</label>
                     <select id="comparison{{ $index }}"
-                            data-ng-model="alert.alert_comparison_type_id"
+                            data-ng-model="alert.comparisonTypeId"
                             data-ng-options="id as name for (id, name) in comparisonTypes"></select>
                 </div>
 
@@ -147,8 +147,8 @@
 
                     <label>Display in my</label>
                     <input id="breakdown{{ $index }}"
-                           data-ng-init="alert.in_breakdown = alert.in_breakdown == 1"
-                           data-ng-model="alert.in_breakdown"
+                           data-ng-init="alert.inBreakdown = alert.inBreakdown == 1"
+                           data-ng-model="alert.inBreakdown"
                            type="checkbox">
                     <label for="breakdown{{ $index }}">Breakdown</label>
                 </div>
@@ -158,13 +158,13 @@
                     <label>Also, please</label>
                     <input type="checkbox"
                            id="emailMe{{ $index }}"
-                           data-ng-init="alert.in_email = alert.in_email == 1"
-                           data-ng-model="alert.in_email">
+                           data-ng-init="alert.inEmail = alert.inEmail == 1"
+                           data-ng-model="alert.inEmail">
                     <label for="emailMe{{ $index }}">email me</label>
                 </div>
 
                 <div class="field"
-                     data-ng-if="alert.in_email">
+                     data-ng-if="alert.inEmail">
 
                     <label for="email{{ $index }}">at this email:</label>
                     <input id="email{{ $index }}"
