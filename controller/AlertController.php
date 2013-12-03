@@ -77,4 +77,9 @@ class AlertController extends Controller {
             'success' => $success
         ));
     }
+
+    public function updateAction(Request $request) {
+
+
+    }
 }

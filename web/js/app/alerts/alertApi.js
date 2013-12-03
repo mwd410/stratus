@@ -4,7 +4,7 @@
     ng.module('app.alerts').factory('alertApi', function($http, pivotApi, _) {
 
         var original, api = {
-            data   : $http.get('/alerts').then(function(response) {
+            data   : $http.get('/alert/index').then(function(response) {
 
                 original = ng.copy(response.data);
                 return response.data;
@@ -19,7 +19,7 @@
                     id : alert.id
                 };
 
-                return $http.post('/alerts/delete', params).then(function(response) {
+                return $http.post('/alert/delete', params).then(function(response) {
 
                     var success = response.data.success;
 
@@ -42,7 +42,7 @@
             },
             submit : function(alert) {
 
-                $http.post('/alerts/update',{alert : alert}).then(function(response) {
+                $http.post('/alert/update',{alert : alert}).then(function(response) {
 
                     return response.data;
                 });

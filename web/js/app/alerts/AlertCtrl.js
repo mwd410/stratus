@@ -55,11 +55,11 @@
         $scope.displayInTypes = [
             {
                 value : 'overview',
-                name : 'overview'
+                name  : 'overview'
             },
             {
                 value : 'breakdown',
-                name : 'breakdown'
+                name  : 'breakdown'
             }
         ];
 
@@ -77,7 +77,7 @@
 
             return [
                 {
-                    id : null,
+                    id   : null,
                     name : 'All Providers'
                 }
             ].concat(alertApi.getProviders());
@@ -85,36 +85,45 @@
 
         $scope.getProducts = function() {
 
-            return [
-                {
-                    id : null,
-                    name : 'All Providers',
-                    subId : null,
-                    subName : 'All Products'
-                }
-            ].concat(alertApi.getProducts($scope.alert));
+            var products = alertApi.getProducts($scope.alert),
+                base = [
+                    {
+                        id      : null,
+                        name    : 'All Providers',
+                        subId   : null,
+                        subName : 'All Products'
+                    }
+                ];
+
+            return products && base.concat(products) || base;
         };
 
         $scope.getServiceTypes = function() {
 
-            return [
-                {
-                    id : null,
-                    name : 'All Types'
-                }
-            ].concat(alertApi.getServiceTypes());
+            var types = alertApi.getServiceTypes(),
+                base = [
+                    {
+                        id   : null,
+                        name : 'All Types'
+                    }
+                ];
+
+            return types && base.concat(types) || base;
         };
 
         $scope.getServiceCategories = function() {
 
-            return [
-                {
-                    id : null,
-                    name : 'All Types',
-                    subId : null,
-                    subName : 'All Categories'
-                }
-            ].concat(alertApi.getServiceCategories($scope.alert));
+            var categories = alertApi.getServiceCategories($scope.alert),
+                base = [
+                    {
+                        id      : null,
+                        name    : 'All Types',
+                        subId   : null,
+                        subName : 'All Categories'
+                    }
+                ];
+
+            return categories && base.concat(categories) || base;
         };
     });
 

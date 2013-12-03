@@ -8,9 +8,10 @@
                 type     : 'category'
             },
             api = {
-                data             : {},
+                data             : null,
                 promise          : $http.get('/pivot').then(function(response) {
 
+                    api.data = {};
                     var data = response.data.data;
 
                     _.each(pivots, function(minor, major) {
@@ -69,12 +70,18 @@
                 },
                 getMajor         : function(pivotType) {
 
+                    if (!api.data) {
+                        return null;
+                    }
                     var typeName = this.getPivotTypeName(pivotType);
 
                     return api.data[typeName];
                 },
                 getMinor         : function(pivotType, id) {
 
+                    if (!api.data) {
+                        return null;
+                    }
                     var typeName = this.getPivotTypeName(pivotType),
                         minorName = pivots[typeName];
 
