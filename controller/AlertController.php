@@ -80,6 +80,70 @@ class AlertController extends Controller {
 
     public function updateAction(Request $request) {
 
+        $params = $request->getParams();
+        $allowed = array_diff(Alert::$columns, array('user_id'));
+        $params = Utils::stripNotIn($params, $allowed);
+        $builder = new ResponseBuilder();
 
+        $id = $params['id'];
+        $userId = $this->getUser()->get('id');
+
+        $existingAlert = Query::select('alert')
+            ->column('*')
+            ->where('id = ?', $id)
+            ->fetchOne();
+
+        if ($existingAlert === null) {
+            $builder->addError('id', "Invalid alert id '$id'");
+            $this->json($builder->getResponse());
+            return;
+        }
+
+        if ($userId != $existingAlert['user_id']) {
+            $builder->addError('You do not have permission to edit this alert');
+            $this->json($builder->getResponse());
+            return;
+        }
+
+        foreach($existingAlert as $key => $value) {
+
+            if (!isset($params[$key])) {
+                continue;
+            }
+
+            if ($params[$key] === true) {
+                $params[$key] = '1';
+            } else if ($params[$key] === false) {
+                $params[$key] = '0';
+            }
+            // check isset to skip user_id, which is not a required param.
+            if ($value == $params[$key]) {
+
+                unset($params[$key]);
+            }
+        }
+
+        if (empty($params)) {
+            $builder->addWarning('No values changed.');
+        } else {
+
+            $updateQuery = Query::update('alert')
+                ->setAll($params)
+                ->where('id = ?', $id);
+
+            if (!$updateQuery->execute()) {
+
+                $error = $updateQuery->getStatement()->errorInfo();
+                $builder->addError(implode(': ', $error));
+            } else {
+
+                $builder->setData(Query::select('alert')
+                    ->column('*')
+                    ->where('id = ?', $id)
+                    ->fetchOne());
+            }
+        }
+
+        $this->json($builder->getResponse());
     }
 }

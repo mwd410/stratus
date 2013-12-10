@@ -2,10 +2,29 @@
 
     <div class="st-alert"
          data-ng-repeat="alert in alerts"
-         data-ng-controller="AlertCtrl">
+         data-ng-controller="AlertCtrl"
+         data-ng-class="{'is-expanded' : isExpanded()}">
 
         <header>
-            adsf{{ name + '&nbsp;' }}
+            <div class="name">
+                <button ng-click="toggleEdit()"
+                        data-ng-show="!isEditingName()">
+                    {{ alert.name + '&nbsp;' }}
+                </button>
+                <input type="text"
+                       data-ng-show="isEditingName()"
+                       data-ng-model="alert.name"
+                       data-ng-blur="stopEditingName()">
+                <div class="icons">
+                    <button class="st-button"
+                            data-ng-click="editName()">
+                        <i class="icon-pencil"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="description">
+                Alert me when: {{ alert.description }}
+            </div>
             <div class="icons">
                 <span data-ng-show="!isDeleting() && !isEditing()">
                     <button class="st-button"
@@ -43,7 +62,7 @@
             </div>
         </header>
 
-        <section data-ng-class="{'is-expanded' : isExpanded()}">
+        <section>
             <div class="box filter">
 
                 <header>Filter</header>
@@ -104,7 +123,7 @@
 
                     <label for="timeFrame{{ $index }}">Time Frame</label>
                     <select id="timeFrame{{ $index }}"
-                            data-ng-model="alert.alert_time_frame_id"
+                            data-ng-model="alert.time_frame_id"
                             data-ng-options="id as name for (id, name) in timeFrames"></select>
                 </div>
 
@@ -112,7 +131,7 @@
 
                     <label for="calculation{{ $index }}">Calculation</label>
                     <select id="calculation{{ $index }}"
-                            data-ng-model="alert.alert_calculation_type_id"
+                            data-ng-model="alert.calculation_type_id"
                             data-ng-options="id as name for (id, name) in calculationTypes"></select>
                 </div>
 
@@ -120,7 +139,7 @@
 
                     <label for="valueType{{ $index }}">Value</label>
                     <select id="valueType{{ $index }}"
-                            data-ng-model="alert.alert_value_type_id"
+                            data-ng-model="alert.value_type_id"
                             data-ng-options="id as name for (id, name) in valueTypes"></select>
                 </div>
 
@@ -128,7 +147,7 @@
 
                     <label for="comparison{{ $index }}">Is</label>
                     <select id="comparison{{ $index }}"
-                            data-ng-model="alert.alert_comparison_type_id"
+                            data-ng-model="alert.comparison_type_id"
                             data-ng-options="id as name for (id, name) in comparisonTypes"></select>
                 </div>
 

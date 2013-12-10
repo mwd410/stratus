@@ -6,12 +6,18 @@
 ######################## SCHEMA CHANGES & DATA MIGRATION #######################
 ################################################################################
 
+DROP TABLE IF EXISTS alert_classification_type
+;
+
 CREATE TABLE IF NOT EXISTS pivot_type (
     id BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    api_name varchar(255)
+    api_name VARCHAR(255)
 )
     ENGINE =InnoDB
+;
+
+DROP TABLE IF EXISTS alert_comparison_type
 ;
 
 CREATE TABLE IF NOT EXISTS comparison_type (
@@ -21,11 +27,17 @@ CREATE TABLE IF NOT EXISTS comparison_type (
     ENGINE =InnoDB
 ;
 
+DROP TABLE IF EXISTS alert_calculation_type
+;
+
 CREATE TABLE IF NOT EXISTS calculation_type (
     id BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY,
     name VARCHAR(255) NOT NULL
 )
     ENGINE =InnoDB
+;
+
+DROP TABLE IF EXISTS alert_time_frame
 ;
 
 CREATE TABLE IF NOT EXISTS time_frame (
@@ -35,6 +47,9 @@ CREATE TABLE IF NOT EXISTS time_frame (
     ENGINE =InnoDB
 ;
 
+DROP TABLE IF EXISTS alert_value_type
+;
+
 CREATE TABLE IF NOT EXISTS value_type (
     id BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY,
     name VARCHAR(255) NOT NULL
@@ -42,7 +57,12 @@ CREATE TABLE IF NOT EXISTS value_type (
     ENGINE =InnoDB
 ;
 
-drop table if exists alert;
+DROP TABLE IF EXISTS alert_object_type
+;
+
+DROP TABLE IF EXISTS alert
+;
+
 CREATE TABLE IF NOT EXISTS alert (
     id BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY,
     user_id BIGINT(20) UNSIGNED NOT NULL,
@@ -60,7 +80,62 @@ CREATE TABLE IF NOT EXISTS alert (
     threshold FLOAT UNSIGNED NOT NULL,
     in_email TINYINT(1) UNSIGNED NOT NULL DEFAULT 1,
     in_breakdown TINYINT(1) UNSIGNED NOT NULL DEFAULT 1,
-    email VARCHAR(60) NOT NULL
+    email VARCHAR(60) NOT NULL,
+    CONSTRAINT fk_alert_user_id
+    FOREIGN KEY (user_id)
+    REFERENCES user (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT fk_alert_pivot_type_id
+    FOREIGN KEY (pivot_type_id)
+    REFERENCES pivot_type (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT fk_alert_account_id
+    FOREIGN KEY (account_id)
+    REFERENCES account (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT fk_alert_service_provider_id
+    FOREIGN KEY (service_provider_id)
+    REFERENCES service_provider (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_alert_service_provider_product_id
+    FOREIGN KEY (service_provider_product_id)
+    REFERENCES service_product (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_alert_service_type_id
+    FOREIGN KEY (service_type_id)
+    REFERENCES service_type (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_alert_service_type_category_id
+    FOREIGN KEY (service_type_category_id)
+    REFERENCES service_type_category (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_alert_comparison_type_id
+    FOREIGN KEY (comparison_type_id)
+    REFERENCES comparison_type (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_alert_calculation_type_id
+    FOREIGN KEY (calculation_type_id)
+    REFERENCES calculation_type (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_alert_time_frame_id
+    FOREIGN KEY (time_frame_id)
+    REFERENCES time_frame (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_alert_value_type_id
+    FOREIGN KEY (value_type_id)
+    REFERENCES value_type (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 )
     ENGINE =InnoDB
 ;
@@ -102,11 +177,12 @@ REPLACE INTO value_type VALUES
 SOURCE db/views.sql;
 
 
-select
-    sum(cost) / count(distinct history_date) as average,
+SELECT
+    sum(cost) / count(DISTINCT history_date) AS average,
     history_date
-    from billing_history_v
-    group by customer_id;
+FROM billing_history_v
+GROUP BY customer_id
+;
 
 REPLACE INTO alert (
     id,
@@ -137,10 +213,10 @@ REPLACE INTO alert (
 # |  |                |     |     |     |     |     |  |  |  + time_frame_id
 # |  |                |     |     |     |     |     |  |  |  |  + value_type_id
 # |  |                |     |     |     |     |     |  |  |  |  |     + threshold
-( 1, 1, 'my alert 1', 1, null,    1, null, null, null, 1, 2, 3, 1,  120),
-( 2, 1, 'my alert 2', 2, null, null, null,    1,    1, 2, 1, 4, 2, 1000),
-( 3, 1, 'my alert 3', 1, null,    1,    1, null, null, 3, 2, 2, 1, 1000),
-( 4, 1, 'my alert 4', 3,   72, null, null, null, null, 3, 2, 2, 1, 1000)
+(1, 1, 'my alert 1', 1, null,    1, null, null, null, 1, 2, 3, 1, 120),
+(2, 1, 'my alert 2', 2, null, null, null,    1,    1, 2, 1, 3, 2, 1000),
+(3, 1, 'my alert 3', 1, null,    1,    1, null, null, 1, 2, 2, 1, 1000),
+(4, 1, 'my alert 4', 2,   72, null, null, null, null, 2, 2, 2, 1, 1000)
 ;
 
 /*

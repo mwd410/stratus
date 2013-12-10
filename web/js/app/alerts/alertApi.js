@@ -3,7 +3,14 @@
 
     ng.module('app.alerts').factory('alertApi', function($http, pivotApi, _) {
 
-        var original, api = {
+        var original,
+            saveOriginal = function(alert) {
+
+                var originalAlert = _.find(original, {id : alert.id});
+
+                ng.copy(alert, originalAlert);
+            },
+            api = {
             data   : $http.get('/alert/index').then(function(response) {
 
                 original = ng.copy(response.data);
@@ -42,7 +49,9 @@
             },
             submit : function(alert) {
 
-                $http.post('/alert/update',{alert : alert}).then(function(response) {
+                return $http.post('/alert/update', alert).then(function(response) {
+
+                    saveOriginal(response.data.data);
 
                     return response.data;
                 });

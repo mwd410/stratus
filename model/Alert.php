@@ -8,6 +8,26 @@
 
 class Alert extends Record {
 
+    public static $columns = array(
+        'id',
+        'user_id',
+        'name',
+        'pivot_type_id',
+        'account_id',
+        'service_provider_id',
+        'service_provider_product_id',
+        'service_type_id',
+        'service_type_category_id',
+        'comparison_type_id',
+        'calculation_type_id',
+        'time_frame_id',
+        'value_type_id',
+        'threshold',
+        'in_email',
+        'in_breakdown',
+        'email'
+    );
+
     public function getSchema() {
 
         return array(
@@ -42,7 +62,8 @@ class Alert extends Record {
         );
     }
 
-    public function getLabel() {
+    public static function getDescription($alert) {
+
 
     }
 } 

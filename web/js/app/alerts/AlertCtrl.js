@@ -8,12 +8,37 @@
             return $scope.isEditing();
         };
 
+        $scope.isEditingName = function() {
+
+            return $scope.isEditing()
+                && $scope.editingName;
+        };
+
+        $scope.editName = function() {
+
+            $scope.editingName =  !$scope.editingName;
+        };
+
+        $scope.stopEditingName = function() {
+
+            $scope.editingName = false;
+        };
+
         //-----------------------------//
         // Editing Functions
 
         $scope.edit = function() {
 
             $scope.editing = true;
+        };
+
+        $scope.toggleEdit = function() {
+
+            if ($scope.isEditing()) {
+                $scope.cancelEdit();
+            } else {
+                $scope.edit();
+            }
         };
 
         $scope.cancelEdit = function() {
@@ -31,7 +56,11 @@
 
         $scope.submit = function() {
 
-            alertApi.submit($scope.alert);
+            alertApi.submit($scope.alert).then(function(data) {
+
+                $scope.alert = data.data;
+                $scope.editing = false;
+            });
         };
 
         //-----------------------------//

@@ -33,9 +33,26 @@ abstract class Query {
     /**
      * @return Select
      */
-    public static function select() {
+    public static function select($from = null) {
 
-        return self::create(self::SELECT);
+        $query = new Select();
+
+        if ($from !== null) {
+            $query->from($from);
+        }
+
+        return $query;
+    }
+
+    public static function update($from = null) {
+
+        $query = new Update();
+
+        if ($from !== null) {
+            $query->from($from);
+        }
+
+        return $query;
     }
 
     public static function selectAllFrom($from) {
@@ -211,6 +228,16 @@ abstract class Query {
 
         $this->addPart('set', $set);
         $this->addParams('set', array_slice(func_get_args(), 1));
+
+        return $this;
+    }
+
+    public function setAll($values) {
+
+        foreach($values as $key => $value) {
+
+            $this->set("$key = ?", $value);
+        }
 
         return $this;
     }

@@ -59,6 +59,22 @@ abstract class Utils {
         return $array;
     }
 
+    public static function hasAll($array, $keys) {
+
+        $present = array_keys($array);
+
+        $missing = array_diff($keys, $present);
+
+        return count($missing) === 0 ? true : $missing;
+    }
+
+    public static function requireExactly(&$array, $keys) {
+
+        $array = self::stripNotIn($array, $keys);
+
+        return self::hasAll($array, $keys);
+    }
+
     public static function arrayIsIndexed($array) {
 
         $i = 0;

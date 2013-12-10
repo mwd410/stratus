@@ -9,160 +9,6 @@
     }
 }
 
-.st-alert-list {
-    .st-wrapper;
-
-    margin-top : 20px;
-
-    border     : 1px solid @st-bg-very-dark;
-    @headerHeight : 31px;
-    @boxPadding : 10px;
-
-    .box {
-        height : 100%;
-        float  : left;
-        clear : both;
-        border-top : 1px solid @st-bg-very-dark;
-        margin-top: @boxPadding;
-        & > header {
-            float         : left;
-            width         : 100%;
-            padding       : (@boxPadding / 2);
-            border-bottom : 1px solid @st-bg-very-dark;
-            .gradient(@st-bg-main, @st-bg-dark);
-        }
-        & > div {
-            height  : 100%;
-            width   : 100%;
-            padding : (@headerHeight + @boxPadding) @boxPadding @boxPadding @boxPadding;
-        }
-
-        &.outer-box {
-            & > div {
-                padding : (@headerHeight) 0 0 0;
-            }
-        }
-    }
-
-    .box .main-header {
-        background : @st-brand-main;
-        color      : @st-brand-text-strong;
-        i {
-            color   : @st-brand-text;
-            padding : 5px;
-            cursor  : pointer;
-            .transition(0.1s linear opacity);
-            .opacity(0);
-            &:hover {
-                color : @st-brand-text-strong;
-            }
-        }
-        &:hover i {
-            .opacity(100);
-        }
-    }
-
-    .field {
-        margin-top : 10px;
-    }
-
-    .left-side {
-        width : 100%;
-        .what, .when {
-            width : 100%;
-        }
-
-        .st-checkbox {
-            float : left;
-            clear : left;
-            &.is-active {
-                color : @st-bg-text-strong;
-            }
-            label {
-                width : auto;
-            }
-        }
-
-        .filter-wrapper {
-            float       : left;
-            margin-left : 5px;
-
-            &.is-active {
-                color : @st-bg-text-strong;
-            }
-        }
-
-        .category-type {
-            float   : left;
-            clear   : both;
-            display : inline-block;
-        }
-
-        .provider-options {
-            float  : left;
-            clear  : left;
-            margin : 0 5px 0 23px;
-
-            &.is-active {
-                color : @st-bg-text-strong;
-            }
-        }
-
-        .account-select {
-            float      : left;
-            width      : 100%;
-            margin-top : 3px;
-        }
-
-        label {
-            font-weight : 100;
-            width       : 130px;
-        }
-    }
-
-    .right-side {
-        width      : 100%;
-        background : @st-bg-dark;
-
-        .notification-option {
-
-            font-weight : normal !important;
-            font-size   : 14px;
-
-            + .notification-option {
-                margin-top : 5px;
-            }
-            span {
-            }
-            &.is-active {
-                color : @st-bg-text-strong;
-            }
-        }
-    }
-
-    @media (min-width : @screen-md) {
-        height     : 300px;
-        .box {
-            clear : none;
-            margin-top: 0;
-            border-top: none;
-            + .box {
-                border-top  : none;
-                border-left : 1px solid @st-bg-very-dark;
-            }
-        }
-        .left-side {
-            width : 66%;
-            .what, .when {
-                width : 50%;
-            }
-        }
-        .right-side {
-            width : 34%;
-        }
-    }
-}
-
 .st-alert-wrapper {
     padding : 20px;
 }
@@ -175,6 +21,19 @@
         margin-top: 20px;
     }
 
+    &.is-expanded {
+        > section {
+
+            border-top : 1px solid @st-bg-very-dark;
+            display    : table;
+            max-height : 300px;
+        }
+
+        > header .name:hover .icons {
+            display : inline-block;
+        }
+    }
+
     header {
         padding : 5px 10px;
     }
@@ -182,6 +41,28 @@
     & > header {
         background: @st-brand-main;
         color : @st-brand-text-strong;
+
+        .name, .description {
+            display: inline-block;
+            height: 100%;
+        }
+        .name {
+            width : 200px;
+            > button {
+                border : none;
+                background: none;
+                color : @st-brand-text-strong;
+                outline : none;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+            .icons {
+                display: none;
+            }
+            &:hover .icons {
+            }
+        }
 
         .icons {
             float : right;
@@ -201,11 +82,7 @@
         display: block;
         overflow: hidden;
 
-        &.is-expanded {
-            border-top: 1px solid @st-bg-very-dark;
-            display: table;
-            max-height: 300px;
-        }
+
     }
 
     .box {

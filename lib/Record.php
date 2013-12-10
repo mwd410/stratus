@@ -19,12 +19,80 @@ abstract class Record {
     }
 
     public abstract function getSchema();
+    
+    public function getValidation() {
+        return array();
+    }
+
+    private function validateString($value, $validation) {
+
+        $errors = array();
+        if ($value === null) {
+            if (!isset($validation['allowNull'])
+                || $validation['allowNull'] === false) {
+
+                $errors[] = 'Cannot be null.';
+            }
+        } else {
+
+            if (!is_string($value)) {
+
+                $errors[] = 'Must be a string';
+            }
+
+            if (isset($validation['minLength'])
+                && strlen($value) < $validation['minLength']) {
+
+                $errors[] = 'Must be at least '
+                    . $validation['minLength']
+                    . ' characters long.';
+            }
+
+            if (isset($validation['maxLength'])
+                && strlen($value) < $validation['maxLength']) {
+
+                $errors[] = 'Cannot be longer than '
+                    . $validation['maxLength']
+                    . ' characters.';
+            }
+        }
+
+        return $errors;
+    }
+
+    private function validateField($value, $validation) {
+
+        $type = $validation['type'];
+
+        switch($type) {
+            case 'string';
+                return $this->validateString($value, $validation);
+            default:
+                return array();
+        }
+    }
+
+    public function validate(array $params, ResponseBuilder $builder = null) {
+        
+        $validation = $this->getValidation();
+        
+        foreach($params as $field => $value) {
+        
+            if (isset($validation[$field])) {
+                $errors = $this->validateField($value, $validation[$field]);
+
+                foreach($errors as $error) {
+                    $builder->addError($field, $error);
+                }
+            }
+        }
+    }
 
     public function setup() {
 
         $schema = $this->getSchema();
 
-        $table = $schema['_table'];
+        $this->table = $schema['_table'];
         $this->setRecordSchema($schema['_record']);
     }
 

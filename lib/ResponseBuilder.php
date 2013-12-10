@@ -17,26 +17,28 @@ class ResponseBuilder {
 
         $this->success = true;
         $this->data = null;
-        $this->errors = new stdClass();
-        $this->warnings = new stdClass();
+        $this->errors = array();
+        $this->warnings = array();
     }
 
-    public function addError($key, $error) {
+    public function addError($field, $error = null) {
 
-        if (isset($this->errors->$key)) {
-            throw new Exception('Already have error key '.$key);
+        if ($error === null) {
+            $error = $field;
+            $field = '_';
         }
 
-        $this->errors->$key = $error;
+        $this->errors[$field][] = $error;
     }
 
-    public function addWarning($key, $warning) {
+    public function addWarning($field, $warning = null) {
 
-        if (isset($this->warnings->$key)) {
-            throw new Exception('Already have warning key '.$key);
+        if ($warning === null) {
+            $warning = $field;
+            $field = '_';
         }
 
-        $this->warnings->$key = $warning;
+        $this->warnings[$field][] = $warning;
     }
 
     public function getResponse() {
@@ -53,5 +55,10 @@ class ResponseBuilder {
     public function setData($data) {
 
         $this->data = $data;
+    }
+
+    public function setSuccess($success) {
+
+        $this->success = !!$success;
     }
 } 
