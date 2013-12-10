@@ -2,10 +2,64 @@
 
     <div class="st-alert"
          data-ng-repeat="alert in alerts"
-         data-ng-controller="AlertCtrl">
+         data-ng-controller="AlertCtrl"
+         data-ng-class="{'is-expanded' : isExpanded()}">
 
         <header>
-            adsf{{ name + '&nbsp;' }}
+            <div class="name">
+                <button ng-click="toggleEdit()"
+                        data-ng-show="!isEditingName()">
+                    {{ alert.name + '&nbsp;' }}
+                </button>
+                <input type="text"
+                       data-ng-show="isEditingName()"
+                       data-ng-model="alert.name"
+                       data-ng-blur="stopEditingName()">
+                <div class="icons">
+                    <button class="st-button"
+                            data-ng-click="editName()">
+                        <i class="icon-pencil"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="description">
+                Alert me when: {{ alert.description }}
+            </div>
+            <div class="icons">
+                <span data-ng-show="!isDeleting() && !isEditing()">
+                    <button class="st-button"
+                            data-ng-click="edit()">
+                        <i class="icon-pencil icon-large"></i>
+                    </button>
+                    <button class="st-button"
+                            data-ng-click="askToDelete()">
+                        <i class="icon-trash icon-large"></i>
+                    </button>
+                </span>
+                <span data-ng-show="isEditing()">
+                    <button class="st-button"
+                            data-ng-click="submit()">
+                        <i class="icon-ok icon-large"></i>
+                    </button>
+                    <button class="st-button"
+                            data-ng-click="cancelEdit()">
+                        <i class="icon-remove icon-large"></i>
+                    </button>
+                </span>
+                <span data-ng-show="isDeleting()">
+                    <span>
+                        Are you sure you want to delete this alert?
+                    </span>
+                    <button class="st-button"
+                            data-ng-click="remove(alert)">
+                        <i class="icon-ok icon-large"></i>
+                    </button>
+                    <button class="st-button"
+                            data-ng-click="cancelDelete()">
+                        <i class="icon-remove icon-large"></i>
+                    </button>
+                </span>
+            </div>
         </header>
 
         <section>
@@ -23,26 +77,42 @@
                 <div class="field">
 
                     <label>Pivot By</label>
-                    <select id="classificationCombo{{ $index }}"
-                            data-ng-options="cls.id as cls.name for cls in classifications"
-                            data-ng-model="alert.alert_classification_type_id"
+                    <select id="pivotCombo{{ $index }}"
+                            data-ng-options="pivot.id as pivot.name for pivot in pivotTypes"
+                            data-ng-model="alert.pivot_type_id"
                             data-ng-change="pivotChanged()"></select>
                 </div>
 
-                <div class="field">
+                <div class="field" data-ng-show="alert.pivot_type_id == 1">
 
-                    <label for="typeCombo{{ $index }}">Service Provider</label>
-                    <select id="typeCombo{{ $index }}"
+                    <label for="provider{{ $index }}">Service Provider</label>
+                    <select id="provider{{ $index }}"
                             data-ng-model="alert.service_provider_id"
-                            data-ng-options="type.id as type.name for type in getPivots()"></select>
+                            data-ng-options="provider.id as provider.name for provider in getProviders()"></select>
                 </div>
 
-                <div class="field">
+                <div class="field" data-ng-show="alert.pivot_type_id == 1">
 
-                    <label for="subTypeCombo{{ $index }}">Service Product</label>
-                    <select id="subTypeCombo{{ $index }}"
+                    <label for="product{{ $index }}">Service Product</label>
+                    <select id="product{{ $index }}"
                             data-ng-model="alert.service_provider_product_id"
-                            data-ng-options="subType.id as subType.name for subType in getSubPivots()"></select>
+                            data-ng-options="product.subId as product.subName for product in getProducts()"></select>
+                </div>
+
+                <div class="field" data-ng-show="alert.pivot_type_id == 2">
+
+                    <label for="serviceType{{ $index }}">Service Type</label>
+                    <select id="serviceType{{ $index }}"
+                            data-ng-model="alert.service_type_id"
+                            data-ng-options="type.id as type.name for type in getServiceTypes()"></select>
+                </div>
+
+                <div class="field" data-ng-show="alert.pivot_type_id == 2">
+
+                    <label for="serviceTypeCategory{{ $index }}">Service Category</label>
+                    <select id="serviceTypeCategory{{ $index }}"
+                            data-ng-model="alert.service_type_category_id"
+                            data-ng-options="cat.subId as cat.subName for cat in getServiceCategories()"></select>
                 </div>
 
             </div>
@@ -53,32 +123,32 @@
 
                     <label for="timeFrame{{ $index }}">Time Frame</label>
                     <select id="timeFrame{{ $index }}"
-                            data-ng-model="alert.alert_time_frame_id"
-                            data-ng-options="timeFrame.id as timeFrame.name for timeFrame in timeFrames"></select>
+                            data-ng-model="alert.time_frame_id"
+                            data-ng-options="id as name for (id, name) in timeFrames"></select>
                 </div>
 
                 <div class="field">
 
                     <label for="calculation{{ $index }}">Calculation</label>
                     <select id="calculation{{ $index }}"
-                            data-ng-model="alert.alert_calculation_type_id"
-                            data-ng-options="calcType.id as calcType.name for calcType in calculationTypes"></select>
+                            data-ng-model="alert.calculation_type_id"
+                            data-ng-options="id as name for (id, name) in calculationTypes"></select>
                 </div>
 
                 <div class="field">
 
                     <label for="valueType{{ $index }}">Value</label>
                     <select id="valueType{{ $index }}"
-                            data-ng-model="alert.alert_value_type_id"
-                            data-ng-options="valueType.id as valueType.name for valueType in valueTypes"></select>
+                            data-ng-model="alert.value_type_id"
+                            data-ng-options="id as name for (id, name) in valueTypes"></select>
                 </div>
 
                 <div class="field">
 
                     <label for="comparison{{ $index }}">Is</label>
                     <select id="comparison{{ $index }}"
-                            data-ng-model="alert.alert_comparison_type_id"
-                            data-ng-options="compType.id as compType.name for compType in comparisonTypes"></select>
+                            data-ng-model="alert.comparison_type_id"
+                            data-ng-options="id as name for (id, name) in comparisonTypes"></select>
                 </div>
 
                 <div class="field">
@@ -92,14 +162,14 @@
             <div class="box notification">
                 <header>Notification</header>
 
-                <div class="field"
-                     data-ng-repeat="displayInType in displayInTypes">
+                <div class="field">
 
-                    <label data-ng-if="$first">Display in my</label>
-                    <input type="checkbox"
-                           id="displayIn{{ $index }}"
-                           data-ng-model="alert.displayIn[displayInType.name]">
-                    <label for="displayIn{{ $index }}">{{ displayInType.name }}</label>
+                    <label>Display in my</label>
+                    <input id="breakdown{{ $index }}"
+                           data-ng-init="alert.in_breakdown = alert.in_breakdown == 1"
+                           data-ng-model="alert.in_breakdown"
+                           type="checkbox">
+                    <label for="breakdown{{ $index }}">Breakdown</label>
                 </div>
 
                 <div class="field">
@@ -107,18 +177,19 @@
                     <label>Also, please</label>
                     <input type="checkbox"
                            id="emailMe{{ $index }}"
-                           data-ng-model="alert.send_email">
+                           data-ng-init="alert.in_email = alert.in_email == 1"
+                           data-ng-model="alert.in_email">
                     <label for="emailMe{{ $index }}">email me</label>
                 </div>
 
                 <div class="field"
-                     data-ng-if="alert.send_email">
+                     data-ng-if="alert.in_email">
 
                     <label for="email{{ $index }}">at this email:</label>
                     <input id="email{{ $index }}"
                            type="text"
                            data-ng-model="alert.email"
-                           placeholder="m.deady410@comcast.net">
+                           placeholder="{{ userEmail }}">
 
                 </div>
             </div>

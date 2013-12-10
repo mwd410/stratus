@@ -1,142 +1,146 @@
 (function(ng, undefined) {
     'use strict';
 
-    ng.module('app.alerts').controller('AlertCtrl', function($scope) {
+    ng.module('app.alerts').controller('AlertCtrl', function($scope, alertApi) {
+
+        $scope.isExpanded = function() {
+
+            return $scope.isEditing();
+        };
+
+        $scope.isEditingName = function() {
+
+            return $scope.isEditing()
+                && $scope.editingName;
+        };
+
+        $scope.editName = function() {
+
+            $scope.editingName =  !$scope.editingName;
+        };
+
+        $scope.stopEditingName = function() {
+
+            $scope.editingName = false;
+        };
+
+        //-----------------------------//
+        // Editing Functions
+
+        $scope.edit = function() {
+
+            $scope.editing = true;
+        };
+
+        $scope.toggleEdit = function() {
+
+            if ($scope.isEditing()) {
+                $scope.cancelEdit();
+            } else {
+                $scope.edit();
+            }
+        };
+
+        $scope.cancelEdit = function() {
+
+            var original = alertApi.getOriginal($scope.alert);
+
+            ng.copy(original, $scope.alert);
+            $scope.editing = false;
+        };
+
+        $scope.isEditing = function() {
+
+            return $scope.editing === true;
+        };
+
+        $scope.submit = function() {
+
+            alertApi.submit($scope.alert).then(function(data) {
+
+                $scope.alert = data.data;
+                $scope.editing = false;
+            });
+        };
+
+        //-----------------------------//
+        // Deleting Functions
+
+        $scope.askToDelete = function() {
+
+            $scope.confirmDelete = true;
+        };
+
+        $scope.cancelDelete = function() {
+
+            $scope.confirmDelete = false;
+        };
+
+        $scope.isDeleting = function() {
+
+            return $scope.confirmDelete === true;
+        };
 
         $scope.pivotChanged = function() {
 
-            var pivotId = $scope.getClassificationId();
-
-            if (pivotId === null) {
-                $scope.alert.service_provider_id = null;
-                $scope.alert.service_type_id = null;
-
-                $scope.serviceProviderChanged();
-                $scope.serviceTypeChanged();
-            } else if (pivotId == 1) {
-
-                $scope.alert.service_type_id = null;
-                $scope.serviceTypeChanged();
-            } else {
-                $scope.alert.service_provider_id = null;
-                $scope.serviceProviderChanged();
-            }
-        };
-
-        $scope.serviceProviderChanged = function() {
+            $scope.alert.service_provider_id = null;
             $scope.alert.service_provider_product_id = null;
-        };
-
-        $scope.serviceTypeChanged = function() {
+            $scope.alert.service_type_id = null;
             $scope.alert.service_type_category_id = null;
         };
 
-        $scope.standardEmailChecked = function() {
+        $scope.getProviders = function() {
 
-            var on = $scope.standardEmail;
-        };
-
-        $scope.getClassificationId = function() {
-
-            return $scope.alert.alert_classification_type_id;
-        };
-
-        $scope.getClassification = function() {
-
-            var classId = $scope.getClassificationId(),
-                classification;
-
-            if (!$scope.classifications) {
-                return null;
-            }
-
-            for (var i = 0; i < $scope.classifications.length; ++i) {
-                classification = $scope.classifications[i];
-
-                if (classification.id == classId) {
-                    return classification;
+            return [
+                {
+                    id   : null,
+                    name : 'All Providers'
                 }
-            }
-
-            return null;
+            ].concat(alertApi.getProviders());
         };
 
-        $scope.getTypes = function() {
+        $scope.getProducts = function() {
 
-            var classification = $scope.getClassification();
-
-            return classification && classification.types || null;
-        };
-
-        $scope.getTypeId = function() {
-
-            var classId = $scope.getClassificationId();
-
-            return classId == 1 && $scope.alert.service_provider_id
-                || classId == 2 && $scope.alert.service_product_id
-                || null;
-        };
-
-        $scope.getType = function() {
-
-            var types = $scope.getTypes(),
-                typeId = $scope.getTypeId();
-
-            if (types && typeId) {
-                for (var i = 0; i < types.length; ++i) {
-                    if (types[i].id == typeId) {
-                        return types[i];
+            var products = alertApi.getProducts($scope.alert),
+                base = [
+                    {
+                        id      : null,
+                        name    : 'All Providers',
+                        subId   : null,
+                        subName : 'All Products'
                     }
-                }
-            }
+                ];
 
-            return null;
+            return products && base.concat(products) || base;
         };
 
-        $scope.getSubTypes = function() {
+        $scope.getServiceTypes = function() {
 
-            var type = $scope.getType();
-
-            return type && type.sub_types || null;
-        };
-
-        $scope.getSubTypeId = function() {
-
-            var classId = $scope.getClassificationId();
-
-            return classId == 1 && $scope.alert.service_provider_product_id
-                || classId == 2 && $scope.alert.service_type_category_id
-                || null;
-        };
-
-        $scope.getSubType = function() {
-
-            var subTypes = $scope.getSubTypes(),
-                subTypeId = $scope.getSubTypeId();
-
-            if (subTypes && subTypeId) {
-                for (var i = 0; i < subTypes.length; ++i) {
-                    if (subTypes[i].id == subTypeId) {
-                        return subTypes[i];
+            var types = alertApi.getServiceTypes(),
+                base = [
+                    {
+                        id   : null,
+                        name : 'All Types'
                     }
-                }
-            }
+                ];
 
-            return null;
+            return types && base.concat(types) || base;
         };
 
-        $scope.displayInTypes = [
-            {
-                value : 'overview',
-                name : 'overview'
-            },
-            {
-                value : 'breakdown',
-                name : 'breakdown'
-            }
-        ];
+        $scope.getServiceCategories = function() {
 
-        $scope.alert.displayIn = {};
+            var categories = alertApi.getServiceCategories($scope.alert),
+                base = [
+                    {
+                        id      : null,
+                        name    : 'All Types',
+                        subId   : null,
+                        subName : 'All Categories'
+                    }
+                ];
+
+            return categories && base.concat(categories) || base;
+        };
     });
 
 })(window.angular);

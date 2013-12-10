@@ -2,17 +2,12 @@
     'use strict';
 
     ng.module('app.alerts').controller('AlertManagementCtrl', [
-        '$scope', 'alertApi', 'AccountService', 'serviceApi',
-        function($scope, alertApi, accountApi, serviceApi) {
+        '$scope', 'alertApi', 'AccountService', 'pivotApi', '_', 'user',
+        function($scope, alertApi, accountApi, pivotApi, _, user) {
 
-            // Can't $watch(alertApi.data), because that won't catch if
-            // alertApi re-assigns alertApi.data to a different promise.
-            $scope.$watch(function() {return alertApi.data;}, function(dataPromise) {
+            alertApi.data.then(function(data) {
 
-                dataPromise.then(function(data) {
-
-                    $scope.alerts = data.alerts;
-                });
+                $scope.alerts = ng.copy(data.alerts);
             });
 
             accountApi.data.then(function(data) {
@@ -25,20 +20,36 @@
                 ].concat(data.accounts);
             });
 
-            serviceApi.data.then(function(data) {
+            pivotApi.promise.then(function(data) {
 
-                $scope.classifications = [
+                $scope.pivotTypes = [
                     {
                         id   : null,
                         name : 'None'
                     }
-                ].concat(data.pivots);
+                ].concat(data.pivotTypes);
+            });
+
+            alertApi.info.then(function(data) {
+
                 $scope.comparisonTypes = data.comparisonTypes;
                 $scope.calculationTypes = data.calculationTypes;
                 $scope.timeFrames = data.timeFrames;
                 $scope.valueTypes = data.valueTypes;
             });
 
+            $scope.remove = function(alert) {
+
+                alertApi.remove(alert).then(function(success) {
+
+                    $scope.alerts = _.without($scope.alerts, alert);
+                });
+            };
+
+            $scope.$watch(function() {return user.data && user.data.email;}, function(email) {
+
+                $scope.userEmail = email;
+            });
         }]);
 
 })(window.angular);

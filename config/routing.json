@@ -29,8 +29,12 @@
             "/dashboard"         : "Dashboard.index",
             "/providers"         : "Provider.index",
             "/breakdown/update"  : "Breakdown.update",
-            "/alerts"            : "Alert.index",
-            "/service"           : "Service.index"
+            "/alert/index"       : "Alert.index",
+            "/alert/info"        : "Alert.info",
+            "/alert/delete"      : "Alert.delete",
+            "/alert/update"      : "Alert.update",
+            "/pivot"             : "Pivot.index",
+            "/user/info"         : "User.info"
         }
     }
 }

@@ -9,6 +9,14 @@
 
 abstract class Utils {
 
+    public static function mapValues($array, $key = 'id', $value = 'name') {
+
+        return array_reduce($array, function($result, $item) use ($key, $value) {
+            $result[$item[$key]] = $item[$value];
+            return $result;
+        }, array());
+    }
+
     public static function apply(&$array, $values) {
 
         foreach ($values as $key => $value) {
@@ -49,6 +57,22 @@ abstract class Utils {
             }
         }
         return $array;
+    }
+
+    public static function hasAll($array, $keys) {
+
+        $present = array_keys($array);
+
+        $missing = array_diff($keys, $present);
+
+        return count($missing) === 0 ? true : $missing;
+    }
+
+    public static function requireExactly(&$array, $keys) {
+
+        $array = self::stripNotIn($array, $keys);
+
+        return self::hasAll($array, $keys);
     }
 
     public static function arrayIsIndexed($array) {

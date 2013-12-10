@@ -61,6 +61,11 @@ class User {
         $this->persist();
     }
 
+    public function getAll() {
+
+        return $this->data;
+    }
+
     public function get($name) {
 
         if (!isset($this->data[$name])) {

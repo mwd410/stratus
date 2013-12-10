@@ -31,9 +31,41 @@ abstract class Query {
     }
 
     /**
+     * @return Select
+     */
+    public static function select($from = null) {
+
+        $query = new Select();
+
+        if ($from !== null) {
+            $query->from($from);
+        }
+
+        return $query;
+    }
+
+    public static function update($from = null) {
+
+        $query = new Update();
+
+        if ($from !== null) {
+            $query->from($from);
+        }
+
+        return $query;
+    }
+
+    public static function selectAllFrom($from) {
+
+        return self::select()
+            ->column('*')
+            ->from($from)
+            ->execute();
+    }
+    /**
      * @param $type
      *
-     * @return Query
+     * @return $this
      * @throws Exception
      */
     public static function create($type) {
@@ -137,7 +169,7 @@ abstract class Query {
     }
 
     /**
-     * @return Query
+     * @return $this
      */
     public function isDistinct() {
         $this->isDistinct = true;
@@ -148,7 +180,7 @@ abstract class Query {
      * @param      $column
      * @param null $params
      *
-     * @return Query
+     * @return $this
      */
     public function column($column, $params = null) {
 
@@ -159,10 +191,24 @@ abstract class Query {
     }
 
     /**
+     * @param $columns
+     *
+     * @return $this
+     */
+    public function columns(array $columns) {
+
+        foreach($columns as $alias => $column) {
+            $this->column($column . ' as ' . $alias);
+        }
+
+        return $this;
+    }
+
+    /**
      * @param      $from
      * @param null $params
      *
-     * @return Query
+     * @return $this
      */
     public function from($from, $params = null) {
 
@@ -176,7 +222,7 @@ abstract class Query {
      * @param      $set
      * @param null $params
      *
-     * @return Query
+     * @return $this
      */
     public function set($set, $params = null) {
 
@@ -186,11 +232,21 @@ abstract class Query {
         return $this;
     }
 
+    public function setAll($values) {
+
+        foreach($values as $key => $value) {
+
+            $this->set("$key = ?", $value);
+        }
+
+        return $this;
+    }
+
     /**
      * @param      $data
      * @param null $params
      *
-     * @return Query
+     * @return $this
      */
     public function insert($data, $params = null) {
 
@@ -204,7 +260,7 @@ abstract class Query {
      * @param      $join
      * @param null $params
      *
-     * @return Query
+     * @return $this
      */
     public function join($join, $params = null) {
 
@@ -218,7 +274,7 @@ abstract class Query {
      * @param      $join
      * @param null $params
      *
-     * @return Query
+     * @return $this
      */
     public function leftJoin($join, $params = null) {
 
@@ -232,7 +288,7 @@ abstract class Query {
      * @param      $where
      * @param null $params
      *
-     * @return Query
+     * @return $this
      */
     public function where($where, $params = null) {
 
@@ -246,7 +302,7 @@ abstract class Query {
      * @param      $group
      * @param null $params
      *
-     * @return Query
+     * @return $this
      */
     public function groupBy($group, $params = null) {
 
@@ -260,7 +316,7 @@ abstract class Query {
      * @param      $order
      * @param null $params
      *
-     * @return Query
+     * @return $this
      */
     public function orderBy($order, $params = null) {
 
@@ -274,7 +330,7 @@ abstract class Query {
      * @param      $limit
      * @param null $params
      *
-     * @return Query
+     * @return $this
      */
     public function limit($limit, $params = null) {
 
