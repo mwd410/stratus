@@ -34,7 +34,8 @@
             "/alert/delete"      : "Alert.delete",
             "/alert/update"      : "Alert.update",
             "/pivot"             : "Pivot.index",
-            "/user/info"         : "User.info"
+            "/user/info"         : "User.info",
+            "/chargeback/index"  : "Chargeback.index"
         }
     }
 }

@@ -6,10 +6,6 @@
 
             return {
                 require    : ['stWidget', '^stDash'],
-                scope      : {
-                    widget        : '=stWidget',
-                    widgetService : '='
-                },
                 controller : function($scope, $injector) {
 
                     function resize(el) {

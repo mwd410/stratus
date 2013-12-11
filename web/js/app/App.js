@@ -9,7 +9,8 @@
             'app.dashboard',
             'app.nav',
             'app.utils',
-            'app.service'
+            'app.service',
+            'app.chargeback'
         ])
         .config(function($stateProvider, $urlRouterProvider) {
 
@@ -71,6 +72,8 @@
     ng.module('app.alerts', []);
 
     ng.module('app.service', []);
+
+    ng.module('app.chargeback', []);
 
 })(window.angular);
 

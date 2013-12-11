@@ -30,25 +30,37 @@
                             }
 
                             $scope.accounts = accounts;
-                            $scope.widgetService.selectedAccount = accounts[0];
+                            if ($scope.widgetService) {
+
+                                $scope.widgetService.selectedAccount = accounts[0];
+                            }
                         }
                     );
 
                     $scope.getTitle = function() {
-                        return $scope.widgetService.title;
+                        return ($scope.widgetService || {}).title;
                     };
 
                     $scope.menu = toggle();
 
                     this.register = function(widget) {
-                        $scope.widgetService.registerWidget(widget);
+                        if (!$scope.widgetService) {
+                            return;
+                        }
+                        if ($scope.widgetService.registerWidget) {
 
-                        var lastRow = _.last($scope.dash.widgetRows),
-                            lastColumn = _.last(lastRow.widgetColumns),
-                            lastWidget = _.last(lastColumn.widgets);
+                            $scope.widgetService.registerWidget(widget);
+                        }
 
-                        if (lastWidget === widget) {
-                            $scope.widgetService.init();
+                        if ($scope.widgetService.init) {
+
+                            var lastRow = _.last($scope.dash.widgetRows),
+                                lastColumn = _.last(lastRow.widgetColumns),
+                                lastWidget = _.last(lastColumn.widgets);
+
+                            if (lastWidget === widget) {
+                                $scope.widgetService.init();
+                            }
                         }
                     };
                 },

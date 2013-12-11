@@ -13,11 +13,7 @@
                     var windowHeight = window.innerHeight,
                         height = windowHeight - el.offset().top - bottomSpace;
 
-                    el.height(height);
-
-                    var padding = (height - 40) + 'px';
-
-                    el.css('padding-bottom', padding);
+                    el.css('min-height', height + 'px');
                 }
 
                 ng.element(window).bind('resize', function() {
