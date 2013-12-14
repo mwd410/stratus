@@ -10,16 +10,18 @@
 }
 
 .st-alert-wrapper {
-    padding : 20px;
+    padding : 16px;
+    background: @st-bg-dark;
+    min-height: 100%;
 }
 
 .st-alert {
 
+    .individual-box;
     border : 1px solid @st-bg-very-dark;
     width: 100%;
-    & + .st-alert {
-        margin-top: 20px;
-    }
+
+    margin-top: 12px;
 
     &.is-expanded {
         > section {
@@ -90,6 +92,7 @@
         display: table-cell;
         width : 33%;
         position: relative;
+        background: @st-bg-main;
         +.box {
             border-left: 1px solid @st-bg-very-dark;
         }

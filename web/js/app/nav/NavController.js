@@ -21,6 +21,11 @@
 
             return NavService.isExpanded(menu);
         };
+
+        $scope.isActive = function(item) {
+
+            return $state.current.name == item.state;
+        };
     });
 
 })(window.angular);

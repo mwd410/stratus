@@ -31,10 +31,12 @@
             "/breakdown/update"  : "Breakdown.update",
             "/alert/index"       : "Alert.index",
             "/alert/info"        : "Alert.info",
+            "/alert/create"      : "alert.create",
             "/alert/delete"      : "Alert.delete",
             "/alert/update"      : "Alert.update",
             "/pivot"             : "Pivot.index",
-            "/user/info"         : "User.info"
+            "/user/info"         : "User.info",
+            "/chargeback/index"  : "Chargeback.index"
         }
     }
 }

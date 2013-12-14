@@ -50,8 +50,13 @@ class Select extends Query {
                 'limit',
             ));
 
+
         $parts['from'] = 'from '.$parts['from'];
         $select = 'select ' . ($this->isDistinct ? 'DISTINCT ' : '');
+
+        if (!isset($parts['column'])) {
+            $select .= ' * ';
+        }
         return $select . implode(' ', $parts);
     }
 }

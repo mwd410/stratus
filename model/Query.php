@@ -14,78 +14,129 @@ abstract class Query {
     const INSERT = 2;
     const DELETE = 3;
 
-    private $parts;
-    private $params;
-    private $stmt;
+    protected $parts;
+    protected $params;
+    protected $stmt;
     protected $isDistinct;
 
-    public static function delete($from = null) {
+    private static $staticStmt;
 
-        $query = new Delete();
+    public static function stmt() {
 
-        if ($from !== null) {
-            $query->from($from);
-        }
-
-        return $query;
+        return self::$staticStmt;
     }
 
-    /**
-     * @return Select
-     */
-    public static function select($from = null) {
+    public static function begin() {
 
-        $query = new Select();
-
-        if ($from !== null) {
-            $query->from($from);
-        }
-
-        return $query;
+        Database::getInstance()->begin();
     }
 
-    public static function update($from = null) {
+    public static function commit() {
 
-        $query = new Update();
-
-        if ($from !== null) {
-            $query->from($from);
-        }
-
-        return $query;
+        Database::getInstance()->commit();
     }
 
-    public static function selectAllFrom($from) {
+    public static function rollback() {
 
-        return self::select()
-            ->column('*')
-            ->from($from)
-            ->execute();
+        Database::getInstance()->rollback();
     }
+
+    public static function lastInsertId($table) {
+
+        return Database::getInstance()
+            ->getConnection()
+            ->lastInsertId($table);
+    }
+
     /**
      * @param $type
      *
      * @return $this
      * @throws Exception
      */
-    public static function create($type) {
+    public static function create($type, $from = null) {
 
         switch($type) {
+            case self::INSERT:
+                $query = new Insert();
+                break;
             case self::SELECT:
-                return new Select();
+                $query = new Select();
                 break;
             case self::UPDATE:
-                return new Update();
-                break;
-            case self::INSERT:
-                return new Insert();
+                $query = new Update();
                 break;
             case self::DELETE:
-                return new Delete();
+                $query =  new Delete();
                 break;
             default:
                 throw new Exception('You must provide a $type.');
         }
+
+        $query->from($from);
+
+        return $query;
+    }
+
+    public static function executeStmt($str1, $param1 = null) {
+
+        $arguments = func_get_args();
+
+        $parts = array();
+        $params = array();
+
+        foreach ($arguments as $index => $arg) {
+
+            if ($index % 2 === 0) {
+                $parts[] = $arg;
+            } else if (is_array($arg)) {
+                $params = array_merge($params, $arg);
+            } else {
+                $params[] = $arg . ' ? ';
+            }
+        }
+
+        $sql = implode(' ', $parts);
+        self::$staticStmt = Database::getInstance()->getConnection()->prepare($sql);
+
+        if (Config::from('config')->get('sql_log') === true) {
+
+            App::log('sql', $sql . '[' . implode(',', $params) . ']');
+        }
+
+        return self::$staticStmt->execute($params);
+    }
+
+    public static function insertInto($from = null) {
+
+        return self::create(self::INSERT, $from);
+    }
+
+    /**
+     * @param null $from
+     *
+     * @return Select
+     */
+    public static function select($from = null) {
+
+        return self::create(self::SELECT, $from);
+    }
+
+    public static function update($from = null) {
+
+        return self::create(self::UPDATE, $from);
+    }
+
+    public static function delete($from = null) {
+
+        return self::create(self::DELETE, $from);
+    }
+
+    public static function selectAllFrom($from) {
+
+        return self::select($from)
+            ->column('*')
+            ->execute();
     }
 
     public function __construct() {
@@ -357,7 +408,7 @@ abstract class Query {
         return $parts;
     }
 
-    private function getAllParams($lastParams = array()) {
+    protected function getAllParams($lastParams = array()) {
 
         $allParams = array();
 
@@ -367,22 +418,22 @@ abstract class Query {
         return array_merge($allParams, $lastParams);
     }
 
-    private function getColumnPart() {
+    protected function getColumnPart() {
 
         return implode(', ', $this->parts['column']);
     }
 
-    private function getFromPart() {
+    protected function getFromPart() {
 
         return $this->parts['from'][0];
     }
 
-    private function getSetPart() {
+    protected function getSetPart() {
 
         return 'set '.implode(', ', $this->parts['set']);
     }
 
-    private function getInsertPart() {
+    protected function getInsertPart() {
         $valueList = array();
         foreach($this->parts['insert'] as $values) {
             $valueList[] = "(".implode(", ", $values) . ")";
@@ -390,27 +441,27 @@ abstract class Query {
         return implode(', ', $valueList);
     }
 
-    private function getJoinPart() {
+    protected function getJoinPart() {
 
         return implode(' ', $this->parts['join']);
     }
 
-    private function getWherePart() {
+    protected function getWherePart() {
 
         return 'where ' . implode(' AND ', $this->parts['where']);
     }
 
-    private function getGroupPart() {
+    protected function getGroupPart() {
 
         return 'group by ' . implode(', ', $this->parts['group']);
     }
 
-    private function getOrderPart() {
+    protected function getOrderPart() {
 
         return 'order by ' . implode(', ', $this->parts['order']);
     }
 
-    private function getLimitPart() {
+    protected function getLimitPart() {
 
         return 'limit ' . $this->parts['limit'][0];
     }
