@@ -31,7 +31,7 @@
             "/breakdown/update"  : "Breakdown.update",
             "/alert/index"       : "Alert.index",
             "/alert/info"        : "Alert.info",
-            "/alert/create"      : "alert.create",
+            "/alert/create"      : "Alert.create",
             "/alert/delete"      : "Alert.delete",
             "/alert/update"      : "Alert.update",
             "/pivot"             : "Pivot.index",
