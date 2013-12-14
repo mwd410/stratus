@@ -40,9 +40,21 @@
 
             $scope.remove = function(alert) {
 
-                alertApi.remove(alert).then(function(success) {
-
+                if (alert._new === true) {
                     $scope.alerts = _.without($scope.alerts, alert);
+                } else {
+
+                    alertApi.remove(alert).then(function(success) {
+
+                        $scope.alerts = _.without($scope.alerts, alert);
+                    });
+                }
+            };
+
+            $scope.add = function() {
+
+                $scope.alerts.unshift({
+                    _new : true
                 });
             };
 

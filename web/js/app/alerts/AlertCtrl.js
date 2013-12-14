@@ -43,13 +43,23 @@
 
         $scope.cancelEdit = function() {
 
-            var original = alertApi.getOriginal($scope.alert);
+            if ($scope.alert._new === true) {
+                $scope.remove($scope.alert);
+            } else {
 
-            ng.copy(original, $scope.alert);
-            $scope.editing = false;
+                var original = alertApi.getOriginal($scope.alert);
+
+                ng.copy(original, $scope.alert);
+                $scope.editing = false;
+            }
+
         };
 
         $scope.isEditing = function() {
+
+            if ($scope.alert._new === true) {
+                $scope.editing = true;
+            }
 
             return $scope.editing === true;
         };
