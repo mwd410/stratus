@@ -1,6 +1,12 @@
 <div class="st-alert-wrapper"
      data-st-auto-size="50">
 
+    <input class="st-search-box icon-search icon-large"
+           data-ng-model="search"
+           type="text">
+
+    <i class="icon-search icon-large"></i>
+
     <button class="st-button st-floating-button fl-r"
             data-ng-click="add()">
         <i class="icon-plus icon-large"></i>
@@ -10,7 +16,7 @@
     <div class="st-clear-both"></div>
 
     <div class="st-alert"
-         data-ng-repeat="alert in alerts"
+         data-ng-repeat="alert in alerts | filter:{name:search}"
          data-ng-controller="AlertCtrl"
          data-ng-class="{'is-expanded' : isExpanded()}">
 

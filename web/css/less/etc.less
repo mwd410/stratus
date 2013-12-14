@@ -79,3 +79,20 @@
 .fl-l {
     float: left;
 }
+
+.st-search-box {
+    padding : 5px;
+    border : 1px solid @st-bg-light;
+    width : 50px;
+    &:after {
+        content : '\uf002';
+    }
+    &:focus {
+        width : 200px;
+        font-family : 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+
+    &.icon-search {
+
+    }
+}
