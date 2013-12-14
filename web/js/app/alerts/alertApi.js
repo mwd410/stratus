@@ -6,9 +6,13 @@
         var original,
             saveOriginal = function(alert) {
 
-                var originalAlert = _.find(original, {id : alert.id});
+                var originalAlert = _.find(original.alerts, {id : alert.id});
 
-                ng.copy(alert, originalAlert);
+                if (originalAlert) {
+                    ng.copy(alert, originalAlert);
+                } else {
+                    original.alerts.push(alert);
+                }
             },
             api = {
             data   : $http.get('/alert/index').then(function(response) {
@@ -26,7 +30,7 @@
                     id : alert.id
                 };
 
-                return $http.post('/alert/delete', params).then(function(response) {
+                return $http.post('/alert/delete', params).then(function removePromise(response) {
 
                     var success = response.data.success;
 
@@ -49,7 +53,13 @@
             },
             submit : function(alert) {
 
-                return $http.post('/alert/update', alert).then(function(response) {
+                var url;
+                if (alert._new === true) {
+                    url = '/alert/create';
+                } else {
+                    url = '/alert/update';
+                }
+                return $http.post(url, alert).then(function submitPromise(response) {
 
                     saveOriginal(response.data.data);
 

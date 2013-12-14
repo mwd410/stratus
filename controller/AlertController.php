@@ -78,6 +78,60 @@ class AlertController extends Controller {
         ));
     }
 
+    public function createAction(Request $request) {
+
+        $builder = new ResponseBuilder();
+
+        $params = $request->getParams();
+        $allowed = array_diff(Alert::$columns, array('id'));
+        $params = Utils::stripNotIn($params, $allowed);
+        $hasAll = Utils::requireExactly($params, Alert::$columns);
+
+        if ($hasAll !== true) {
+
+            $builder->addError('field-missing',
+                'You are missing the following fields: '
+                . implode(', ', $hasAll));
+        }
+
+        $params['user_id'] = $this->getUser()->get('id');
+
+        Query::begin();
+
+        $columns = array();
+        $queryParams = array();
+
+        foreach($params as $key => $value) {
+
+            $columns[] = $key;
+            $queryParams[] = $value;
+        }
+        $values = array_fill(0, count($columns), '?');
+
+        $columnList = implode(',', $columns);
+        $valueList = implode(',', $values);
+
+        $sql = "insert into alert ($columnList) values ($valueList)";
+
+        if (!Query::executeStmt($sql, $queryParams)) {
+
+            Query::rollback();
+
+            $builder->addError('internal', 'There was an internal error');
+            throw new Exception(implode(' : ', Query::stmt()->errorInfo()));
+        }
+
+        $lastInsertId = Query::lastInsertId('alert');
+
+        Query::commit();
+
+        $builder->setData(Query::select('alert')
+            ->where('id = ?', $lastInsertId)
+            ->fetchOne());
+
+        $this->json($builder->getResponse());
+    }
+
     public function updateAction(Request $request) {
 
         $params = $request->getParams();
