@@ -21,27 +21,7 @@
                         }
                     ]
                 }
-            ],
-            accounts : {
-                '1' : {
-                    name     : 'Stratus 1',
-                    products : {
-                        '1' : {
-                            name  : 'Amazon AWS',
-                            chargebackUnit  : {
-                                id : '1',
-                                name : 'Head of Product Development',
-                                user : {
-                                    id         : '1',
-                                    first_name : 'Matt',
-                                    last_name  : 'Deady',
-                                    email      : 'mwd410@comcast.net'
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            ]
         };
 
         $scope.isItemActive = function(item) {
