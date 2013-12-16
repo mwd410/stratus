@@ -36,7 +36,8 @@
             "/alert/update"      : "Alert.update",
             "/pivot"             : "Pivot.index",
             "/user/info"         : "User.info",
-            "/chargeback/index"  : "Chargeback.index"
+            "/chargeback/index"  : "Chargeback.index",
+            "/chargeback/info"   : "Chargeback.info"
         }
     }
 }

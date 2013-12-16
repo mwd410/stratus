@@ -12,6 +12,8 @@ SOURCE db/views/service_type_v.sql;
 
 SOURCE db/views/service_type_category_v.sql;
 
+SOURCE db/views/chargeback_v.sql;
+
 
 ################################################################################
 ############################## DEPENDENT VIEWS #################################
