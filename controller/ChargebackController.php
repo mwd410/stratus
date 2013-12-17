@@ -40,11 +40,28 @@ class ChargebackController extends Controller {
             'stakeholders' => Query::select('stakeholder')
                     ->where('customer_id = ' . $customerId)
                     ->execute(),
-            'chargeback'  => Query::select('chargeback_v')
+            'chargeback'   => Query::select('chargeback_unit_v')
+                    ->where('customer_id = ' . $customerId)
+                    ->execute(),
+            'accounts'     => Query::select('account a')
+                    ->column('a.id')
+                    ->column('a.name')
+                    ->column('a.service_provider_id')
+                    ->column('sp.name as service_provider_name')
+                    ->join('service_provider_v sp')
                     ->where('customer_id = ' . $customerId)
                     ->execute()
         ));
 
         $this->json($builder->getResponse());
+    }
+
+    public function createStakeholderAction(Request $request) {
+
+        $name = $request->getParam('name');
+        $title = $request->getParam('title');
+        $email = $request->getParam('email');
+
+        $customerId = $this->getUser()->get('customer_id');
     }
 } 

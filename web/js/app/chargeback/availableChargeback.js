@@ -3,12 +3,12 @@
     
     ng.module('app.chargeback').filter('availableChargeback', function(_) {
     
-        return function(map) {
+        return function(map, showAssigned, id) {
 
             var filtered = {};
             _.each(map, function(unit, key) {
 
-                if (!unit.stakeholder_id) {
+                if (!unit.stakeholder || showAssigned && unit.stakeholder.id != id) {
                     filtered[key] = unit;
                 }
             });

@@ -1,19 +1,17 @@
 (function(ng, undefined) {
     'use strict';
 
-    ng.module('app.chargeback').filter('unitDisplay', function() {
+    ng.module('app.chargeback').filter('unitDisplay', function(chargeback) {
 
         return function(unit) {
 
-            if (unit.accounts) {
-                return unit.service_provider_name
-                    + ' - '
-                    + unit.service_provider_product_name
-                    + '(' + unit.accounts.length + 'Accounts)';
-            } else {
+            var result = unit.name + ' (' + unit.service_provider_name + ')';
 
-                return
+            if (unit.stakeholder) {
+                result += ' - Assigned to ' + unit.stakeholder.name;
             }
+
+            return result;
         };
     });
 

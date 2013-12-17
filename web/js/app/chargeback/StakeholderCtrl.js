@@ -5,12 +5,28 @@
 
         $scope.assign = function(unit) {
 
-            unit.stakeholder_id = $scope.widget.stakeholder.id;
+            if (unit.stakeholder) {
+                // remove this unit from its current stakeholder
+                delete unit.stakeholder.units[unit.getKey()];
+            }
+            unit.stakeholder = $scope.widget.stakeholder;
+            $scope.widget.stakeholder.units[unit.getKey()] = unit;
         };
 
         $scope.unassign = function(unit) {
 
-            delete unit.stakeholder_id;
+            delete unit.stakeholder;
+            delete $scope.widget.stakeholder.units[unit.getKey()];
+        };
+
+        $scope.showAssigned = function() {
+
+            return chargeback.showAssigned;
+        };
+
+        $scope.toggleShowAssigned = function() {
+
+            chargeback.showAssigned = !chargeback.showAssigned;
         };
     });
 

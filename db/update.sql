@@ -29,14 +29,11 @@ CREATE TABLE IF NOT EXISTS stakeholder (
     ENGINE =InnoDB
 ;
 
-alter table stakeholder add column email varchar (40) not null after title;
-
-CREATE TABLE IF NOT EXISTS chargeback (
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS chargeback_unit (
     stakeholder_id SMALLINT UNSIGNED NOT NULL,
     account_id BIGINT(20) UNSIGNED NOT NULL,
-    service_provider_product_id BIGINT(20) UNSIGNED NOT NULL,
-    UNIQUE (account_id, service_provider_product_id),
+    PRIMARY KEY (stakeholder_id, account_id),
+    UNIQUE (account_id),
     CONSTRAINT fk_chargeback_stakeholder_id
     FOREIGN KEY (stakeholder_id)
     REFERENCES stakeholder (id)
@@ -45,11 +42,6 @@ CREATE TABLE IF NOT EXISTS chargeback (
     CONSTRAINT fk_chargeback_account_id
     FOREIGN KEY (account_id)
     REFERENCES account (id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
-    CONSTRAINT fk_chargeback_service_provider_product_id
-    FOREIGN KEY (service_provider_product_id)
-    REFERENCES service_product (id)
         ON DELETE CASCADE
         ON UPDATE CASCADE
 )

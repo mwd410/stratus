@@ -51,6 +51,7 @@
             "/js/app/chargeback/availableChargeback.js",
             "/js/app/chargeback/selectedChargeback.js",
             "/js/app/chargeback/StakeholderCtrl.js",
+            "/js/app/chargeback/unitDisplay.js",
             "/js/app/dashboard/stDash.js",
             "/js/app/dashboard/stWidgetRow.js",
             "/js/app/dashboard/stWidgetColumn.js",

@@ -1,15 +1,19 @@
 <div class="st-stakeholder" data-ng-controller="StakeholderCtrl">
 
     <div class="available box">
-        <header>Available</header>
+        <header>
+            Available
+            <button class="st-button bg"
+                    data-ng-click="toggleShowAssigned()">
+                {{ showAssigned() ? 'Hide' : 'Show' }} Assigned
+            </button>
+        </header>
         <div>
 
-            <div data-ng-repeat="(key, unit) in widgetService.map | availableChargeback"
-                 class="unit">
-                {{ unit.account_name }}
-                -
-                {{ unit.service_provider_product_name }}
-                ({{ unit.service_provider_name }})
+            <div data-ng-repeat="(key, unit) in widgetService.map | availableChargeback:showAssigned():widget.stakeholder.id"
+                 class="unit"
+                 data-ng-style="{color : !!unit.stakeholder ? 'inherit' : ''}">
+                {{ unit | unitDisplay }}
 
                 <button class="st-button bg right-arrow"
                         data-ng-click="assign(unit)">
@@ -30,12 +34,11 @@
                     <i class="icon-arrow-left icon-large"></i>
                 </button>
 
-                {{ unit.account_name }}
-                -
-                {{ unit.service_provider_product_name }}
-                ({{ unit.service_provider_name }})
+                {{ unit.name }} ({{ unit.service_provider_name }})
             </div>
         </div>
     </div>
+
+    <div class="st-clear-both"></div>
 
 </div>

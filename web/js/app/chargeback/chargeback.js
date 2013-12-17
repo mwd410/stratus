@@ -5,8 +5,13 @@
 
         var indexPromise = $http.get('/chargeback/index').then(function(response, _) {
 
+                var data = response.data.data;
+                chargeback.stakeholderMap = {};
                 chargeback.stakeholders = {
-                    widgetRows : response.data.data.stakeholders.map(function(stakeholder) {
+                    widgetRows : data.stakeholders.map(function(stakeholder) {
+
+                        stakeholder.units = {};
+                        chargeback.stakeholderMap[stakeholder.id] = stakeholder;
 
                         return {
                             widgetColumns : [
@@ -15,8 +20,12 @@
                                     widgets : [
                                         {
                                             flex         : 1,
-                                            title        : stakeholder.name
-                                                + ' <' + stakeholder.email + '>',
+                                            title        : function() {
+
+                                                return stakeholder.name
+                                                    + ' (' + Object.keys(stakeholder.units).length
+                                                    + ' Accounts)';
+                                            },
                                             stakeholder  : stakeholder,
                                             dynamicTitle : false,
                                             templateFile : 'stakeholder.html'
@@ -28,43 +37,27 @@
                     })
                 };
 
-                return response.data.data;
-            }),
-            infoPromise = $http.get('/chargeback/info').then(function(response) {
+                chargeback.map = data.accounts.reduce(function(result, account) {
 
-                chargeback.map = response.data.data.accountProducts.reduce(function(map, pa) {
+                    account.getKey = function() {
 
-                    var p = pa.service_provider_product_id,
-                        a = pa.account_id,
-                        key = [p, a].join('-');
-
-                    map[key] = pa;
-                    return map;
+                        return account.id;
+                    };
+                    result[account.getKey()] = account;
+                    return result;
                 }, {});
+
+                data.chargeback.forEach(function(unit) {
+
+                    chargeback.map[unit.account_id].stakeholder = chargeback.stakeholderMap[unit.stakeholder_id];
+                });
 
                 return response.data.data;
             }),
             chargeback = {
                 title        : 'Chargeback Assignment',
                 indexPromise : indexPromise,
-                infoPromise  : infoPromise,
-                promise      : $q.all({
-                    index : indexPromise,
-                    info  : infoPromise
-                }).then(
-                    function(result) {
-
-                        result.index.chargeback.forEach(function(assignment) {
-
-                            var product = assignment.service_provider_product_id,
-                                account = assignment.account_id,
-                                key = [product, account].join('-');
-
-                            chargeback.map[key].stakeholder_id = assignment.stakeholder_id;
-                        });
-                    }
-                ),
-                units        : {},
+                showAssigned : false,
                 getData      : function(widget) {
 
                     return widget.stakeholder;

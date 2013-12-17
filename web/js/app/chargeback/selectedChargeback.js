@@ -8,7 +8,7 @@
             var filtered = {};
             _.each(map, function(unit, key) {
 
-                if (unit.stakeholder_id == id) {
+                if (unit.stakeholder && unit.stakeholder.id == id) {
                     filtered[key] = unit;
                 }
             });

@@ -57,7 +57,9 @@
 
                     scope.title = function() {
 
-                        if (scope.widget.dynamicTitle !== false) {
+                        if (typeof scope.widget.title === 'function') {
+                            return scope.widget.title();
+                        } else if (scope.widget.dynamicTitle !== false) {
                             return [scope.widgetService.lastTitle,
                                     scope.widget.title].join(' - ');
                         } else {
