@@ -1,11 +1,41 @@
-<div class="st-stakeholder">
+<div class="st-stakeholder" data-ng-controller="StakeholderCtrl">
 
     <div class="available box">
         <header>Available</header>
-        available list
+        <div>
+
+            <div data-ng-repeat="(key, unit) in widgetService.map | availableChargeback"
+                 class="unit">
+                {{ unit.account_name }}
+                -
+                {{ unit.service_provider_product_name }}
+                ({{ unit.service_provider_name }})
+
+                <button class="st-button bg right-arrow"
+                        data-ng-click="assign(unit)">
+                    <i class="icon-arrow-right icon-large"></i>
+                </button>
+            </div>
+        </div>
     </div>
     <div class="selected box">
         <header>Selected</header>
-        selected list
+
+        <div>
+            <div data-ng-repeat="(key, unit) in widgetService.map | selectedChargeback:widget.stakeholder.id"
+                 class="unit">
+
+                <button class="st-button bg left-arrow"
+                        data-ng-click="unassign(unit)">
+                    <i class="icon-arrow-left icon-large"></i>
+                </button>
+
+                {{ unit.account_name }}
+                -
+                {{ unit.service_provider_product_name }}
+                ({{ unit.service_provider_name }})
+            </div>
+        </div>
     </div>
+
 </div>

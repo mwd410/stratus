@@ -15,6 +15,7 @@ class ChargebackController extends Controller {
         $accountProducts = Query::select('billing_history_v')
             ->isDistinct()
             ->column('account_id')
+            ->column('account_name')
             ->column('service_provider_id')
             ->column('service_provider_name')
             ->column('service_product_id as service_provider_product_id')

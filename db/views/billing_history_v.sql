@@ -8,6 +8,7 @@ CREATE OR REPLACE VIEW billing_history_v AS
         bh.cost                  AS cost,
         a.customer_id            AS customer_id,
         bh.account_id            AS account_id,
+        a.name                   AS account_name,
         stcv.id                  AS service_type_category_id,
         stcv.name                AS service_type_category_name,
         stcv.service_type_id     AS service_type_id,

@@ -17,7 +17,7 @@
                                             flex         : 1,
                                             title        : stakeholder.name
                                                 + ' <' + stakeholder.email + '>',
-                                            target       : stakeholder,
+                                            stakeholder  : stakeholder,
                                             dynamicTitle : false,
                                             templateFile : 'stakeholder.html'
                                         }
@@ -54,20 +54,20 @@
                 }).then(
                     function(result) {
 
-                        result.index.chargeback.forEach(function(chargeback) {
+                        result.index.chargeback.forEach(function(assignment) {
 
-                            var product = chargeback.service_provider_product_id,
-                                account = chargeback.account_id,
+                            var product = assignment.service_provider_product_id,
+                                account = assignment.account_id,
                                 key = [product, account].join('-');
 
-                            chargeback.map[key].chargeback = chargeback;
+                            chargeback.map[key].stakeholder_id = assignment.stakeholder_id;
                         });
                     }
                 ),
                 units        : {},
                 getData      : function(widget) {
 
-                    return widget.target;
+                    return widget.stakeholder;
                 }
             };
 
