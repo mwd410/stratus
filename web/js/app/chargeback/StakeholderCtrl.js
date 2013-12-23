@@ -4,13 +4,7 @@
     ng.module('app.chargeback').controller('StakeholderCtrl', function($scope, chargeback) {
 
         $scope.assign = function(unit) {
-
-            if (unit.stakeholder) {
-                // remove this unit from its current stakeholder
-                delete unit.stakeholder.units[unit.getKey()];
-            }
-            unit.stakeholder = $scope.widget.stakeholder;
-            $scope.widget.stakeholder.units[unit.getKey()] = unit;
+            chargeback.assign(unit, $scope.widget.stakeholder);
         };
 
         $scope.unassign = function(unit) {

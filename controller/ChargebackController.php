@@ -64,4 +64,43 @@ class ChargebackController extends Controller {
 
         $customerId = $this->getUser()->get('customer_id');
     }
+
+    public function assignAction(Request $request) {
+
+        $accountId = $request->getParam('account_id');
+        $stakeholderId = $request->getParam('stakeholder_id');
+        $customerId = $this->getUser()->get('customer_id');
+        $builder = new ResponseBuilder();
+
+        $stakeholder = Query::select('stakeholder')
+            ->column('customer_id')
+            ->where('id = ?', $stakeholderId)
+            ->fetchOne();
+
+        $account = Query::select('account')
+            ->column('customer_id')
+            ->where('id = ?', $accountId)
+            ->fetchOne();
+
+        if (!$stakeholder || !$account) {
+            $builder->addError('not-found', 'Sorry, we could not find the specified account or stakeholder.');
+            $this->json($builder->getResponse());
+            return;
+        }
+
+        if ($customerId != $stakeholder['customer_id']
+            || $customerId != $account['customer_id']) {
+
+            $builder->addError('forbidden', 'Sorry, you do not have permission to assign this chargeback unit to this stakeholder.');
+            $this->json($builder->getResponse());
+            return;
+        }
+
+        $success = Query::executeStmt("REPLACE INTO chargeback_unit
+            (stakeholder_id, account_id)
+            VALUES (?", $stakeholderId, ', ?)', $accountId);
+
+        $builder->setSuccess($success);
+        $this->json($builder->getResponse());
+    }
 } 

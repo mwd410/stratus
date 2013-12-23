@@ -92,7 +92,7 @@ abstract class Query {
             } else if (is_array($arg)) {
                 $params = array_merge($params, $arg);
             } else {
-                $params[] = $arg . ' ? ';
+                $params[] = $arg;
             }
         }
 

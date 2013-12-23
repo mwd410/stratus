@@ -61,6 +61,37 @@
                 getData      : function(widget) {
 
                     return widget.stakeholder;
+                },
+                assign       : function(unit, stakeholder) {
+
+                    var oldStakeholder = unit.stakeholder;
+
+                    if (unit.stakeholder) {
+                        // remove this unit from its current stakeholder
+                        delete unit.stakeholder.units[unit.getKey()];
+                    }
+                    unit.stakeholder = stakeholder;
+                    stakeholder.units[unit.getKey()] = unit;
+
+                    $http.post('/chargeback/assign', {
+                        account_id     : unit.id,
+                        stakeholder_id : stakeholder.id
+                    }).then(
+                        function(response) {
+
+                            if (!response.data.success) {
+                                throw new Error;
+                            }
+                        },
+                        function(error) {
+
+                            if (oldStakeholder) {
+                                unit.stakeholder = oldStakeholder;
+                            } else {
+                                delete unit.stakeholder;
+                            }
+                            delete stakeholder.units[unit.getKey()];
+                        });
                 }
             };
 
