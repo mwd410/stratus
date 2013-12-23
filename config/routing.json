@@ -38,7 +38,8 @@
             "/user/info"         : "User.info",
             "/chargeback/index"  : "Chargeback.index",
             "/chargeback/info"   : "Chargeback.info",
-            "/chargeback/assign" : "Chargeback.assign"
+            "/chargeback/assign" : "Chargeback.assign",
+            "/chargeback/unassign" : "Chargeback.unassign"
         }
     }
 }

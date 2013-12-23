@@ -50,6 +50,7 @@ class ChargebackController extends Controller {
                     ->column('sp.name as service_provider_name')
                     ->join('service_provider_v sp')
                     ->where('customer_id = ' . $customerId)
+                    ->where('deleted = 0')
                     ->execute()
         ));
 
@@ -99,6 +100,31 @@ class ChargebackController extends Controller {
         $success = Query::executeStmt("REPLACE INTO chargeback_unit
             (stakeholder_id, account_id)
             VALUES (?", $stakeholderId, ', ?)', $accountId);
+
+        $builder->setSuccess($success);
+        $this->json($builder->getResponse());
+    }
+
+    public function unassignAction(Request $request) {
+
+        $accountId = $request->getParam('account_id');
+        $customerId = $this->getUser()->get('customer_id');
+        $builder = new ResponseBuilder();
+
+        $account = Query::select('account')
+            ->column('customer_id')
+            ->where('id = ?', $accountId)
+            ->fetchOne();
+
+        if (!$account || $customerId != $account['customer_id']) {
+            $builder->addError('forbidden', 'Sorry, you do not have permission to unassign this chargeback unit.');
+            $this->json($builder->getResponse());
+            return;
+        }
+
+        $success = Query::delete('chargeback_unit')
+            ->where('account_id = ?', $accountId)
+            ->execute();
 
         $builder->setSuccess($success);
         $this->json($builder->getResponse());

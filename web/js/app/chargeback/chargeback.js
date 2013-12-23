@@ -49,7 +49,9 @@
 
                 data.chargeback.forEach(function(unit) {
 
-                    chargeback.map[unit.account_id].stakeholder = chargeback.stakeholderMap[unit.stakeholder_id];
+                    if (chargeback.map[unit.account_id]) {
+                        chargeback.map[unit.account_id].stakeholder = chargeback.stakeholderMap[unit.stakeholder_id];
+                    }
                 });
 
                 return response.data.data;
@@ -76,14 +78,14 @@
                     $http.post('/chargeback/assign', {
                         account_id     : unit.id,
                         stakeholder_id : stakeholder.id
-                    }).then(
-                        function(response) {
+                    })
+                        .then(function(response) {
 
                             if (!response.data.success) {
                                 throw new Error;
                             }
-                        },
-                        function(error) {
+                        })
+                        .catch(function(error) {
 
                             if (oldStakeholder) {
                                 unit.stakeholder = oldStakeholder;
@@ -91,6 +93,27 @@
                                 delete unit.stakeholder;
                             }
                             delete stakeholder.units[unit.getKey()];
+                        });
+                },
+                unassign     : function(unit, stakeholder) {
+
+                    var oldStakeholder = unit.stakeholder;
+                    delete unit.stakeholder;
+                    delete stakeholder.units[unit.getKey()];
+
+                    $http.post('/chargeback/unassign', {
+                        account_id : unit.id
+                    })
+                        .then(function(response) {
+
+                            if (!response.data.success) {
+                                throw new Error;
+                            }
+                        })
+                        .catch(function(error) {
+                            // Revert the unassign
+                            unit.stakeholder = oldStakeholder;
+                            stakeholder.units[unit.getKey()] = unit;
                         });
                 }
             };

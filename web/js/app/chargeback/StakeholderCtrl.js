@@ -8,9 +8,7 @@
         };
 
         $scope.unassign = function(unit) {
-
-            delete unit.stakeholder;
-            delete $scope.widget.stakeholder.units[unit.getKey()];
+            chargeback.unassign(unit, $scope.widget.stakeholder);
         };
 
         $scope.showAssigned = function() {
