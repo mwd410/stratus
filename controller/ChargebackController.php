@@ -57,15 +57,6 @@ class ChargebackController extends Controller {
         $this->json($builder->getResponse());
     }
 
-    public function createStakeholderAction(Request $request) {
-
-        $name = $request->getParam('name');
-        $title = $request->getParam('title');
-        $email = $request->getParam('email');
-
-        $customerId = $this->getUser()->get('customer_id');
-    }
-
     public function assignAction(Request $request) {
 
         $accountId = $request->getParam('account_id');
@@ -127,6 +118,34 @@ class ChargebackController extends Controller {
             ->execute();
 
         $builder->setSuccess($success);
+        $this->json($builder->getResponse());
+    }
+
+    public function createStakeholderAction(Request $request) {
+
+        $name = $request->getParam('name');
+        $title = $request->getParam('title');
+        $email = $request->getParam('email');
+        $builder = new ResponseBuilder();
+
+        $customerId = $this->getUser()->get('customer_id');
+
+        $insert = Query::insertInto('stakeholder')
+            ->column('name, title, email, customer_id')
+            ->insert(array_fill(0, 4, '?'), array($name, $title, $email, $customerId));
+
+        if (!$insert->execute()) {
+            $builder->addError('Internal error');
+        }
+
+        $stakeholderId = Query::lastInsertId('stakeholder');
+
+        $stakeholder = Query::select('stakeholder')
+            ->where('id = '.$stakeholderId)
+            ->execute();
+
+        $builder->setData($stakeholder);
+
         $this->json($builder->getResponse());
     }
 } 
