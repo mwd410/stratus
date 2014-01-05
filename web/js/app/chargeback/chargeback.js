@@ -23,7 +23,8 @@
                                             title        : function() {
 
                                                 return stakeholder.name
-                                                    + ' (' + Object.keys(stakeholder.units).length
+                                                    + ' ('
+                                                    + Object.keys(stakeholder.units).length
                                                     + ' Accounts)';
                                             },
                                             stakeholder  : stakeholder,
@@ -37,7 +38,7 @@
                     })
                 };
 
-                chargeback.map = data.accounts.reduce(function(result, account) {
+                chargeback.unitMap = data.accounts.reduce(function(result, account) {
 
                     account.getKey = function() {
 
@@ -49,8 +50,9 @@
 
                 data.chargeback.forEach(function(unit) {
 
-                    if (chargeback.map[unit.account_id]) {
-                        chargeback.map[unit.account_id].stakeholder = chargeback.stakeholderMap[unit.stakeholder_id];
+                    if (chargeback.unitMap[unit.account_id]) {
+                        chargeback.unitMap[unit.account_id].stakeholder = chargeback.stakeholderMap[unit.stakeholder_id];
+                        chargeback.stakeholderMap[unit.stakeholder_id].units[unit.account_id] = chargeback.unitMap[unit.account_id];
                     }
                 });
 
