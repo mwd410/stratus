@@ -2,15 +2,9 @@
     'use strict';
 
     ng.module('app.dashboard')
-        .directive('stDash', function(_) {
+        .directive('stDash', function(_, $compile) {
 
             return {
-                require : 'stDash',
-                scope       : {
-                    dash : '=stDash',
-                    widgetService : '='
-                },
-                templateUrl : '/partials/stDash.html',
                 controller  : function($scope, NavService, AccountService, toggle) {
 
                     $scope.isLeftExpanded = function() {
@@ -44,9 +38,11 @@
                     $scope.menu = toggle();
 
                     this.register = function(widget) {
+
                         if (!$scope.widgetService) {
                             return;
                         }
+
                         if ($scope.widgetService.registerWidget) {
 
                             $scope.widgetService.registerWidget(widget);
@@ -64,8 +60,38 @@
                         }
                     };
                 },
+                require     : 'stDash',
+                scope       : {
+                    dash          : '=stDash',
+                    widgetService : '=',
+                    toolbar       : '=?'
+                },
+                templateUrl : '/partials/stDash.html',
                 link        : function(scope, el, attrs, ctrl) {
 
+                    scope.toolbar = scope.toolbar || [];
+
+                    _.each(el.find('span'), function(span) {
+
+                        var toolbar = ng.element(span);
+                        if (toolbar.hasClass('st-dash-toolbar')) {
+
+                            var toolbarItems = scope.toolbar.map(function(item) {
+
+                                var itemScope = scope.$new();
+
+                                _.each(item.scope, function(value, key) {
+                                    itemScope[key] = value;
+                                });
+
+                                return $compile(item.el)(itemScope);
+                            });
+
+                            toolbar.append(toolbarItems);
+
+                            return false;
+                        }
+                    });
                 }
             };
         });

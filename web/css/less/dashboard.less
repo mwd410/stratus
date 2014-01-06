@@ -28,15 +28,22 @@
     & > div {
         position         : relative;
         //.st-emboss;
+        text-align : center;
         padding          : 10px;
-        text-align       : center;
-        font-size        : 20px;
-        line-height      : 15px;
         background-color : @st-brand-main;
         color            : @st-brand-text-strong;
         .individual-box;
         border           : 1px solid @st-bg-very-dark;
         //.border-radius(3px);
+
+        .title {
+            line-height : 15px;
+            font-size   : 20px;
+        }
+
+        button {
+            padding : 5px;
+        }
 
         select {
             font-size : 14px;

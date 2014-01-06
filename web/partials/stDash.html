@@ -4,23 +4,14 @@
 
     <div st-auto-size="50"> <!-- Wrapper Div for recessed area. -->
 
-        <div data-ng-if="getTitle()" class="st-dash-title">
+        <div data-ng-show="getTitle()" class="st-dash-title">
             <div>
                 <!--
                 <select data-ng-model="widgetService.selectedAccount"
                         data-ng-options="item.name for item in accounts"></select>
                          -->
-                <span>{{ getTitle() }}</span>
-                <!--
-                <button class="st-button brand" data-ng-click="menu.toggle()">
-                    <i class="icon-reorder"></i>
-                </button>
-                <div class="menu-options"
-                     data-ng-class="{'is-expanded' : menu.isActive}">
-
-                    blah
-                </div>
-                -->
+                <span class="title">{{ getTitle() }}</span>
+                <span class="st-dash-toolbar"></span>
             </div>
         </div>
 
