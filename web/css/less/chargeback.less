@@ -1,19 +1,55 @@
+.st-stakeholder-list {
+    height : 100%;
+    .wrapper {
+        margin      : 0;
+        padding     : 0;
+        min-height  : 100%;
+        margin-left : 240px;
+        & > div {
+            height      : 100%;
+            padding     : 16px;
+            border-left : 1px solid @st-bg-very-dark;
+            .st-deboss;
+            background  : @st-bg-dark;
+        }
+    }
+}
+
+.st-chargeback-title {
+    .individual-box;
+    position         : relative;
+    text-align       : center;
+    padding          : 10px;
+    background-color : @st-brand-main;
+    color            : @st-brand-text-strong;
+    .individual-box;
+    border           : 1px solid @st-bg-very-dark;
+
+    .title {
+        line-height : 15px;
+        font-size   : 20px;
+    }
+}
+
 .st-stakeholder {
 
+}
+
+.st-stakeholder-assignment {
     width : 100%;
 
     .box {
-        width : 50%;
+        width   : 50%;
         padding : 30px 0 0 0;
-        float : left;
+        float   : left;
         header {
             button {
                 float : right;
             }
         }
         > div {
-            padding : 10px;
-            height : 200px;
+            padding    : 10px;
+            height     : 200px;
             overflow-y : auto;
         }
         .unit {
@@ -22,8 +58,8 @@
                 float : right;
             }
             button.left-arrow {
-                float : left;
-                margin-right: 10px;
+                float        : left;
+                margin-right : 10px;
             }
         }
     }

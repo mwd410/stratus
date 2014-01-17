@@ -8,38 +8,13 @@
                 stakeholder.units = {};
                 chargeback.stakeholderMap[stakeholder.id] = stakeholder;
 
-                return {
-                    widgetColumns : [
-                        {
-                            flex    : 1,
-                            widgets : [
-                                {
-                                    flex         : 1,
-                                    title        : function() {
-
-                                        return stakeholder.name
-                                            + ' ('
-                                            + Object.keys(stakeholder.units).length
-                                            + ' Accounts)';
-                                    },
-                                    stakeholder  : stakeholder,
-                                    dynamicTitle : false,
-                                    templateFile : 'stakeholder.html'
-                                }
-                            ]
-                        }
-                    ]
-                };
+                return stakeholder;
             },
             indexPromise = $http.get('/chargeback/index').then(function(response, _) {
 
                 var data = response.data.data;
                 chargeback.stakeholderMap = {};
-                chargeback.stakeholders = {
-                    widgetRows : data.stakeholders.map(function(stakeholder) {
-                        return initStakeholder(stakeholder);
-                    })
-                };
+                chargeback.stakeholders = data.stakeholders.map(initStakeholder);
 
                 chargeback.unitMap = data.accounts.reduce(function(result, account) {
 
@@ -53,9 +28,12 @@
 
                 data.chargeback.forEach(function(unit) {
 
-                    if (chargeback.unitMap[unit.account_id]) {
-                        chargeback.unitMap[unit.account_id].stakeholder = chargeback.stakeholderMap[unit.stakeholder_id];
-                        chargeback.stakeholderMap[unit.stakeholder_id].units[unit.account_id] = chargeback.unitMap[unit.account_id];
+                    var acctId = unit.account_id,
+                        stakeId = unit.stakeholder_id;
+                    
+                    if (chargeback.unitMap[acctId]) {
+                        chargeback.unitMap[acctId].stakeholder = chargeback.stakeholderMap[stakeId];
+                        chargeback.stakeholderMap[stakeId].units[acctId] = chargeback.unitMap[acctId];
                     }
                 });
 
