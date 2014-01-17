@@ -75,6 +75,9 @@
 
     ng.module('app.chargeback', []);
 
+    var loginName = document.getElementById( 'name-field' );
+    loginName && loginName.focus();
+
 })(window.angular);
 
 angular.module('app').controller('MenuController', function($scope, NavService) {

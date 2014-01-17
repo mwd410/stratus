@@ -22,6 +22,7 @@ beginPartial('content');?>
             <form role="form" method="POST" action="/login">
                 <div class="form-group">
                     <input type="text"
+                           id="name-field"
                            name="email"
                            class="form-control"
                            placeholder="Email Address">
