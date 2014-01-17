@@ -16,6 +16,27 @@
                 <span class="title">Chargeback</span>
             </div>
 
+            <div class="st-stakeholder">
+
+                <header class="st-stakeholder-header">
+
+                    <label for="newStakeholderName">Name</label>
+                    <input id="newStakeholderName"
+                           data-ng-model="stakeholder.name"
+                           type="text">
+
+                    <label for="newStakeholderTitle">Title</label>
+                    <input id="newStakeholderTitle"
+                           data-ng-model="stakeholder.title"
+                           type="text">
+
+                    <label for="newStakeholderEmail">Email</label>
+                    <input id="newStakeholderEmail"
+                           data-ng-model="stakeholder.email"
+                           type="email">
+                </header>
+            </div>
+
             <div class="st-stakeholder"
                  data-ng-repeat="stakeholder in chargeback.stakeholders"
                  data-ng-controller="StakeholderCtrl">
