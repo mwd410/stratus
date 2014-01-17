@@ -33,6 +33,25 @@
 
 .st-stakeholder {
 
+    @bg : @st-bg-main;
+    width : 100%;
+    margin-top : 16px;
+    .individual-box;
+    border : 1px solid @st-bg-very-dark;
+}
+
+.st-stakeholder-header {
+
+    padding : 7px;
+    border-bottom: 1px solid @st-bg-very-dark;
+    label {
+        margin : 0;
+        font-weight: normal;
+    }
+
+    input + label {
+        margin-left : 20px;
+    }
 }
 
 .st-stakeholder-assignment {

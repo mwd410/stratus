@@ -16,6 +16,74 @@
                 <span class="title">Chargeback</span>
             </div>
 
+            <div class="st-stakeholder"
+                 data-ng-repeat="stakeholder in chargeback.stakeholders"
+                 data-ng-controller="StakeholderCtrl">
+
+                <header class="st-stakeholder-header">
+
+                    <label for="stakeholderName{{ $index }}">Name</label>
+                    <input id="stakeholderName{{ $index }}"
+                           data-ng-model="stakeholder.name"
+                           type="text">
+
+                    <label for="stakeholderTitle{{ $index }}">Title</label>
+                    <input id="stakeholderTitle{{ $index }}"
+                           data-ng-model="stakeholder.title"
+                           type="text">
+
+                    <label for="stakeholderEmail{{ $index }}">Email</label>
+                    <input id="stakeholderEmail{{ $index }}"
+                           data-ng-model="stakeholder.email"
+                           type="email">
+                </header>
+
+                <div class="st-stakeholder-assignment">
+
+                    <div class="available box">
+                        <header>
+                            Available
+                            <button class="st-button bg"
+                                    data-ng-click="toggleShowAssigned()">
+                                {{ showAssigned() ? 'Hide' : 'Show' }} Assigned
+                            </button>
+                        </header>
+                        <div>
+
+                            <div data-ng-repeat="(key, unit) in chargeback.unitMap | availableChargeback:showAssigned():stakeholder.id"
+                                 class="unit"
+                                 data-ng-style="{color : !!unit.stakeholder ? 'inherit' : ''}">
+                                {{ unit | unitDisplay }}
+
+                                <button class="st-button bg right-arrow"
+                                        data-ng-click="assign(unit)">
+                                    <i class="icon-arrow-right icon-large"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="selected box">
+                        <header>Selected</header>
+
+                        <div>
+                            <div data-ng-repeat="(key, unit) in chargeback.unitMap | selectedChargeback:stakeholder.id"
+                                 class="unit">
+
+                                <button class="st-button bg left-arrow"
+                                        data-ng-click="unassign(unit)">
+                                    <i class="icon-arrow-left icon-large"></i>
+                                </button>
+
+                                {{ unit.name }} ({{ unit.service_provider_name }})
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="st-clear-both"></div>
+
+                </div>
+            </div>
+
         </div>
     </div>
 

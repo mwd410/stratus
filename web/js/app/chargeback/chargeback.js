@@ -101,7 +101,7 @@
                 },
                 createStakeholder : function(data) {
 
-                    chargeback.stakeholders.widgetRows.unshift(initStakeholder(data));
+                    chargeback.stakeholders.unshift(initStakeholder(data));
                 }
             };
 
