@@ -30,7 +30,7 @@
 
                     var acctId = unit.account_id,
                         stakeId = unit.stakeholder_id;
-                    
+
                     if (chargeback.unitMap[acctId]) {
                         chargeback.unitMap[acctId].stakeholder = chargeback.stakeholderMap[stakeId];
                         chargeback.stakeholderMap[stakeId].units[acctId] = chargeback.unitMap[acctId];
@@ -102,6 +102,20 @@
                 createStakeholder : function(data) {
 
                     chargeback.stakeholders.unshift(initStakeholder(data));
+
+                    $http.post('/chargeback/create', {
+                        name  : data.name,
+                        email : data.email,
+                        title : data.title
+                    })
+                        .then( function( response ) {
+                            if (!response.data.success) {
+                                throw new Error;
+                            }
+                        })
+                        .catch( function( error ) {
+                            chargeback.stakeholders.shift();
+                        })
                 }
             };
 

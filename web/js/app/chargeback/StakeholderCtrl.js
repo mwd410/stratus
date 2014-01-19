@@ -1,14 +1,14 @@
-(function(ng, undefined) {
+(function( ng, undefined ) {
     'use strict';
 
-    ng.module('app.chargeback').controller('StakeholderCtrl', function($scope, chargeback) {
+    ng.module( 'app.chargeback' ).controller( 'StakeholderCtrl', function( $scope, chargeback ) {
 
-        $scope.assign = function(unit) {
-            chargeback.assign(unit, $scope.stakeholder);
+        $scope.assign = function( unit ) {
+            chargeback.assign( unit, $scope.stakeholder );
         };
 
-        $scope.unassign = function(unit) {
-            chargeback.unassign(unit, $scope.stakeholder);
+        $scope.unassign = function( unit ) {
+            chargeback.unassign( unit, $scope.stakeholder );
         };
 
         $scope.showAssigned = function() {
@@ -20,6 +20,10 @@
 
             chargeback.showAssigned = !chargeback.showAssigned;
         };
-    });
 
-})(window.angular);
+        $scope.unitCount = function() {
+            return Object.keys( $scope.stakeholder.units ).length;
+        };
+    } );
+
+})( window.angular );

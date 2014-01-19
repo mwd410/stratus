@@ -14,7 +14,9 @@
             return can;
         };
 
-
+        $scope.add = function() {
+            chargeback.createStakeholder($scope.newStakeholder);
+        };
     });
 
 })(window.angular);

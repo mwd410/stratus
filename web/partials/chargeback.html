@@ -35,14 +35,16 @@
                            data-ng-model="newStakeholder.email"
                            type="email">
 
-                    <button class="st-button bg"
-                            data-ng-class="{'is-disabled' : !canAdd()}"
-                            data-ng-disabled="!canAdd()"
-                            data-ng-click="add()">
+                    <span>
+                        <button class="st-button bg"
+                                data-ng-class="{'is-disabled' : !canAdd()}"
+                                data-ng-disabled="!canAdd()"
+                                data-ng-click="add()">
 
-                        <i class="icon-plus"></i>
-                        Add Stakeholder
-                    </button>
+                            <i class="icon-plus"></i>
+                            Add Stakeholder
+                        </button>
+                    </span>
 
                     <span class="toolbar">
                         <input id="chargeback-search"
@@ -77,6 +79,8 @@
                     <input id="stakeholderEmail{{ $index }}"
                            data-ng-model="stakeholder.email"
                            type="email">
+
+                    <span>({{ unitCount() }} Accounts)</span>
                 </header>
 
                 <div class="st-stakeholder-assignment">
