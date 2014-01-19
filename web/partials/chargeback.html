@@ -60,7 +60,7 @@
             </div>
 
             <div class="st-stakeholder"
-                 data-ng-repeat="stakeholder in chargeback.stakeholders"
+                 data-ng-repeat="stakeholder in chargeback.stakeholders | filter:{name:search}"
                  data-ng-controller="StakeholderCtrl">
 
                 <header class="st-stakeholder-header">

@@ -103,7 +103,7 @@
 
                     chargeback.stakeholders.unshift(initStakeholder(data));
 
-                    $http.post('/chargeback/create', {
+                    $http.post('/chargeback/createStakeholder', {
                         name  : data.name,
                         email : data.email,
                         title : data.title

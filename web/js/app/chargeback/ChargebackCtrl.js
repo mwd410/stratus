@@ -9,9 +9,7 @@
 
         $scope.canAdd = function() {
             var ns = $scope.newStakeholder;
-            var can = ns.email && ns.name && ns.title;
-            console.log(can);
-            return can;
+            return ns.email && ns.name && ns.title;
         };
 
         $scope.add = function() {
