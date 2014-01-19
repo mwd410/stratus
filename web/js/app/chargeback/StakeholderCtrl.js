@@ -24,6 +24,14 @@
         $scope.unitCount = function() {
             return Object.keys( $scope.stakeholder.units ).length;
         };
+
+        $scope.isExpanded = function() {
+            return !!$scope.stakeholder.isExpanded;
+        };
+        
+        $scope.toggle = function() {
+            $scope.stakeholder.isExpanded = !$scope.stakeholder.isExpanded;
+        };
     } );
 
 })( window.angular );

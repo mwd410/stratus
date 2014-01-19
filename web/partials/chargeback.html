@@ -81,9 +81,17 @@
                            type="email">
 
                     <span>({{ unitCount() }} Accounts)</span>
+
+                    <span class="toolbar">
+                        <button class="st-button bg expander"
+                                data-ng-click="toggle()">
+                            <i data-ng-class="{true : 'icon-chevron-left', false: 'icon-chevron-down'}[!!isExpanded()]"></i>
+                        </button>
+                    </span>
                 </header>
 
-                <div class="st-stakeholder-assignment">
+                <div class="st-stakeholder-assignment"
+                     data-ng-class="{'is-collapsed' : !isExpanded()}">
 
                     <div class="available box">
                         <header>
