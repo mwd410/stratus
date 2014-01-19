@@ -5,26 +5,16 @@
 
         $scope.chargeback = chargeback;
 
-        $scope.newStakeholderData = {
-            name  : '',
-            title : '',
-            email : ''
+        $scope.newStakeholder = {};
+
+        $scope.canAdd = function() {
+            var ns = $scope.newStakeholder;
+            var can = ns.email && ns.name && ns.title;
+            console.log(can);
+            return can;
         };
 
-        $scope.toolbar = [
-            {
-                el      : '<button class="st-button brand" ' +
-                    'ng-click="onClick()"><i class="icon-plus"></i>' +
-                    '<span>Add Stakeholder</span>' +
-                    '</button>',
-                scope   : {
-                    onClick : function() {
 
-                        chargeback.createStakeholder($scope.newStakeholderData);
-                    }
-                }
-            }
-        ];
     });
 
 })(window.angular);

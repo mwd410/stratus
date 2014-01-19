@@ -45,19 +45,19 @@
 }
 
 .st-button {
-    &.brand {
+    &.brand:hover {
+        color : @st-brand-text-strong;
+        background: @st-brand-dark;
+    }
+    &.brand, &.brand.is-disabled {
         background: @st-brand-main;
         color : @st-brand-text;
-        &:hover {
-            color : @st-brand-text-strong;
-            background: @st-brand-dark;
-        }
     }
-    &.bg {
+    &.bg:hover {
+        color : @st-bg-text-strong;
+    }
+    &.bg, &.bg.is-disabled {
         color : @st-bg-text;
-        &:hover {
-            color : @st-bg-text-strong;
-        }
     }
     outline: none;
     border-radius: 3px;
@@ -90,15 +90,15 @@
 }
 
 .st-search-box {
-    padding : 5px;
+    padding : 5px 28px 5px 5px;
     border : 1px solid @st-bg-light;
+    text-align: right;
     width : 50px;
     &:after {
         content : '\uf002';
     }
-    &:focus {
+    &:focus, &.is-expanded {
         width : 200px;
-        font-family : 'Helvetica Neue', Helvetica, Arial, sans-serif;
     }
 
     &.icon-search {

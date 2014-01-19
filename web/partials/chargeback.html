@@ -16,24 +16,44 @@
                 <span class="title">Chargeback</span>
             </div>
 
-            <div class="st-stakeholder">
+            <div class="st-stakeholder new-stakeholder">
 
                 <header class="st-stakeholder-header">
 
                     <label for="newStakeholderName">Name</label>
                     <input id="newStakeholderName"
-                           data-ng-model="stakeholder.name"
+                           data-ng-model="newStakeholder.name"
                            type="text">
 
                     <label for="newStakeholderTitle">Title</label>
                     <input id="newStakeholderTitle"
-                           data-ng-model="stakeholder.title"
+                           data-ng-model="newStakeholder.title"
                            type="text">
 
                     <label for="newStakeholderEmail">Email</label>
                     <input id="newStakeholderEmail"
-                           data-ng-model="stakeholder.email"
+                           data-ng-model="newStakeholder.email"
                            type="email">
+
+                    <button class="st-button bg"
+                            data-ng-class="{'is-disabled' : !canAdd()}"
+                            data-ng-disabled="!canAdd()"
+                            data-ng-click="add()">
+
+                        <i class="icon-plus"></i>
+                        Add Stakeholder
+                    </button>
+
+                    <span class="toolbar">
+                        <input id="chargeback-search"
+                               class="st-search-box is-expanded"
+                               data-ng-model="search"
+                               type="text">
+                        <label class="st-search-icon"
+                               for="chargeback-search">
+                            <i class="icon-search"></i>
+                        </label>
+                    </span>
                 </header>
             </div>
 
