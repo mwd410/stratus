@@ -15,6 +15,21 @@
                 var data = response.data.data;
                 chargeback.stakeholderMap = {};
                 chargeback.stakeholders = data.stakeholders.map(initStakeholder);
+                var providers = [
+                    {
+                        id : null,
+                        name : 'All',
+                        isActive : true
+                    }
+                ];
+                chargeback.menus = [
+                    {
+                        name : 'Service Provider',
+                        items : providers
+                    }
+                ];
+
+                chargeback.setFilter(providers[0]);
 
                 chargeback.unitMap = data.accounts.reduce(function(result, account) {
 
@@ -22,6 +37,11 @@
 
                         return account.id;
                     };
+                    providers.push({
+                        id : account.service_provider_id,
+                        name : account.service_provider_name,
+                        isActive : false
+                    });
                     result[account.getKey()] = account;
                     return result;
                 }, {});
@@ -43,6 +63,12 @@
                 title        : 'Chargeback Assignment',
                 indexPromise : indexPromise,
                 showAssigned : false,
+                setFilter    : function( provider ) {
+                    chargeback.selectedFilter = provider;
+                },
+                isFilteredBy : function( provider ) {
+                    return chargeback.selectedFilter === provider;
+                },
                 getData      : function(widget) {
 
                     return widget.stakeholder;
@@ -112,6 +138,7 @@
                             if (!response.data.success) {
                                 throw new Error;
                             }
+                            data.id = response.data.data.id;
                         })
                         .catch( function( error ) {
                             chargeback.stakeholders.shift();

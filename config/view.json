@@ -50,6 +50,7 @@
             "/js/app/chargeback/chargeback.js",
             "/js/app/chargeback/availableChargeback.js",
             "/js/app/chargeback/selectedChargeback.js",
+            "/js/app/chargeback/chargebackAccountFilter.js",
             "/js/app/chargeback/StakeholderCtrl.js",
             "/js/app/chargeback/unitDisplay.js",
             "/js/app/dashboard/stDash.js",

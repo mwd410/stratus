@@ -142,7 +142,7 @@ class ChargebackController extends Controller {
 
         $stakeholder = Query::select('stakeholder')
             ->where('id = '.$stakeholderId)
-            ->execute();
+            ->fetchOne();
 
         $builder->setData($stakeholder);
 

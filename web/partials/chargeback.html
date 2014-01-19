@@ -103,7 +103,9 @@
                         </header>
                         <div>
 
-                            <div data-ng-repeat="(key, unit) in chargeback.unitMap | availableChargeback:showAssigned():stakeholder.id"
+                            <div data-ng-repeat="(key, unit) in chargeback.unitMap
+                                                 | chargebackAccounts:chargeback.selectedFilter
+                                                 | availableChargeback:showAssigned():stakeholder.id"
                                  class="unit"
                                  data-ng-style="{color : !!unit.stakeholder ? 'inherit' : ''}">
                                 {{ unit | unitDisplay }}
@@ -119,7 +121,9 @@
                         <header>Selected</header>
 
                         <div>
-                            <div data-ng-repeat="(key, unit) in chargeback.unitMap | selectedChargeback:stakeholder.id"
+                            <div data-ng-repeat="(key, unit) in chargeback.unitMap
+                                                 | chargebackAccounts:chargeback.selectedFilter
+                                                 | selectedChargeback:stakeholder.id"
                                  class="unit">
 
                                 <button class="st-button bg left-arrow"
