@@ -1,19 +1,24 @@
 'use strict';
 
-module.exports = function(grunt) {
+module.exports = function( grunt ) {
 
-    var viewConfig = grunt.file.readJSON('config/view.json'),
+    grunt.loadNpmTasks( 'grunt-contrib-uglify' );
+    grunt.loadNpmTasks( 'grunt-contrib-less' );
+    grunt.loadNpmTasks( 'grunt-ngmin' );
+    grunt.loadNpmTasks( 'grunt-contrib-watch' );
+
+    var viewConfig = grunt.file.readJSON( 'config/view.json' ),
         jsFiles = viewConfig.dev.js.slice();
 
-    for (var i = 0; i < jsFiles.length; ++i) {
+    for ( var i = 0; i < jsFiles.length; ++i ) {
         jsFiles[i] = 'web' + jsFiles[i];
     }
 
-    grunt.initConfig({
-        pkg : grunt.file.readJSON('package.json'),
+    grunt.initConfig( {
+        pkg : grunt.file.readJSON( 'package.json' ),
 
         uglify : {
-            options : {
+            options    : {
                 mangle : false,
                 banner : '/*! <%= pkg.name %> v<%= pkg.version %> : <%= grunt.template.today("yyyy-mm-dd") %> */\n'
             },
@@ -23,8 +28,8 @@ module.exports = function(grunt) {
                 }
             }
         },
-        less : {
-            options : {
+        less   : {
+            options    : {
                 yuicompress : true
             },
             prodTarget : {
@@ -32,14 +37,22 @@ module.exports = function(grunt) {
                     "web/css/stratus.min.css" : "web/css/less/app.less"
                 }
             }
+        },
+        delta  : {
+            buildJs  : {
+                files : jsFiles,
+                tasks : [ 'uglify' ]
+            },
+            buildCss : {
+                files : 'web/css/less/**/*.less',
+                tasks : [ 'less' ]
+            }
         }
-    });
+    } );
 
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-less');
-    grunt.loadNpmTasks('grunt-ngmin');
+    grunt.renameTask( 'watch', 'delta' );
 
-    grunt.registerTask('default', ['uglify', 'less']);
+    grunt.registerTask( 'watch', ['uglify', 'less', 'delta'] );
 
 
 };
