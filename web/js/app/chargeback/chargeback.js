@@ -1,7 +1,7 @@
 (function(ng, undefined) {
     'use strict';
 
-    ng.module('app.chargeback').factory('chargeback', function($http, $q) {
+    ng.module('app.chargeback').factory('chargeback', function($http, _) {
 
         var initStakeholder = function(stakeholder) {
 
@@ -10,26 +10,14 @@
 
                 return stakeholder;
             },
-            indexPromise = $http.get('/chargeback/index').then(function(response, _) {
+            indexPromise = $http.get('/chargeback/index').then(function(response) {
 
                 var data = response.data.data;
                 chargeback.stakeholderMap = {};
                 chargeback.stakeholders = data.stakeholders.map(initStakeholder);
-                var providers = [
-                    {
-                        id : null,
-                        name : 'All',
-                        isActive : true
-                    }
-                ];
-                chargeback.menus = [
-                    {
-                        name : 'Service Provider',
-                        items : providers
-                    }
-                ];
 
-                chargeback.setFilter(providers[0]);
+                var providers = {};
+
 
                 chargeback.unitMap = data.accounts.reduce(function(result, account) {
 
@@ -37,14 +25,31 @@
 
                         return account.id;
                     };
-                    providers.push({
-                        id : account.service_provider_id,
-                        name : account.service_provider_name,
+                    var spId = account.service_provider_id;
+                    providers[spId] = providers[spId] || {
+                        id       : spId,
+                        name     : account.service_provider_name,
                         isActive : false
-                    });
+                    };
                     result[account.getKey()] = account;
                     return result;
                 }, {});
+
+                var providerArray = _.values(providers);
+
+                providerArray.unshift({
+                    id       : null,
+                    name     : 'All',
+                    isActive : true
+                });
+                chargeback.setFilter(providerArray[0]);
+
+                chargeback.menus = [
+                    {
+                        name  : 'Service Provider',
+                        items : providerArray
+                    }
+                ];
 
                 data.chargeback.forEach(function(unit) {
 
@@ -60,20 +65,20 @@
                 return response.data.data;
             }),
             chargeback = {
-                title        : 'Chargeback Assignment',
-                indexPromise : indexPromise,
-                showAssigned : false,
-                setFilter    : function( provider ) {
+                title             : 'Chargeback Assignment',
+                indexPromise      : indexPromise,
+                showAssigned      : false,
+                setFilter         : function(provider) {
                     chargeback.selectedFilter = provider;
                 },
-                isFilteredBy : function( provider ) {
+                isFilteredBy      : function(provider) {
                     return chargeback.selectedFilter === provider;
                 },
-                getData      : function(widget) {
+                getData           : function(widget) {
 
                     return widget.stakeholder;
                 },
-                assign       : function(unit, stakeholder) {
+                assign            : function(unit, stakeholder) {
 
                     var oldStakeholder = unit.stakeholder;
 
@@ -104,7 +109,7 @@
                             delete stakeholder.units[unit.getKey()];
                         });
                 },
-                unassign     : function(unit, stakeholder) {
+                unassign          : function(unit, stakeholder) {
 
                     var oldStakeholder = unit.stakeholder;
                     delete unit.stakeholder;
@@ -134,13 +139,13 @@
                         email : data.email,
                         title : data.title
                     })
-                        .then( function( response ) {
+                        .then(function(response) {
                             if (!response.data.success) {
                                 throw new Error;
                             }
                             data.id = response.data.data.id;
                         })
-                        .catch( function( error ) {
+                        .catch(function(error) {
                             chargeback.stakeholders.shift();
                         })
                 }

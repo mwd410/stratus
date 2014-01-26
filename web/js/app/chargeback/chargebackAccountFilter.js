@@ -2,7 +2,7 @@
 
     ng.module('app.chargeback' ).filter('chargebackAccounts', function(_) {
         return function( accounts, selected ) {
-            if (selected.id === null) {
+            if (!selected || !selected.id) {
                 return accounts;
             }
 

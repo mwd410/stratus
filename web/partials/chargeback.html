@@ -106,7 +106,10 @@
                             <div data-ng-repeat="(key, unit) in chargeback.unitMap | chargebackAccounts:chargeback.selectedFilter | availableChargeback:showAssigned():stakeholder.id"
                                  class="unit"
                                  data-ng-style="{color : !!unit.stakeholder ? 'inherit' : ''}">
-                                {{ unit | unitDisplay }}
+                                <button class="st-button bg" style="color:inherit"
+                                        data-ng-click="assign(unit)">
+                                    {{ unit | unitDisplay }}
+                                </button>
 
                                 <button class="st-button bg right-arrow"
                                         data-ng-click="assign(unit)">
@@ -127,7 +130,10 @@
                                     <i class="icon-arrow-left icon-large"></i>
                                 </button>
 
-                                {{ unit.name }} ({{ unit.service_provider_name }})
+                                <button class="st-button bg" style="color:inherit"
+                                        data-ng-click="unassign(unit)">
+                                    {{ unit.name }} ({{ unit.service_provider_name }})
+                                </button>
                             </div>
                         </div>
                     </div>
