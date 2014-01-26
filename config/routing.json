@@ -40,7 +40,9 @@
             "/chargeback/info"   : "Chargeback.info",
             "/chargeback/assign" : "Chargeback.assign",
             "/chargeback/unassign" : "Chargeback.unassign",
-            "/chargeback/createStakeholder" : "Chargeback.createStakeholder"
+            "/chargeback/createStakeholder" : "Chargeback.createStakeholder",
+            "/chargeback/updateStakeholder" : "Chargeback.updateStakeholder",
+            "/chargeback/deleteStakeholder" : "Chargeback.deleteStakeholder"
         }
     }
 }

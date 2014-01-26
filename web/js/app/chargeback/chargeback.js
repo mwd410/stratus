@@ -148,6 +148,42 @@
                         .catch(function(error) {
                             chargeback.stakeholders.shift();
                         })
+                },
+                removeStakeholder : function(stakeholder) {
+
+                    $http.post('/chargeback/deleteStakeholder', {
+                        id : stakeholder.id
+                    })
+                        .then(function(response) {
+                            if (!response.data.success) {
+                                throw new Error;
+                            }
+
+                            _.each(stakeholder.units, function(unit) {
+                                delete unit.stakeholder;
+                            });
+                            delete stakeholder.units;
+                            delete chargeback.stakeholderMap[stakeholder.id];
+                            chargeback.stakeholders.splice(chargeback.stakeholders.indexOf(stakeholder), 1);
+                        })
+                        .catch(function(error) {
+
+                        });
+                },
+                editStakeholder : function(stakeholder, field) {
+                    var params = {
+                        id : stakeholder.id
+                    };
+                    params[field] = stakeholder[field];
+                    $http.post('/chargeback/updateStakeholder', params)
+                        .then(function(response) {
+                            if (!response.data.success) {
+                                throw new Error;
+                            }
+                        })
+                        .catch(function(error) {
+                            console.error(error);
+                        });
                 }
             };
 

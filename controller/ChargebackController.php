@@ -136,15 +136,69 @@ class ChargebackController extends Controller {
 
         if (!$insert->execute()) {
             $builder->addError('Internal error');
+        } else {
+
+            $stakeholderId = Query::lastInsertId('stakeholder');
+
+            $stakeholder = Query::select('stakeholder')
+                ->where('id = '.$stakeholderId)
+                ->fetchOne();
+
+            $builder->setData($stakeholder);
         }
 
-        $stakeholderId = Query::lastInsertId('stakeholder');
+        $this->json($builder->getResponse());
+    }
 
-        $stakeholder = Query::select('stakeholder')
-            ->where('id = '.$stakeholderId)
-            ->fetchOne();
+    public function updateStakeholderAction(Request $request) {
 
-        $builder->setData($stakeholder);
+        $builder = new ResponseBuilder();
+        $id = $request->getParam('id');
+        $customerId = $this->getUser()->get('customer_id');
+        $params = $request->getParams();
+
+        Utils::stripNotIn($params, array(
+            'name',
+            'title',
+            'email'
+        ));
+
+        $update = Query::update('stakeholder');
+
+        foreach($params as $key => $value) {
+            $update->set("$key = ?", $value);
+        }
+
+        $update->where('id = ?', $id)
+            ->where('customer_id = ?', $customerId);
+
+        if (!$update->execute()) {
+            $builder->addError('Internal Error');
+        }
+
+        $this->json($builder->getResponse());
+    }
+
+    public function deleteStakeholderAction(Request $request) {
+
+        $builder = new ResponseBuilder();
+        $id = $request->getParam('id');
+        $customerId = $this->getUser()->get('customer_id');
+
+        $delete = Query::delete('stakeholder')
+            ->where('id = ?', $id)
+            ->where('customer_id = ?', $customerId);
+
+        if (!$delete->execute()) {
+            $builder->addError('Internal Error');
+        } else if ($delete->getStatement()->rowCount() == 0) {
+            $builder->addError('Sorry, you do not have permission to delete this stakeholder');
+        } else {
+
+            Query::delete('chargeback_unit')
+                ->where('stakeholder_id = ?', $id)
+                ->execute();
+        }
 
         $this->json($builder->getResponse());
     }

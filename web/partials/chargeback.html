@@ -68,19 +68,30 @@
                     <label for="stakeholderName{{ $index }}">Name</label>
                     <input id="stakeholderName{{ $index }}"
                            data-ng-model="stakeholder.name"
+                           data-ng-blur="edit('name')"
                            type="text">
 
                     <label for="stakeholderTitle{{ $index }}">Title</label>
                     <input id="stakeholderTitle{{ $index }}"
                            data-ng-model="stakeholder.title"
+                           data-ng-blur="edit('title')"
                            type="text">
 
                     <label for="stakeholderEmail{{ $index }}">Email</label>
                     <input id="stakeholderEmail{{ $index }}"
                            data-ng-model="stakeholder.email"
+                           data-ng-blur="edit('email')"
                            type="email">
 
                     <span>({{ unitCount() }} Accounts)</span>
+                    <span>
+                        <button class="st-button bg"
+                                data-ng-click="remove()">
+
+                            <i class="icon-remove"></i>
+                            Delete Stakeholder
+                        </button>
+                    </span>
 
                     <span class="toolbar">
                         <button class="st-button bg expander"

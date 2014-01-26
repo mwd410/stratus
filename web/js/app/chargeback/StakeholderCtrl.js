@@ -32,6 +32,14 @@
         $scope.toggle = function() {
             $scope.stakeholder.isExpanded = !$scope.stakeholder.isExpanded;
         };
+
+        $scope.edit = function(field) {
+            chargeback.editStakeholder($scope.stakeholder, field);
+        };
+
+        $scope.remove = function() {
+            chargeback.removeStakeholder($scope.stakeholder);
+        };
     } );
 
 })( window.angular );
