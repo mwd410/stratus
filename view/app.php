@@ -16,5 +16,24 @@ beginPartial('body');
     </footer>
 </div>
 
+
+<div id="modalOverlay" data-ng-show="modalDialog">
+
+    <div id="modalDialog">
+        <header>{{ modalDialog.title }}</header>
+        <div>
+            <div class="message">{{ modalDialog.message }}</div>
+            <button class="st-button bg"
+                    data-ng-repeat="button in modalDialog.buttons"
+                    data-ng-click="modalDialog.onClick(button.text)">
+                <i class="icon-large"
+                   data-ng-show="button.iconCls"
+                   data-ng-class="button.iconCls"></i>
+                {{ button.text }}
+            </button>
+        </div>
+    </div>
+</div>
+
 <?php
 endPartial();

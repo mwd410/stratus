@@ -1,0 +1,60 @@
+#modalWrapper {
+    position : fixed;
+    text-align : center;
+    &:before {
+        content : ' ';
+        display : inline-block;
+        height : 100%;
+        width : 0px;
+        vertical-align: middle;
+    }
+}
+
+#modalOverlay {
+    position : fixed;
+    text-align: center;
+    &:before {
+        content : ' ';
+        display : inline-block;
+        height : 100%;
+        width : 0px;
+        vertical-align: middle;
+    }
+    width : 100%;
+    height : 100%;
+    top : 0;
+    left : 0;
+    background : rgba(0, 0, 0, 0.3);
+    //display: none;
+    display : table-cell;
+    &.is-active {
+        display: block;
+    }
+}
+
+#modalDialog {
+    display : inline-block;
+    vertical-align: middle;
+    background : @st-bg-main;
+    border : 1px solid @st-bg-very-dark;
+    .individual-box;
+    header {
+        padding : 10px;
+        width : 100%;
+        text-align : left;
+        border-bottom: 1px solid @st-bg-very-dark;
+        background : @st-brand-main;
+        color : @st-brand-text-strong;
+    }
+    > div {
+        padding : 15px 30px;
+        width : 100%;
+        color : @st-bg-text-strong;
+    }
+    .message {
+        padding : 20px 0 40px;
+    }
+    button+button {
+        margin-left: 20px;
+    }
+}

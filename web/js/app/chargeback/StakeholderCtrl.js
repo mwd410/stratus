@@ -1,7 +1,7 @@
 (function( ng, undefined ) {
     'use strict';
 
-    ng.module( 'app.chargeback' ).controller( 'StakeholderCtrl', function( $scope, chargeback ) {
+    ng.module( 'app.chargeback' ).controller( 'StakeholderCtrl', function( $scope, chargeback, modalDialog ) {
 
         $scope.assign = function( unit ) {
             chargeback.assign( unit, $scope.stakeholder );
@@ -28,7 +28,7 @@
         $scope.isExpanded = function() {
             return !!$scope.stakeholder.isExpanded;
         };
-        
+
         $scope.toggle = function() {
             $scope.stakeholder.isExpanded = !$scope.stakeholder.isExpanded;
         };
@@ -38,7 +38,26 @@
         };
 
         $scope.remove = function() {
-            chargeback.removeStakeholder($scope.stakeholder);
+
+            modalDialog({
+                title : 'Delete Stakeholder?',
+                message : 'Are you sure you want to delete this stakeholder?',
+                buttons : [
+                    {
+                        text : 'Yes',
+                        iconCls : 'icon-ok'
+                    },
+                    {
+                        text : 'No',
+                        iconCls : 'icon-remove'
+                    }
+                ]
+            }).then(function(selection) {
+                    console.log(selection);
+                    if (selection === 'Yes') {
+                        chargeback.removeStakeholder($scope.stakeholder);
+                    }
+                });
         };
     } );
 
