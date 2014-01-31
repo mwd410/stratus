@@ -41,7 +41,7 @@
 
             modalDialog({
                 title : 'Delete Stakeholder?',
-                message : 'Are you sure you want to delete this stakeholder?',
+                message : 'Are you sure you want to delete ' + $scope.stakeholder.name + '?',
                 buttons : [
                     {
                         text : 'Yes',

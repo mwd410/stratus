@@ -5,6 +5,10 @@
 
         var queue = [];
 
+        $rootScope.$on('$stateChangeSuccess', function() {
+            $rootScope.modalDialog = null;
+        });
+
         return function(config) {
 
             config.title = config.title || 'Alert';
